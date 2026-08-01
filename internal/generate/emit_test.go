@@ -62,6 +62,30 @@ func TestEmitTypes(t *testing.T) {
 	}
 }
 
+func TestArchBuildTagsLeadGeneratedFiles(t *testing.T) {
+	model := Model{Types: []TypeDecl{{CName: "ghostty_value_s", Kind: TypeStruct}}}
+	names := map[string]string{"ghostty_value_s": "Value"}
+	layouts := map[string]RecordLayout{"ghostty_value_s": {CName: "ghostty_value_s", Size: 0, Align: 1}}
+	output := Output{Package: "ghostty", Upstream: Upstream{Commit: "0123456789abcdef0123456789abcdef01234567"}}
+
+	types, _, err := renderTypeFile(model, names, layouts, map[string]bool{"ghostty_value_s": true}, true, "arm64", output)
+	if err != nil {
+		t.Fatal(err)
+	}
+	data, test, err := renderABIFor(&model, names, layouts, output, "abi_gen_arm64.go", "abi_gen_test_arm64.go", "arm64")
+	if err != nil {
+		t.Fatal(err)
+	}
+	for name, generated := range map[string][]byte{"types": types, "abi": data, "abi_test": test} {
+		text := string(generated)
+		tag := strings.Index(text, "//go:build arm64")
+		pkg := strings.Index(text, "package ghostty")
+		if tag < 0 || pkg < 0 || tag > pkg {
+			t.Fatalf("%s build tag position = %d, package position = %d\n%s", name, tag, pkg, text)
+		}
+	}
+}
+
 func TestEmitConstants(t *testing.T) {
 	header := fixtureHeader(t)
 	model, err := InspectHeader(context.Background(), "clang", header, filepath.Dir(header), LinuxTargets, nil)
