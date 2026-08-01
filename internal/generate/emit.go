@@ -4,7 +4,10 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"go/ast"
 	"go/format"
+	"go/parser"
+	"go/token"
 	"os"
 	"path/filepath"
 	"sort"
@@ -37,6 +40,9 @@ func EmitTypes(model Model, layouts map[string]map[string]RecordLayout, output O
 	}
 	targets := sortedArchitectures(layouts)
 	for _, arch := range targets {
+		if err := validateTargetGOARCH(arch); err != nil {
+			return err
+		}
 		for _, typ := range model.Types {
 			if typ.Kind != TypeStruct && typ.Kind != TypeUnion {
 				continue
@@ -59,7 +65,7 @@ func EmitTypes(model Model, layouts map[string]map[string]RecordLayout, output O
 	}
 
 	files := make(map[string][]byte)
-	commonTypes, _, err := renderTypeFile(model, names, layouts[targets[0]], split, false, "", output)
+	commonTypes, _, err := renderTypeFile(model, names, layouts[targets[0]], split, false, targets[0], output)
 	if err != nil {
 		return err
 	}
@@ -152,6 +158,7 @@ func renderTypeFile(model Model, names map[string]string, layouts map[string]Rec
 			return nil, false, err
 		}
 		body.WriteString(definition)
+		needsUnsafe = needsUnsafe || strings.Contains(definition, "unsafe.")
 	}
 	if body.Len() == 0 && !archFile {
 		body.WriteString("// no declarations\n")
@@ -159,7 +166,7 @@ func renderTypeFile(model Model, names map[string]string, layouts map[string]Rec
 	if body.Len() == 0 {
 		return nil, needsUnsafe, nil
 	}
-	return goFile(output, "types_gen.go", body.String(), needsUnsafe, arch), needsUnsafe, nil
+	return goFile(output, "types_gen.go", body.String(), needsUnsafe, archIf(archFile, arch)), needsUnsafe, nil
 }
 
 func renderNamedType(typ TypeDecl, names map[string]string, output Output) (string, error) {
@@ -173,7 +180,11 @@ func renderNamedType(typ TypeDecl, names map[string]string, output Output) (stri
 		if typ.Type.CName == "void" && typ.Type.Pointers == 1 {
 			out.WriteString("type " + name + " uintptr\n\n")
 		} else {
-			out.WriteString("type " + name + " " + goTypeRef(typ.Type, names, typeKinds(nil), false) + "\n\n")
+			goType, err := goTypeRef(typ.Type, names, typeKinds(nil), false)
+			if err != nil {
+				return "", fmt.Errorf("%s: %w", typ.CName, err)
+			}
+			out.WriteString("type " + name + " " + goType + "\n\n")
 		}
 	case TypeEnum:
 		out.WriteString("type " + name + " int32\n\n")
@@ -206,7 +217,10 @@ func renderRecord(typ TypeDecl, layout RecordLayout, names map[string]string, mo
 		}
 		for _, field := range fields {
 			fieldName := goValueIdentifier(field.CName)
-			fieldType := goTypeRefTarget(field.Type, names, typeKinds(model.Types), true, arch)
+			fieldType, err := goTypeRefTarget(field.Type, names, typeKinds(model.Types), true, arch)
+			if err != nil {
+				return "", false, fmt.Errorf("%s.%s: %w", typ.CName, field.CName, err)
+			}
 			out.WriteString("func (u *" + name + ") Set" + fieldName + "(value " + fieldType + ") {\n")
 			out.WriteString("\t*(*" + fieldType + ")(unsafe.Pointer(u)) = value\n")
 			out.WriteString("}\n\n")
@@ -233,7 +247,10 @@ func renderRecord(typ TypeDecl, layout RecordLayout, names map[string]string, mo
 			out.WriteString("\t_ [" + strconv.Itoa(gap) + "]byte\n")
 			cursor += gap
 		}
-		fieldType := goTypeRefTarget(field.Type, names, typeKinds(model.Types), true, arch)
+		fieldType, err := goTypeRefTarget(field.Type, names, typeKinds(model.Types), true, arch)
+		if err != nil {
+			return "", false, fmt.Errorf("%s.%s: %w", typ.CName, field.CName, err)
+		}
 		out.WriteString("\t" + goValueIdentifier(field.CName) + " " + fieldType + "\n")
 		fieldSize, err := cTypeSize(field.Type, layouts, model.Types, arch)
 		if err != nil {
@@ -260,19 +277,37 @@ func unionFields(typ TypeDecl) ([]Field, error) {
 	}
 	byName := make(map[string]Field, len(typ.Fields))
 	for _, field := range typ.Fields {
+		if _, duplicate := byName[field.CName]; duplicate {
+			return nil, fmt.Errorf("union has duplicate Clang field: %s.%s", typ.CName, field.CName)
+		}
 		byName[field.CName] = field
 	}
 	fields := make([]Field, 0, len(override.Fields))
+	seen := make(map[string]bool, len(override.Fields))
 	for _, name := range override.Fields {
+		if seen[name] {
+			return nil, fmt.Errorf("union override for %s lists field more than once: %s", typ.CName, name)
+		}
+		seen[name] = true
 		field, ok := byName[name]
 		if !ok {
-			return nil, fmt.Errorf("union override field missing from Clang model: %s.%s", typ.CName, name)
+			available := make([]string, 0, len(byName))
+			for candidate := range byName {
+				available = append(available, candidate)
+			}
+			sort.Strings(available)
+			return nil, fmt.Errorf("union override field missing from Clang model: %s.%s (available fields: %s)", typ.CName, name, strings.Join(available, ", "))
 		}
 		fields = append(fields, field)
 		delete(byName, name)
 	}
 	if len(byName) != 0 {
-		return nil, fmt.Errorf("union override missing Clang field: %s", typ.CName)
+		missing := make([]string, 0, len(byName))
+		for name := range byName {
+			missing = append(missing, name)
+		}
+		sort.Strings(missing)
+		return nil, fmt.Errorf("union override for %s does not list Clang fields: %s", typ.CName, strings.Join(missing, ", "))
 	}
 	return fields, nil
 }
@@ -294,19 +329,37 @@ func typeKinds(types []TypeDecl) map[string]TypeKind {
 	return kinds
 }
 
-func goTypeRef(ref TypeRef, names map[string]string, kinds map[string]TypeKind, callbackAsUintptr bool) string {
+func goTypeRef(ref TypeRef, names map[string]string, kinds map[string]TypeKind, callbackAsUintptr bool) (string, error) {
 	return goTypeRefTarget(ref, names, kinds, callbackAsUintptr, "")
 }
 
-func goTypeRefTarget(ref TypeRef, names map[string]string, kinds map[string]TypeKind, callbackAsUintptr bool, arch string) string {
+func goTypeRefTarget(ref TypeRef, names map[string]string, kinds map[string]TypeKind, callbackAsUintptr bool, arch string) (string, error) {
+	if err := validateGOARCH(arch); err != nil {
+		return "", err
+	}
+	if ref.CName == "" {
+		return "", fmt.Errorf("missing C type name")
+	}
 	base := ref
 	base.ArrayLen = 0
 	name := names[base.CName]
-	if callbackAsUintptr && kinds[base.CName] == TypeCallback && ref.Pointers == 0 {
-		name = "uintptr"
+	if kinds[base.CName] != TypeCallback && name == "" {
+		var err error
+		name, err = scalarGoTypeTarget(base.CName, arch)
+		if err != nil {
+			return "", err
+		}
+	}
+	if kinds[base.CName] == TypeCallback {
+		if names[base.CName] == "" {
+			return "", fmt.Errorf("missing Go name: %s", base.CName)
+		}
+		if callbackAsUintptr && ref.Pointers == 0 {
+			name = "uintptr"
+		}
 	}
 	if name == "" {
-		name = scalarGoTypeTarget(base.CName, arch)
+		return "", fmt.Errorf("missing Go name: %s", base.CName)
 	}
 	if ref.Pointers > 0 && ref.CName == "void" {
 		if ref.Pointers == 1 {
@@ -320,49 +373,90 @@ func goTypeRefTarget(ref TypeRef, names map[string]string, kinds map[string]Type
 	if ref.ArrayLen > 0 {
 		name = "[" + strconv.Itoa(ref.ArrayLen) + "]" + name
 	}
-	return name
+	return name, nil
 }
 
 func scalarGoType(cName string) string {
-	return scalarGoTypeTarget(cName, "")
+	name, _ := scalarGoTypeTarget(cName, "")
+	return name
 }
 
-func scalarGoTypeTarget(cName, arch string) string {
+func scalarGoTypeTarget(cName, arch string) (string, error) {
+	if err := validateGOARCH(arch); err != nil {
+		return "", err
+	}
 	switch cName {
 	case "_Bool", "bool":
-		return "bool"
+		return "bool", nil
 	case "char", "unsigned char", "uint8_t":
-		return "byte"
+		return "byte", nil
 	case "int8_t", "signed char":
-		return "int8"
+		return "int8", nil
 	case "uint16_t", "unsigned short":
-		return "uint16"
+		return "uint16", nil
 	case "int16_t", "short":
-		return "int16"
+		return "int16", nil
 	case "uint32_t", "unsigned", "unsigned int":
-		return "uint32"
+		return "uint32", nil
 	case "int32_t", "int", "signed", "signed int":
-		return "int32"
+		return "int32", nil
 	case "uint64_t", "unsigned long", "unsigned long long":
-		return "uint64"
+		return "uint64", nil
 	case "int64_t", "long", "long long", "signed long", "signed long long":
-		return "int64"
+		return "int64", nil
 	case "uintptr_t", "size_t":
-		return "uintptr"
+		return "uintptr", nil
 	case "intptr_t", "ssize_t":
-		return "int"
+		return "int", nil
 	case "float":
-		return "float32"
+		return "float32", nil
 	case "double":
-		return "float64"
+		return "float64", nil
 	case "void":
-		return "byte"
+		return "byte", nil
 	default:
-		return "uintptr"
+		return "", fmt.Errorf("unsupported C type %q", cName)
 	}
 }
 
+func validateGOARCH(arch string) error {
+	if arch == "" {
+		return nil
+	}
+	if arch != "amd64" && arch != "arm64" {
+		return fmt.Errorf("unsupported GOARCH %q (supported: amd64, arm64)", arch)
+	}
+	return nil
+}
+
+func validateTargetGOARCH(arch string) error {
+	if arch == "" {
+		return fmt.Errorf("unsupported GOARCH %q (supported: amd64, arm64)", arch)
+	}
+	return validateGOARCH(arch)
+}
+
+func pointerSize(arch string) (int, error) {
+	if err := validateGOARCH(arch); err != nil {
+		return 0, err
+	}
+	if arch == "" {
+		return 0, fmt.Errorf("GOARCH is required for pointer-sized C type")
+	}
+	return 8, nil
+}
+
+func archIf(enabled bool, arch string) string {
+	if enabled {
+		return arch
+	}
+	return ""
+}
+
 func cTypeSize(ref TypeRef, layouts map[string]RecordLayout, types []TypeDecl, arch string) (int, error) {
+	if err := validateGOARCH(arch); err != nil {
+		return 0, err
+	}
 	if ref.ArrayLen > 0 {
 		element := ref
 		element.ArrayLen = 0
@@ -373,7 +467,7 @@ func cTypeSize(ref TypeRef, layouts map[string]RecordLayout, types []TypeDecl, a
 		return size * ref.ArrayLen, nil
 	}
 	if ref.Pointers > 0 {
-		return 8, nil
+		return pointerSize(arch)
 	}
 	for _, typ := range types {
 		if typ.CName != ref.CName {
@@ -389,7 +483,7 @@ func cTypeSize(ref TypeRef, layouts map[string]RecordLayout, types []TypeDecl, a
 		case TypeEnum:
 			return 4, nil
 		case TypeCallback:
-			return 8, nil
+			return pointerSize(arch)
 		case TypeAlias:
 			return cTypeSize(typ.Type, layouts, types, arch)
 		}
@@ -404,7 +498,7 @@ func cTypeSize(ref TypeRef, layouts map[string]RecordLayout, types []TypeDecl, a
 	case "int64_t", "uint64_t", "long", "unsigned long", "long long", "unsigned long long", "double":
 		return 8, nil
 	case "size_t", "uintptr_t", "intptr_t", "ssize_t":
-		return 8, nil
+		return pointerSize(arch)
 	default:
 		return 0, fmt.Errorf("unsupported C type %q", ref.CName)
 	}
@@ -420,7 +514,10 @@ func renderFunctions(model Model, names map[string]string, output Output) ([]byt
 		if name == "" {
 			return nil, fmt.Errorf("missing Go name: %s", function.CName)
 		}
-		signature := functionSignature(function, names, typeKinds(model.Types))
+		signature, err := functionSignature(function, names, typeKinds(model.Types))
+		if err != nil {
+			return nil, fmt.Errorf("%s: %w", function.CName, err)
+		}
 		body.WriteString("var " + name + " " + signature + "\n\n")
 		needsUnsafe = needsUnsafe || strings.Contains(signature, "unsafe.")
 	}
@@ -430,21 +527,29 @@ func renderFunctions(model Model, names map[string]string, output Output) ([]byt
 	return goFile(output, "functions_gen.go", body.String(), needsUnsafe, ""), nil
 }
 
-func functionSignature(function FunctionDecl, names map[string]string, kinds map[string]TypeKind) string {
+func functionSignature(function FunctionDecl, names map[string]string, kinds map[string]TypeKind) (string, error) {
 	var out strings.Builder
 	out.WriteString("func(")
 	for i, parameter := range function.Parameters {
 		if i > 0 {
 			out.WriteString(", ")
 		}
-		out.WriteString(goTypeRefTarget(parameter.Type, names, kinds, true, ""))
+		parameterType, err := goTypeRefTarget(parameter.Type, names, kinds, true, "")
+		if err != nil {
+			return "", fmt.Errorf("parameter %q: %w", parameter.CName, err)
+		}
+		out.WriteString(parameterType)
 	}
 	out.WriteString(")")
 	if function.Result.CName != "void" || function.Result.Pointers > 0 || function.Result.ArrayLen > 0 {
 		out.WriteByte(' ')
-		out.WriteString(goTypeRefTarget(function.Result, names, kinds, true, ""))
+		resultType, err := goTypeRefTarget(function.Result, names, kinds, true, "")
+		if err != nil {
+			return "", fmt.Errorf("result: %w", err)
+		}
+		out.WriteString(resultType)
 	}
-	return out.String()
+	return out.String(), nil
 }
 
 func renderRegistration(model Model, names map[string]string, output Output) ([]byte, error) {
@@ -483,14 +588,29 @@ func renderConstants(model Model, names map[string]string, output Output) ([]byt
 		if typ.Kind != TypeEnum || len(typ.EnumValues) == 0 {
 			continue
 		}
+		typeName, err := generatedName(names, typ.CName)
+		if err != nil {
+			return nil, err
+		}
 		body.WriteString("const (\n")
 		for _, value := range typ.EnumValues {
-			body.WriteString("\t" + names[value.CName] + " " + names[typ.CName] + " = " + strconv.FormatInt(value.Value, 10) + "\n")
+			valueName, err := generatedName(names, value.CName)
+			if err != nil {
+				return nil, err
+			}
+			body.WriteString("\t" + valueName + " " + typeName + " = " + strconv.FormatInt(value.Value, 10) + "\n")
 		}
 		body.WriteString(")\n\n")
 	}
 	for _, constant := range model.Constants {
-		body.WriteString("const " + names[constant.CName] + " = " + constant.Value + "\n\n")
+		name, err := generatedName(names, constant.CName)
+		if err != nil {
+			return nil, err
+		}
+		if err := validateConstantExpression(constant.Value); err != nil {
+			return nil, fmt.Errorf("%s: %w", constant.CName, err)
+		}
+		body.WriteString("const " + name + " = " + constant.Value + "\n\n")
 	}
 	if body.Len() == 0 {
 		body.WriteString("// no constants\n")
@@ -498,21 +618,65 @@ func renderConstants(model Model, names map[string]string, output Output) ([]byt
 	return goFile(output, "constants_gen.go", body.String(), false, ""), nil
 }
 
+func generatedName(names map[string]string, cName string) (string, error) {
+	name := names[cName]
+	if name == "" {
+		return "", fmt.Errorf("missing Go name: %s", cName)
+	}
+	if name == "_" || !token.IsIdentifier(name) {
+		return "", fmt.Errorf("invalid Go name %q for %s", name, cName)
+	}
+	return name, nil
+}
+
+func validateConstantExpression(value string) error {
+	expr, err := parser.ParseExpr(value)
+	if err != nil {
+		return fmt.Errorf("invalid constant expression %q: %w", value, err)
+	}
+	if !isConstantExpression(expr) {
+		return fmt.Errorf("unsupported constant expression %q", value)
+	}
+	return nil
+}
+
+func isConstantExpression(expr ast.Expr) bool {
+	switch expr := expr.(type) {
+	case *ast.BasicLit:
+		return true
+	case *ast.Ident:
+		return expr.Name == "true" || expr.Name == "false" || expr.Name == "iota"
+	case *ast.ParenExpr:
+		return isConstantExpression(expr.X)
+	case *ast.UnaryExpr:
+		switch expr.Op {
+		case token.ADD, token.SUB, token.XOR, token.NOT:
+			return isConstantExpression(expr.X)
+		default:
+			return false
+		}
+	case *ast.BinaryExpr:
+		return isConstantExpression(expr.X) && isConstantExpression(expr.Y)
+	default:
+		return false
+	}
+}
+
 func renderABI(model Model, names map[string]string, layouts map[string]map[string]RecordLayout, split map[string]bool, output Output) (map[string][]byte, error) {
 	files := make(map[string][]byte)
 	arches := sortedArchitectures(layouts)
 	if !hasSplitForArch(model, split) {
-		data, test, err := renderABIFor(&model, names, layouts[arches[0]], output, "abi_gen.go", "abi_gen_test.go", "")
+		data, test, err := renderABIFor(&model, &model, names, layouts[arches[0]], output, "abi_gen.go", "abi_gen_test.go", "")
 		if err != nil {
 			return nil, err
 		}
 		files["abi_gen.go"] = data
 		files["abi_gen_test.go"] = test
-		files["abi_records_gen.go"] = renderABIRecords(model, output)
+		files["abi_records_gen.go"] = goFile(output, "abi_records_gen.go", renderABIRecords(model), false, "integration")
 		return files, nil
 	}
 	commonModel := modelWithoutSplit(model, split)
-	data, test, err := renderABIFor(&commonModel, names, layouts[arches[0]], output, "abi_gen.go", "abi_gen_test.go", "")
+	data, test, err := renderABIFor(&commonModel, nil, names, layouts[arches[0]], output, "abi_gen.go", "abi_gen_test.go", "")
 	if err != nil {
 		return nil, err
 	}
@@ -520,14 +684,14 @@ func renderABI(model Model, names map[string]string, layouts map[string]map[stri
 	files["abi_gen_test.go"] = test
 	for _, arch := range arches {
 		archModel := modelOnlySplit(model, split)
-		data, test, err := renderABIFor(&archModel, names, layouts[arch], output, "abi_gen_"+arch+".go", "abi_gen_test_"+arch+".go", arch)
+		data, test, err := renderABIFor(&archModel, &model, names, layouts[arch], output, "abi_gen_"+arch+".go", "abi_gen_"+arch+"_test.go", arch)
 		if err != nil {
 			return nil, err
 		}
 		files["abi_gen_"+arch+".go"] = data
-		files["abi_gen_test_"+arch+".go"] = test
+		files["abi_gen_"+arch+"_test.go"] = test
 	}
-	files["abi_records_gen.go"] = renderABIRecords(model, output)
+	files["abi_records_gen.go"] = goFile(output, "abi_records_gen.go", renderABIRecords(model), false, "integration")
 	return files, nil
 }
 
@@ -553,7 +717,7 @@ func modelOnlySplit(model Model, split map[string]bool) Model {
 	return copy
 }
 
-func renderABIFor(model *Model, names map[string]string, layouts map[string]RecordLayout, output Output, goName, testName, arch string) ([]byte, []byte, error) {
+func renderABIFor(model *Model, metadataModel *Model, names map[string]string, layouts map[string]RecordLayout, output Output, goName, testName, arch string) ([]byte, []byte, error) {
 	var body, tests strings.Builder
 	for _, typ := range model.Types {
 		if typ.Kind != TypeStruct && typ.Kind != TypeUnion {
@@ -579,12 +743,17 @@ func renderABIFor(model *Model, names map[string]string, layouts map[string]Reco
 		testFunc += upperFirst(arch)
 	}
 	tests.WriteString("func " + testFunc + "(t *testing.T) {\n")
+	needsUnsafe := false
 	for _, typ := range model.Types {
 		if typ.Kind != TypeStruct && typ.Kind != TypeUnion {
 			continue
 		}
 		layout := layouts[typ.CName]
 		name := names[typ.CName]
+		if name == "" {
+			return nil, nil, fmt.Errorf("missing Go name: %s", typ.CName)
+		}
+		needsUnsafe = true
 		prefix := abiIdentifier(typ.CName)
 		tests.WriteString("\tif got, want := unsafe.Sizeof(" + name + "{}), " + prefix + "Size; got != want { t.Errorf(\"" + typ.CName + " size = %d, want %d\", got, want) }\n")
 		tests.WriteString("\tif got, want := unsafe.Alignof(" + name + "{}), " + prefix + "Align; got != want { t.Errorf(\"" + typ.CName + " align = %d, want %d\", got, want) }\n")
@@ -599,7 +768,7 @@ func renderABIFor(model *Model, names map[string]string, layouts map[string]Reco
 		}
 	}
 	tests.WriteString("}\n")
-	return goFile(output, goName, body.String(), false, arch), goTestFile(output, testName, tests.String(), arch), nil
+	return goFile(output, goName, body.String(), false, arch), goTestFile(output, testName, tests.String(), arch, needsUnsafe), nil
 }
 
 func abiIdentifier(name string) string {
@@ -617,7 +786,7 @@ func upperFirst(value string) string {
 	return string(unicode.ToUpper(runeValue)) + value[size:]
 }
 
-func renderABIRecords(model Model, output Output) []byte {
+func renderABIRecords(model Model) string {
 	var body strings.Builder
 	body.WriteString("type abiField struct { name string; offset uintptr }\n")
 	body.WriteString("type abiRecord struct { name string; size uintptr; align uintptr; fields []abiField }\n\n")
@@ -635,7 +804,7 @@ func renderABIRecords(model Model, output Output) []byte {
 		body.WriteString("}},\n")
 	}
 	body.WriteString("\t}\n}\n\n")
-	return goFile(output, "abi_records_gen.go", body.String(), false, "integration")
+	return body.String()
 }
 
 func renderCoverage(model Model, output Output) ([]byte, error) {
@@ -692,13 +861,13 @@ func goFileWithImports(output Output, name, body string, imports []string) []byt
 	return source.Bytes()
 }
 
-func goFile(output Output, name, body string, needsUnsafe bool, build string) []byte {
+func goFile(output Output, name, body string, needsUnsafe bool, buildConstraint string) []byte {
 	var source bytes.Buffer
+	if buildConstraint != "" {
+		source.WriteString("//go:build " + buildConstraint + "\n\n")
+	}
 	source.WriteString("// Code generated by ghosttygen; DO NOT EDIT.\n")
 	source.WriteString("// Ghostty commit: " + output.Upstream.Commit + "\n\n")
-	if build != "" {
-		source.WriteString("//go:build " + build + "\n\n")
-	}
 	source.WriteString("package " + output.Package + "\n\n")
 	if needsUnsafe {
 		source.WriteString("import \"unsafe\"\n\n")
@@ -707,16 +876,29 @@ func goFile(output Output, name, body string, needsUnsafe bool, build string) []
 	return source.Bytes()
 }
 
-func goTestFile(output Output, name, body, build string) []byte {
+func goTestFile(output Output, name, body, buildConstraint string, needsUnsafe bool) []byte {
 	var source bytes.Buffer
+	if buildConstraint != "" {
+		source.WriteString("//go:build " + buildConstraint + "\n\n")
+	}
 	source.WriteString("// Code generated by ghosttygen; DO NOT EDIT.\n")
 	source.WriteString("// Ghostty commit: " + output.Upstream.Commit + "\n\n")
-	if build != "" {
-		source.WriteString("//go:build " + build + "\n\n")
+	source.WriteString("package " + output.Package + "\n\nimport (\n\t\"testing\"\n")
+	if needsUnsafe {
+		source.WriteString("\t\"unsafe\"\n")
 	}
-	source.WriteString("package " + output.Package + "\n\nimport (\n\t\"testing\"\n\t\"unsafe\"\n)\n\n")
+	source.WriteString(")\n\n")
 	source.WriteString(body)
 	return source.Bytes()
+}
+
+var generatedFileNames = []string{
+	"types_gen.go", "types_gen_amd64.go", "types_gen_arm64.go",
+	"constants_gen.go", "abi_gen.go", "abi_gen_amd64.go", "abi_gen_arm64.go", "abi_records_gen.go",
+	"abi_gen_test.go", "abi_gen_amd64_test.go", "abi_gen_arm64_test.go",
+	// Remove the pre-fix spelling when refreshing an existing generated package.
+	"abi_gen_test_amd64.go", "abi_gen_test_arm64.go",
+	"coverage_gen.json", "functions_gen.go", "register_gen.go",
 }
 
 func writeGeneratedFiles(dir string, files map[string][]byte) error {
@@ -750,16 +932,11 @@ func writeGeneratedFiles(dir string, files map[string][]byte) error {
 	if err := os.MkdirAll(dir, 0o755); err != nil {
 		return err
 	}
-	for _, stale := range []string{
-		"types_gen.go", "types_gen_amd64.go", "types_gen_arm64.go",
-		"constants_gen.go", "abi_gen.go", "abi_gen_amd64.go", "abi_gen_arm64.go", "abi_records_gen.go",
-		"abi_gen_test.go", "abi_gen_test_amd64.go", "abi_gen_test_arm64.go", "coverage_gen.json",
-		"functions_gen.go", "register_gen.go",
-	} {
-		if _, ok := files[stale]; ok {
+	for _, name := range generatedFileNames {
+		if _, ok := files[name]; ok {
 			continue
 		}
-		if err := os.Remove(filepath.Join(dir, stale)); err != nil && !os.IsNotExist(err) {
+		if err := os.Remove(filepath.Join(dir, name)); err != nil && !os.IsNotExist(err) {
 			return err
 		}
 	}
