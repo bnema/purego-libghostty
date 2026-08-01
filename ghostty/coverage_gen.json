@@ -1,0 +1,949 @@
+{
+  "upstream": "4d605bf0d819df901a0332bbb320dc849fdd82e4",
+  "declarations": [
+    {
+      "c_name": "GHOSTTY_SUCCESS",
+      "kind": "constant",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_action_cell_size_s",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_action_close_tab_mode_e",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_action_color_change_s",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_action_color_kind_e",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_action_command_finished_s",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_action_config_change_s",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_action_desktop_notification_s",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_action_float_window_e",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_action_fullscreen_e",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_action_goto_split_e",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_action_goto_tab_e",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_action_goto_window_e",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_action_initial_size_s",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_action_inspector_e",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_action_key_sequence_s",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_action_key_table_s",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_action_key_table_tag_e",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_action_key_table_u",
+      "kind": "type",
+      "status": "override",
+      "reason": "embedding union accessors"
+    },
+    {
+      "c_name": "ghostty_action_key_table_u.activate",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_action_mouse_over_link_s",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_action_mouse_shape_e",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_action_mouse_visibility_e",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_action_move_tab_s",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_action_open_url_kind_e",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_action_open_url_s",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_action_progress_report_s",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_action_progress_report_state_e",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_action_prompt_title_e",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_action_pwd_s",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_action_quit_timer_e",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_action_readonly_e",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_action_reload_config_s",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_action_renderer_health_e",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_action_resize_split_direction_e",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_action_resize_split_s",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_action_s",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_action_scrollbar_s",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_action_search_selected_s",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_action_search_total_s",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_action_secure_input_e",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_action_set_title_s",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_action_size_limit_s",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_action_split_direction_e",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_action_start_search_s",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_action_tag_e",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_action_u",
+      "kind": "type",
+      "status": "override",
+      "reason": "embedding union accessors"
+    },
+    {
+      "c_name": "ghostty_app_free",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_app_has_global_keybinds",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_app_key",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_app_keyboard_changed",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_app_needs_confirm_quit",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_app_new",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_app_open_config",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_app_set_color_scheme",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_app_set_focus",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_app_t",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_app_tick",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_app_update_config",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_app_userdata",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_benchmark_cli",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_binding_flags_e",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_build_mode_e",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_cli_try_action",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_clipboard_content_s",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_clipboard_e",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_clipboard_request_e",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_color_scheme_e",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_config_clone",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_config_diagnostics_count",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_config_finalize",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_config_free",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_config_get",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_config_get_diagnostic",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_config_key_is_binding",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_config_load_cli_args",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_config_load_default_files",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_config_load_file",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_config_load_recursive_files",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_config_new",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_config_open_path",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_config_t",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_config_trigger",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_diagnostic_s",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_env_var_s",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_info",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_info_s",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_init",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_input_action_e",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_input_key_e",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_input_key_s",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_input_mods_e",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_input_mouse_button_e",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_input_mouse_state_e",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_input_scroll_mods_t",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_input_trigger_key_u",
+      "kind": "type",
+      "status": "override",
+      "reason": "embedding union accessors"
+    },
+    {
+      "c_name": "ghostty_input_trigger_s",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_input_trigger_tag_e",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_inspector_free",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_inspector_key",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_inspector_mouse_button",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_inspector_mouse_pos",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_inspector_mouse_scroll",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_inspector_set_content_scale",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_inspector_set_focus",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_inspector_set_size",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_inspector_t",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_inspector_text",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_ipc_action_new_window_s",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_ipc_action_u",
+      "kind": "type",
+      "status": "override",
+      "reason": "embedding union accessors"
+    },
+    {
+      "c_name": "ghostty_ipc_target_u",
+      "kind": "type",
+      "status": "override",
+      "reason": "embedding union accessors"
+    },
+    {
+      "c_name": "ghostty_platform_e",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_platform_ios_s",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_platform_macos_s",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_platform_u",
+      "kind": "type",
+      "status": "override",
+      "reason": "embedding union accessors"
+    },
+    {
+      "c_name": "ghostty_point_coord_e",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_point_s",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_point_tag_e",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_quick_terminal_size_value_u",
+      "kind": "type",
+      "status": "override",
+      "reason": "embedding union accessors"
+    },
+    {
+      "c_name": "ghostty_runtime_action_cb",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_runtime_close_surface_cb",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_runtime_config_s",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_runtime_confirm_read_clipboard_cb",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_runtime_read_clipboard_cb",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_runtime_wakeup_cb",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_runtime_write_clipboard_cb",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_selection_s",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_set_window_background_blur",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_string_free",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_string_s",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_surface_app",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_surface_binding_action",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_surface_complete_clipboard_request",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_surface_config_new",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_surface_config_s",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_surface_context_e",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_surface_draw",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_surface_foreground_pid",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_surface_free",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_surface_free_text",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_surface_has_selection",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_surface_ime_point",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_surface_inherited_config",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_surface_inspector",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_surface_key",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_surface_key_is_binding",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_surface_key_translation_mods",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_surface_message_childexited_s",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_surface_mouse_button",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_surface_mouse_captured",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_surface_mouse_pos",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_surface_mouse_pressure",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_surface_mouse_scroll",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_surface_needs_confirm_quit",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_surface_new",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_surface_preedit",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_surface_process_exited",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_surface_read_selection",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_surface_read_text",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_surface_refresh",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_surface_request_close",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_surface_set_color_scheme",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_surface_set_content_scale",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_surface_set_focus",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_surface_set_occlusion",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_surface_set_size",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_surface_size",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_surface_size_s",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_surface_split",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_surface_split_equalize",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_surface_split_focus",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_surface_split_resize",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_surface_t",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_surface_text",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_surface_tty_name",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_surface_update_config",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_surface_userdata",
+      "kind": "function",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_target_s",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_target_tag_e",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_target_u",
+      "kind": "type",
+      "status": "override",
+      "reason": "embedding union accessors"
+    },
+    {
+      "c_name": "ghostty_text_s",
+      "kind": "type",
+      "status": "generated"
+    },
+    {
+      "c_name": "ghostty_translate",
+      "kind": "function",
+      "status": "generated"
+    }
+  ],
+  "exclusions": [
+    {
+      "c_name": "ghostty_inspector_metal_init",
+      "reason": "platform-excluded: __APPLE__"
+    },
+    {
+      "c_name": "ghostty_inspector_metal_render",
+      "reason": "platform-excluded: __APPLE__"
+    },
+    {
+      "c_name": "ghostty_inspector_metal_shutdown",
+      "reason": "platform-excluded: __APPLE__"
+    },
+    {
+      "c_name": "ghostty_surface_quicklook_font",
+      "reason": "platform-excluded: __APPLE__"
+    },
+    {
+      "c_name": "ghostty_surface_quicklook_word",
+      "reason": "platform-excluded: __APPLE__"
+    },
+    {
+      "c_name": "ghostty_surface_set_display_id",
+      "reason": "platform-excluded: __APPLE__"
+    }
+  ]
+}
