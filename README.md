@@ -52,8 +52,9 @@ if cfg != 0 {
 
 ## Generation and checks
 
-Generation resolves the exact pin by default. A matching local checkout can be
-used for development:
+Generation requires Clang 22; the `clang` executable used by `go generate`
+must report major version 22. Generation resolves the exact pin by default. A
+matching local checkout can be used for development:
 
 ```sh
 GHOSTTY_SOURCE_DIR=/path/to/ghostty make generate
