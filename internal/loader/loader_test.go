@@ -77,6 +77,30 @@ func TestOpenRejectsZeroHandleWithoutError(t *testing.T) {
 	}
 }
 
+func TestOpenRejectsZeroHandleAndContinues(t *testing.T) {
+	var paths []string
+	ops := Ops{
+		Open: func(path string, _ int) (uintptr, error) {
+			paths = append(paths, path)
+			if path == "first.so" {
+				return 0, nil
+			}
+			return 44, nil
+		},
+		Close: func(uintptr) error { return nil },
+	}
+	handle, err := Open(ops, "", "first.so", "second.so")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if handle != 44 {
+		t.Fatalf("handle = %d, want 44", handle)
+	}
+	if !reflect.DeepEqual(paths, []string{"first.so", "second.so"}) {
+		t.Fatalf("paths = %#v", paths)
+	}
+}
+
 func TestOpenClosesFailedHandles(t *testing.T) {
 	firstErr := errors.New("first missing")
 	secondErr := errors.New("second missing")

@@ -32,11 +32,3 @@ func Load() error {
 	})
 	return loadErr
 }
-
-func resetLoadForTest() {
-	loadOnce = sync.Once{}
-	loadErr = nil
-	openLibrary = loader.OpenDefault
-	registerLibrary = register
-	closeLibrary = purego.Dlclose
-}

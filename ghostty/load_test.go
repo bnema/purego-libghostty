@@ -3,20 +3,25 @@ package ghostty
 import (
 	"errors"
 	"fmt"
+	"strings"
 	"sync"
 	"sync/atomic"
 	"testing"
+
+	"github.com/bnema/purego"
+	"github.com/bnema/purego-libghostty/internal/loader"
 )
 
 func TestLoadConcurrentSuccess(t *testing.T) {
 	reset := beginLoadTest(t)
 	defer reset()
 
+	var failures loadTestFailures
 	var opens, registrations, closes atomic.Int32
 	openLibrary = func(override string, candidates ...string) (uintptr, error) {
 		opens.Add(1)
 		if override != "" || len(candidates) != 1 || candidates[0] != "ghostty-internal.so" {
-			t.Errorf("open args = %q, %#v", override, candidates)
+			failures.add("open args = %q, %#v", override, candidates)
 		}
 		return 101, nil
 	}
@@ -55,6 +60,7 @@ func TestLoadConcurrentSuccess(t *testing.T) {
 	if got := closes.Load(); got != 0 {
 		t.Fatalf("closes = %d, want 0", got)
 	}
+	failures.check(t)
 }
 
 func TestLoadConcurrentFailureIsSticky(t *testing.T) {
@@ -62,13 +68,14 @@ func TestLoadConcurrentFailureIsSticky(t *testing.T) {
 	defer reset()
 
 	sentinel := errors.New("library unavailable")
+	var failures loadTestFailures
 	var opens atomic.Int32
 	openLibrary = func(string, ...string) (uintptr, error) {
 		opens.Add(1)
 		return 0, sentinel
 	}
 	registerLibrary = func(uintptr) error {
-		t.Fatal("register called after open failure")
+		failures.add("register called after open failure")
 		return nil
 	}
 
@@ -99,6 +106,7 @@ func TestLoadConcurrentFailureIsSticky(t *testing.T) {
 	if err := Load(); !errors.Is(err, sentinel) || err.Error() != first.Error() {
 		t.Fatalf("sticky error = %v, want %v", err, first)
 	}
+	failures.check(t)
 }
 
 func TestLoadUsesOverrideBeforeFirstCall(t *testing.T) {
@@ -139,10 +147,14 @@ func TestLoadMissingSymbolPropagationAndCleanup(t *testing.T) {
 		closed = handle
 		return nil
 	}
+	ConfigNew = nil
 	if err := Load(); !errors.Is(err, sentinel) {
 		t.Fatalf("Load error = %v, want missing symbol", err)
 	} else if want := "ghostty: register: resolve ghostty_config_new: symbol missing"; err.Error() != want {
 		t.Fatalf("Load error = %q, want %q", err, want)
+	}
+	if ConfigNew != nil {
+		t.Fatal("ConfigNew is non-nil after failed Load")
 	}
 	if closed != 303 {
 		t.Fatalf("closed handle = %d, want 303", closed)
@@ -172,6 +184,35 @@ func TestLoadFailureRemainsStickyAfterInjectionChanges(t *testing.T) {
 	if opens.Load() != 1 {
 		t.Fatalf("opens = %d, want 1", opens.Load())
 	}
+}
+
+type loadTestFailures struct {
+	mu       sync.Mutex
+	messages []string
+}
+
+func (f *loadTestFailures) add(format string, args ...any) {
+	f.mu.Lock()
+	defer f.mu.Unlock()
+	f.messages = append(f.messages, fmt.Sprintf(format, args...))
+}
+
+func (f *loadTestFailures) check(t *testing.T) {
+	t.Helper()
+	f.mu.Lock()
+	messages := append([]string(nil), f.messages...)
+	f.mu.Unlock()
+	if len(messages) != 0 {
+		t.Fatalf("concurrent test failures: %s", strings.Join(messages, "; "))
+	}
+}
+
+func resetLoadForTest() {
+	loadOnce = sync.Once{}
+	loadErr = nil
+	openLibrary = loader.OpenDefault
+	registerLibrary = register
+	closeLibrary = purego.Dlclose
 }
 
 func beginLoadTest(t *testing.T) func() {

@@ -12,6 +12,8 @@ type Ops struct {
 	Close func(uintptr) error
 }
 
+// Open tries the override, when nonempty, or each candidate in order.
+// A nonempty override replaces the candidate list.
 func Open(ops Ops, override string, candidates ...string) (uintptr, error) {
 	if ops.Open == nil {
 		return 0, errors.New("ghostty loader: open operation is nil")
