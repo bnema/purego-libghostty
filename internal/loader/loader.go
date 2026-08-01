@@ -27,8 +27,11 @@ func Open(ops Ops, override string, candidates ...string) (uintptr, error) {
 	attempts := make([]error, 0, len(candidates))
 	for _, candidate := range candidates {
 		handle, err := ops.Open(candidate, flags)
-		if err == nil {
+		if err == nil && handle != 0 {
 			return handle, nil
+		}
+		if err == nil {
+			err = errors.New("returned zero handle")
 		}
 		attempt := fmt.Errorf("open %s: %w", candidate, err)
 		if handle != 0 && ops.Close != nil {
