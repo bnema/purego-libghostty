@@ -136,12 +136,14 @@ func recordLocation(label string) string {
 }
 
 func recordLayoutMatches(label, cName string) bool {
+	label = strings.TrimSpace(label)
 	for _, kind := range []string{"struct ", "union "} {
 		if strings.HasPrefix(label, kind) {
-			return strings.TrimSpace(strings.TrimPrefix(label, kind)) == cName
+			label = strings.TrimSpace(strings.TrimPrefix(label, kind))
+			break
 		}
 	}
-	return false
+	return label == cName
 }
 
 func recordLayoutNames(astJSON []byte, header string, model Model) (map[string]string, error) {

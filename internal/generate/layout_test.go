@@ -92,8 +92,14 @@ func TestAddRecordNameUsesFallbackLocationLine(t *testing.T) {
 }
 
 func TestRecordLayoutMatchingUsesCompleteName(t *testing.T) {
-	if !recordLayoutMatches("struct ghostty_value_s", "ghostty_value_s") {
-		t.Fatal("exact record name did not match")
+	for _, label := range []string{
+		"ghostty_value_s",
+		"struct ghostty_value_s",
+		"union ghostty_value_s",
+	} {
+		if !recordLayoutMatches(label, "ghostty_value_s") {
+			t.Fatalf("exact record name %q did not match", label)
+		}
 	}
 	for _, label := range []string{
 		"struct ghostty_value_suffix_s",

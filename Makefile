@@ -9,7 +9,8 @@ test:
 	go vet ./...
 
 check: generate test
-	@test -z "$$(git status --porcelain)" || { git status --short; exit 1; }
+	@status="$$(git status --porcelain)" || { echo 'git status failed' >&2; exit 1; }; \
+	test -z "$$status" || { printf '%s\n' "$$status"; exit 1; }
 
 integration:
 	CGO_ENABLED=0 go test -tags=integration ./... -v
