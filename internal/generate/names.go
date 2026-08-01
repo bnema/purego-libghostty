@@ -38,10 +38,11 @@ func goTypeIdentifier(cName string, kind TypeKind) string {
 		return goIdentifier(cName, allTypeSuffixes)
 	}
 	suffix := map[TypeKind]string{
-		TypeAlias:  "t",
-		TypeEnum:   "e",
-		TypeStruct: "s",
-		TypeUnion:  "u",
+		TypeAlias:    "t",
+		TypeEnum:     "e",
+		TypeStruct:   "s",
+		TypeUnion:    "u",
+		TypeCallback: "t",
 	}[kind]
 	if suffix == "" {
 		return goIdentifier(cName, nil)
