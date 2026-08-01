@@ -55,7 +55,7 @@ func InspectRecordLayouts(ctx context.Context, clang, header, includeDir string,
 		cName := names[layout.location]
 		if cName == "" {
 			for _, typ := range model.Types {
-				if (typ.Kind == TypeStruct || typ.Kind == TypeUnion) && strings.Contains(layout.label, typ.CName) {
+				if (typ.Kind == TypeStruct || typ.Kind == TypeUnion) && recordLayoutMatches(layout.label, typ.CName) {
 					if cName != "" && cName != typ.CName {
 						return nil, fmt.Errorf("duplicate record layout match: %s and %s", cName, typ.CName)
 					}
@@ -133,6 +133,15 @@ func recordLocation(label string) string {
 		return ""
 	}
 	return filepath.Clean(match[1]) + ":" + match[2]
+}
+
+func recordLayoutMatches(label, cName string) bool {
+	for _, kind := range []string{"struct ", "union "} {
+		if strings.HasPrefix(label, kind) {
+			return strings.TrimSpace(strings.TrimPrefix(label, kind)) == cName
+		}
+	}
+	return false
 }
 
 func recordLayoutNames(astJSON []byte, header string, model Model) (map[string]string, error) {

@@ -29,6 +29,10 @@ func TestLoadUpstream(t *testing.T) {
 		`{"repository":"","commit":"` + pinnedCommit + `"}`,
 		`{"repository":"https://example.test/ghostty.git","commit":"` + strings.ToUpper(pinnedCommit) + `"}`,
 		`{"repository":"https://example.test/ghostty.git","commit":"abc"}`,
+		`{"repository":"-https://example.test/ghostty.git","commit":"` + pinnedCommit + `"}`,
+		`{"repository":"ext::sh -c touch\\$PWD/pwned","commit":"` + pinnedCommit + `"}`,
+		`{"repository":"file:///tmp/ghostty.git","commit":"` + pinnedCommit + `"}`,
+		`{"repository":"http://example.test/ghostty.git","commit":"` + pinnedCommit + `"}`,
 	} {
 		if err := os.WriteFile(path, []byte(input), 0o600); err != nil {
 			t.Fatal(err)
@@ -97,6 +101,21 @@ func TestResolveSourceReportsOverrideGitErrors(t *testing.T) {
 	}
 }
 
+func TestResolveSourcePreservesOverrideGitError(t *testing.T) {
+	repository, _, commit, _ := localRepository(t)
+	override := filepath.Join(t.TempDir(), "not-a-repository")
+	if err := os.Mkdir(override, 0o700); err != nil {
+		t.Fatal(err)
+	}
+	_, err := ResolveSource(context.Background(), Upstream{Repository: repository, Commit: commit}, override)
+	if err == nil {
+		t.Fatal("ResolveSource() succeeded for a non-repository override")
+	}
+	if strings.Contains(err.Error(), "must be commit") || !strings.Contains(err.Error(), "git rev-parse HEAD") {
+		t.Fatalf("override git error = %v", err)
+	}
+}
+
 func TestResolveSourceFetchesPinnedCommit(t *testing.T) {
 	repository, _, first, _ := localRepository(t)
 	source, err := ResolveSource(context.Background(), Upstream{Repository: repository, Commit: first}, "")
@@ -116,6 +135,7 @@ func localRepository(t *testing.T) (string, string, string, string) {
 	t.Helper()
 	origin := filepath.Join(t.TempDir(), "origin.git")
 	git(t, "", "init", "--bare", origin)
+	git(t, origin, "config", "uploadpack.allowReachableSHA1InWant", "true")
 	work := t.TempDir()
 	git(t, work, "init")
 	git(t, work, "config", "user.email", "test@example.com")

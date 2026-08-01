@@ -7,10 +7,11 @@
 
 typedef void* ghostty_app_t;
 typedef enum { GHOSTTY_MODE_A, GHOSTTY_MODE_B = 4 } ghostty_mode_e;
+typedef enum { GHOSTTY_NESTED_ONLY } ghostty_nested_only_e;
 typedef union {
   uint32_t codepoint;
   ghostty_app_t app;
-  struct { const char* name; size_t len; } named;
+  struct { const char* name; ghostty_nested_only_e kind; } named;
 } ghostty_value_u;
 typedef struct {
   ghostty_mode_e mode;
@@ -24,4 +25,10 @@ typedef union { uint32_t value; } ghostty_override_only_u;
 GHOSTTY_API ghostty_fixture_s ghostty_fixture(ghostty_app_t, ghostty_callback_t);
 #ifdef __APPLE__
 GHOSTTY_API void ghostty_apple_only(void);
+#endif
+#if defined(__APPLE__)
+GHOSTTY_API void ghostty_defined_apple_only(void);
+#endif
+#if defined __APPLE__
+GHOSTTY_API void ghostty_defined_space_apple_only(void);
 #endif

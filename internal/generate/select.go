@@ -203,7 +203,11 @@ func recordDeclaration(decl TypeDecl, record *astNode, header string) (TypeDecl,
 		fieldType := typeRef(child.Type.QualType)
 		if nested != nil && strings.Contains(child.Type.QualType, "(unnamed") {
 			fieldType.CName = decl.CName + "." + child.Name
-			// Nested records are retained as a deterministic type declaration by its parent field path.
+			for _, nestedField := range nested.Inner {
+				if nestedField.Kind == "FieldDecl" {
+					refs = append(refs, refsInType(nestedField.Type.QualType)...)
+				}
+			}
 		}
 		decl.Fields = append(decl.Fields, Field{CName: child.Name, Source: sourcePath(child, header), Type: fieldType})
 		refs = append(refs, refsInType(child.Type.QualType)...)
@@ -329,6 +333,39 @@ func enumValue(node *astNode) (int64, bool) {
 
 var defineLine = regexp.MustCompile(`^\s*#\s*define\s+(GHOSTTY_[A-Za-z0-9_]+)(\s*\()?\s*(.*)$`)
 
+func normalizePreprocessorCondition(condition string) string {
+	condition = strings.TrimSpace(condition)
+	if !strings.HasPrefix(condition, "defined") {
+		return condition
+	}
+	rest := condition[len("defined"):]
+	if rest == "" || (rest[0] != '(' && rest[0] != ' ' && rest[0] != '\t') {
+		return condition
+	}
+	rest = strings.TrimSpace(rest)
+	if strings.HasPrefix(rest, "(") {
+		if !strings.HasSuffix(rest, ")") {
+			return condition
+		}
+		rest = strings.TrimSpace(rest[1 : len(rest)-1])
+	}
+	if rest == "" {
+		return condition
+	}
+	for i, r := range rest {
+		if i == 0 {
+			if r != '_' && (r < 'a' || r > 'z') && (r < 'A' || r > 'Z') {
+				return condition
+			}
+			continue
+		}
+		if r != '_' && (r < 'a' || r > 'z') && (r < 'A' || r > 'Z') && (r < '0' || r > '9') {
+			return condition
+		}
+	}
+	return rest
+}
+
 func selectMacros(macros []byte, header string) []ConstantDecl {
 	if len(macros) == 0 {
 		return nil
@@ -399,12 +436,4 @@ func auditPreprocessor(header string) error {
 		}
 	}
 	return nil
-}
-
-func normalizePreprocessorCondition(condition string) string {
-	condition = strings.TrimSpace(condition)
-	if strings.HasPrefix(condition, "defined(") && strings.HasSuffix(condition, ")") {
-		return strings.TrimSpace(strings.TrimSuffix(strings.TrimPrefix(condition, "defined("), ")"))
-	}
-	return condition
 }
