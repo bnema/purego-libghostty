@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"reflect"
 	"strings"
@@ -57,6 +58,7 @@ func TestInspectHeaderCallbackSignatures(t *testing.T) {
 }
 
 func TestInspectHeaderRealCallbackSignatures(t *testing.T) {
+	requireClang(t)
 	source := os.Getenv("GHOSTTY_SOURCE_DIR")
 	if source == "" {
 		t.Skip("GHOSTTY_SOURCE_DIR is not set")
@@ -106,6 +108,16 @@ func TestSelectPublic(t *testing.T) {
 	}
 }
 
+func TestAuditPreprocessorNormalizesDefined(t *testing.T) {
+	header := filepath.Join(t.TempDir(), "defined.h")
+	if err := os.WriteFile(header, []byte("#if defined(__APPLE__)\nGHOSTTY_API void ghostty_apple_only(void);\n#endif\n"), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	if err := auditPreprocessor(header); err != nil {
+		t.Fatalf("auditPreprocessor() = %v", err)
+	}
+}
+
 func TestWriteModel(t *testing.T) {
 	header := fixtureHeader(t)
 	var first, second bytes.Buffer
@@ -128,7 +140,15 @@ func TestWriteModel(t *testing.T) {
 
 func fixtureHeader(t *testing.T) string {
 	t.Helper()
+	requireClang(t)
 	return filepath.Join("testdata", "embedding_fixture.h")
+}
+
+func requireClang(t *testing.T) {
+	t.Helper()
+	if _, err := exec.LookPath("clang"); err != nil {
+		t.Skipf("clang is unavailable: %v", err)
+	}
 }
 func assertCallbackSignature(t *testing.T, model Model, name, source string, result TypeRef, parameters []TypeRef) {
 	t.Helper()
