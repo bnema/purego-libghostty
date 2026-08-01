@@ -95,6 +95,10 @@ type ActionMouseShapeE int32
 
 type ActionMouseVisibilityE int32
 
+type ActionMoveTabS struct {
+	Amount int
+}
+
 type ActionOpenURLKind int32
 
 type ActionOpenURLS struct {
@@ -146,6 +150,14 @@ type ActionScrollbarS struct {
 	Total  uint64
 	Offset uint64
 	Len    uint64
+}
+
+type ActionSearchSelectedS struct {
+	Selected int
+}
+
+type ActionSearchTotalS struct {
+	Total int
 }
 
 type ActionSecureInputE int32
@@ -689,6 +701,13 @@ type Selection struct {
 	BottomRight Point
 	Rectangle   bool
 	_           [3]byte
+}
+
+type String struct {
+	Ptr      *byte
+	Len      uintptr
+	Sentinel bool
+	_        [7]byte
 }
 
 type SurfaceConfig struct {
