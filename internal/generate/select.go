@@ -288,12 +288,17 @@ func inHeader(node *astNode, header string) bool {
 	return file == filepath.Clean(header) || samePath(file, header)
 }
 func sourcePath(node *astNode, header string) string {
+	path, _ := sourceLocation(node, header)
+	return path
+}
+
+func sourceLocation(node *astNode, header string) (string, int) {
 	for _, loc := range []*astLoc{&node.Loc, node.Range.Begin.SpellingLoc, node.Range.Begin.ExpansionLoc} {
 		if loc != nil && loc.File != "" {
-			return filepath.Clean(loc.File)
+			return filepath.Clean(loc.File), loc.Line
 		}
 	}
-	return filepath.Clean(header)
+	return filepath.Clean(header), node.Loc.Line
 }
 func samePath(a, b string) bool {
 	aa, ea := filepath.Abs(a)

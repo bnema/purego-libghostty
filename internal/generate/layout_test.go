@@ -67,6 +67,18 @@ func TestRecordLayoutsRejectIncomplete(t *testing.T) {
 	}
 }
 
+func TestAddRecordNameUsesFallbackLocationLine(t *testing.T) {
+	record := &astNode{Loc: astLoc{Line: 99}}
+	record.Range.Begin.SpellingLoc = &astLoc{File: "/tmp/expanded.h", Line: 12}
+	names := map[string]string{}
+	if err := addRecordName(names, record, "ghostty_value_s", "/tmp/header.h"); err != nil {
+		t.Fatal(err)
+	}
+	if got := names["/tmp/expanded.h:12"]; got != "ghostty_value_s" {
+		t.Fatalf("record name = %q, want fallback location line", got)
+	}
+}
+
 func TestGoNames(t *testing.T) {
 	model := Model{
 		Types: []TypeDecl{

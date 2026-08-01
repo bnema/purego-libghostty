@@ -202,7 +202,8 @@ func typedefRecord(node *astNode, nodes map[string]*astNode) *astNode {
 }
 
 func addRecordName(names map[string]string, record *astNode, cName, header string) error {
-	key := filepath.Clean(sourcePath(record, header)) + ":" + strconv.Itoa(record.Loc.Line)
+	path, line := sourceLocation(record, header)
+	key := path + ":" + strconv.Itoa(line)
 	if existing := names[key]; existing != "" && existing != cName {
 		return fmt.Errorf("duplicate record declaration: %s and %s", existing, cName)
 	}
