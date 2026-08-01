@@ -91,10 +91,12 @@ func TestEmitFunctions(t *testing.T) {
 		Types: []TypeDecl{
 			{CName: "ghostty_config_t", Kind: TypeAlias, Type: TypeRef{CName: "void", Pointers: 1}},
 			{CName: "ghostty_info_s", Kind: TypeStruct},
+			{CName: "ghostty_callback_t", Kind: TypeCallback},
 		},
 		Functions: []FunctionDecl{
 			{CName: "ghostty_config_free", Result: TypeRef{CName: "void"}, Parameters: []Parameter{{Type: TypeRef{CName: "ghostty_config_t"}}}},
 			{CName: "ghostty_config_new", Result: TypeRef{CName: "ghostty_config_t"}},
+			{CName: "ghostty_config_set_callback", Result: TypeRef{CName: "void"}, Parameters: []Parameter{{Type: TypeRef{CName: "ghostty_config_t"}}, {Type: TypeRef{CName: "ghostty_callback_t"}}}},
 			{CName: "ghostty_info", Result: TypeRef{CName: "ghostty_info_s"}},
 			{CName: "ghostty_init", Result: TypeRef{CName: "int"}, Parameters: []Parameter{{Type: TypeRef{CName: "uintptr_t"}}, {Type: TypeRef{CName: "char", Pointers: 2}}}},
 		},
@@ -116,6 +118,7 @@ func TestEmitFunctions(t *testing.T) {
 		"var Info func() InfoS",
 		"var ConfigNew func() ConfigHandle",
 		"var ConfigFree func(ConfigHandle)",
+		"var ConfigSetCallback func(ConfigHandle, uintptr)",
 	} {
 		if !strings.Contains(code, want) {
 			t.Errorf("functions output missing %q:\\n%s", want, code)
