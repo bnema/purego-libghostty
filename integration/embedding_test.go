@@ -5,6 +5,7 @@ package integration
 import (
 	"runtime"
 	"testing"
+	"unsafe"
 
 	"github.com/bnema/purego-libghostty/ghostty"
 )
@@ -24,6 +25,7 @@ func TestEmbeddingRawLifecycle(t *testing.T) {
 	if info.Version == nil || info.VersionLen == 0 {
 		t.Fatal("empty version")
 	}
+	t.Logf("Ghostty version: %s", unsafe.Slice(info.Version, info.VersionLen))
 	cfg := ghostty.ConfigNew()
 	if cfg == 0 {
 		t.Fatal("nil config")
