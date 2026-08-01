@@ -76,12 +76,12 @@ func InspectRecordLayouts(ctx context.Context, clang, header, includeDir string,
 }
 
 func recordLayoutOutput(ctx context.Context, clang, header, includeDir string, target Target) ([]parsedRecordLayout, error) {
-	prelude, cleanup, err := targetPrelude(target)
+	prelude, systemIncludeDir, cleanup, err := targetPrelude(target)
 	if err != nil {
 		return nil, err
 	}
 	defer cleanup()
-	output, err := clangOutput(ctx, clang, "--target="+target.Triple, "-include", prelude, "-ffreestanding", "-std=c11", "-I", includeDir, "-fsyntax-only", "-Xclang", "-fdump-record-layouts-complete", "-x", "c", header)
+	output, err := clangOutput(ctx, clang, "--target="+target.Triple, "-include", prelude, "-ffreestanding", "-std=c11", "-isystem", systemIncludeDir, "-I", includeDir, "-fsyntax-only", "-Xclang", "-fdump-record-layouts-complete", "-x", "c", header)
 	if err != nil {
 		return nil, err
 	}
