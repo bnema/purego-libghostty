@@ -58,6 +58,17 @@ func TestGoNamesPreserveFunctionAndConstantSuffix(t *testing.T) {
 	}
 }
 
+func TestGoNamesCallbackSuffix(t *testing.T) {
+	model := Model{Types: []TypeDecl{{CName: "ghostty_callback_t", Kind: TypeCallback}}}
+	names, err := AssignGoNames(model)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got, want := names["ghostty_callback_t"], "Callback"; got != want {
+		t.Fatalf("callback name = %q, want %q", got, want)
+	}
+}
+
 func TestGoNamesRealPinnedModel(t *testing.T) {
 	source := os.Getenv("GHOSTTY_SOURCE_DIR")
 	if source == "" {
@@ -87,6 +98,9 @@ func TestGoNamesRealPinnedModel(t *testing.T) {
 	}
 	if !reflect.DeepEqual(names, again) {
 		t.Fatal("real model name assignment is not deterministic")
+	}
+	if got, want := names["ghostty_runtime_wakeup_cb"], "RuntimeWakeupCb"; got != want {
+		t.Fatalf("real callback name = %q, want %q", got, want)
 	}
 	for cName, goName := range names {
 		if !token.IsIdentifier(goName) || !token.IsExported(goName) {
