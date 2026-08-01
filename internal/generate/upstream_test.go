@@ -39,6 +39,22 @@ func TestLoadUpstream(t *testing.T) {
 	}
 }
 
+func TestLoadUpstreamErrorsIncludePath(t *testing.T) {
+	dir := t.TempDir()
+	missing := filepath.Join(dir, "missing.json")
+	if _, err := LoadUpstream(missing); err == nil || !strings.Contains(err.Error(), missing) {
+		t.Fatalf("LoadUpstream(%q) error = %v, want path", missing, err)
+	}
+
+	malformed := filepath.Join(dir, "malformed.json")
+	if err := os.WriteFile(malformed, []byte("{"), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := LoadUpstream(malformed); err == nil || !strings.Contains(err.Error(), malformed) {
+		t.Fatalf("LoadUpstream(%q) error = %v, want path", malformed, err)
+	}
+}
+
 func TestResolveSourceAcceptsMatchingOverride(t *testing.T) {
 	repository, override, commit, _ := localRepository(t)
 	git(t, override, "checkout", "--detach", commit)
@@ -56,6 +72,28 @@ func TestResolveSourceRejectsMismatchedOverride(t *testing.T) {
 	repository, override, commit, _ := localRepository(t)
 	if _, err := ResolveSource(context.Background(), Upstream{Repository: repository, Commit: commit}, override); err == nil {
 		t.Fatal("ResolveSource() succeeded for mismatched override")
+	}
+}
+
+func TestResolveSourceRejectsDirtyMatchingOverride(t *testing.T) {
+	repository, override, commit, _ := localRepository(t)
+	git(t, override, "checkout", "--detach", commit)
+	if err := os.WriteFile(filepath.Join(override, "untracked"), []byte("dirty"), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := ResolveSource(context.Background(), Upstream{Repository: repository, Commit: commit}, override); err == nil {
+		t.Fatal("ResolveSource() succeeded for dirty override")
+	}
+}
+
+func TestResolveSourceReportsOverrideGitErrors(t *testing.T) {
+	override := filepath.Join(t.TempDir(), "not-a-repository")
+	if err := os.Mkdir(override, 0o700); err != nil {
+		t.Fatal(err)
+	}
+	_, err := ResolveSource(context.Background(), Upstream{Commit: pinnedCommit}, override)
+	if err == nil || !strings.Contains(err.Error(), "rev-parse HEAD") {
+		t.Fatalf("ResolveSource() error = %v, want rev-parse context", err)
 	}
 }
 
