@@ -1,12 +1,13 @@
 # purego-libghostty
 
-Plan 1 provides raw, generated `purego` bindings for Ghostty's embedding API in
-`include/ghostty.h`. The bindings target Linux amd64 and arm64, work with
-`CGO_ENABLED=0`, and are generated for Ghostty commit
+`purego-libghostty` provides generated raw `purego` bindings for Ghostty's
+embedding API in `include/ghostty.h`. It supports Linux amd64 and arm64,
+including `CGO_ENABLED=0`, and is generated from Ghostty commit
 `4d605bf0d819df901a0332bbb320dc849fdd82e4`.
 
-This release does not include VT bindings or managed wrappers. The raw API
-inherits ABI instability from the pinned upstream Ghostty release.
+The package exposes the raw embedding API; it does not provide VT bindings or
+managed wrappers. The raw API inherits ABI instability from the pinned
+upstream Ghostty release.
 
 ## Build Ghostty
 
@@ -20,15 +21,15 @@ zig build --prefix /tmp/libghostty-prefix -Dapp-runtime=none -Demit-exe=false
 ```
 
 The resulting library is `/tmp/libghostty-prefix/lib/ghostty-internal.so`.
-Set `LIBGHOSTTY_PATH` to its path before the first call to `ghostty.Load`.
-Without an override, `ghostty.Load` looks up `ghostty-internal.so` through the
-normal dynamic loader search path. Loading is sticky, so set the override before
-calling it.
+Set `LIBGHOSTTY_PATH` before the first call to `ghostty.Load` to use an
+explicit library. A nonempty override replaces the default candidate list;
+without one, `ghostty.Load` looks up `ghostty-internal.so` through the normal
+dynamic loader search path. Loading is sticky.
 
 ## Raw API
 
-Load the library, initialize it with raw argv storage, inspect build information,
-and manage a raw config handle:
+Load the library, initialize it with raw argv storage, inspect build
+information, and manage a raw config handle:
 
 ```go
 if err := ghostty.Load(); err != nil {
@@ -58,14 +59,14 @@ matching local checkout can be used for development:
 
 ```sh
 GHOSTTY_SOURCE_DIR=/path/to/ghostty make generate
-CGO_ENABLED=0 go test ./...
 make test
 GHOSTTY_SOURCE_DIR=/path/to/ghostty make check
 ```
 
-`make check` regenerates the bindings, runs ordinary and race tests plus vet,
-and fails if generated files are stale. Native ABI and raw lifecycle integration
-requires a pinned native build:
+`make check` regenerates the bindings, runs tests and vet, and fails when the
+working tree contains staged, unstaged, or untracked changes.
+
+Native ABI and lifecycle integration requires a pinned native build:
 
 ```sh
 rm -rf /tmp/libghostty-prefix
@@ -79,5 +80,5 @@ make integration
 ```
 
 The native integration checks compile a no-cgo C ABI probe from the pinned
-header and exercise complete symbol registration, `ghostty_init`, build info,
-and raw config create/finalize/free.
+header and exercise complete symbol registration, `ghostty_init`, build
+information, and raw config create/finalize/free.

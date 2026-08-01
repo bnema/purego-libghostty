@@ -3,6 +3,7 @@
 package ghostty
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"os"
@@ -11,6 +12,7 @@ import (
 	"runtime"
 	"strings"
 	"testing"
+	"time"
 )
 
 type abiProbeField struct {
@@ -44,11 +46,15 @@ func TestEmbeddingABI(t *testing.T) {
 	if clang == "" {
 		clang = "clang"
 	}
-	compile := exec.Command(clang, "-std=c11", "-I", filepath.Join(source, "include"), probe, "-o", binary)
+	compileContext, cancelCompile := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancelCompile()
+	compile := exec.CommandContext(compileContext, clang, "-std=c11", "-I", filepath.Join(source, "include"), probe, "-o", binary)
 	if output, err := compile.CombinedOutput(); err != nil {
 		t.Fatalf("compile ABI probe: %v\n%s", err, output)
 	}
-	command := exec.Command(binary)
+	runContext, cancelRun := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancelRun()
+	command := exec.CommandContext(runContext, binary)
 	output, err := command.Output()
 	if err != nil {
 		if exitErr, ok := err.(*exec.ExitError); ok {
