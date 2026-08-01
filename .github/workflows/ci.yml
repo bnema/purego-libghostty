@@ -1,0 +1,39 @@
+name: ci
+on: [push, pull_request]
+permissions:
+  contents: read
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [ubuntu-24.04, ubuntu-24.04-arm]
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16
+        with:
+          go-version: 1.26.x
+      - uses: mlugg/setup-zig@d1434d08867e3ee9daa34448df10607b98908d29
+        with:
+          version: 0.16.0
+      - name: Fetch pinned Ghostty
+        run: |
+          git init "$RUNNER_TEMP/ghostty"
+          git -C "$RUNNER_TEMP/ghostty" remote add origin https://github.com/ghostty-org/ghostty.git
+          git -C "$RUNNER_TEMP/ghostty" fetch --depth=1 origin 4d605bf0d819df901a0332bbb320dc849fdd82e4
+          git -C "$RUNNER_TEMP/ghostty" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/ghostty" rev-parse HEAD)" = 4d605bf0d819df901a0332bbb320dc849fdd82e4
+      - name: Check generated bindings
+        run: make check
+        env:
+          GHOSTTY_SOURCE_DIR: ${{ runner.temp }}/ghostty
+      - name: Build embedding library
+        run: zig build --prefix "$RUNNER_TEMP/libghostty" -Dapp-runtime=none -Demit-exe=false
+        working-directory: ${{ runner.temp }}/ghostty
+      - name: Run native integration tests
+        run: make integration
+        env:
+          GHOSTTY_SOURCE_DIR: ${{ runner.temp }}/ghostty
+          LIBGHOSTTY_PATH: ${{ runner.temp }}/libghostty/lib/ghostty-internal.so
