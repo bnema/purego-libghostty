@@ -138,6 +138,15 @@ func TestGeneratedABI(t *testing.T) {
 	if got, want := unsafe.Offsetof(ActionMouseOverLinkS{}.Len), abiAction_mouse_over_link_s_abiLenOffset; got != want {
 		t.Errorf("ghostty_action_mouse_over_link_s.len offset = %d, want %d", got, want)
 	}
+	if got, want := unsafe.Sizeof(ActionMoveTabS{}), abiAction_move_tab_sSize; got != want {
+		t.Errorf("ghostty_action_move_tab_s size = %d, want %d", got, want)
+	}
+	if got, want := unsafe.Alignof(ActionMoveTabS{}), abiAction_move_tab_sAlign; got != want {
+		t.Errorf("ghostty_action_move_tab_s align = %d, want %d", got, want)
+	}
+	if got, want := unsafe.Offsetof(ActionMoveTabS{}.Amount), abiAction_move_tab_s_abiAmountOffset; got != want {
+		t.Errorf("ghostty_action_move_tab_s.amount offset = %d, want %d", got, want)
+	}
 	if got, want := unsafe.Sizeof(ActionOpenURLS{}), abiAction_open_url_sSize; got != want {
 		t.Errorf("ghostty_action_open_url_s size = %d, want %d", got, want)
 	}
@@ -221,6 +230,24 @@ func TestGeneratedABI(t *testing.T) {
 	}
 	if got, want := unsafe.Offsetof(ActionScrollbarS{}.Len), abiAction_scrollbar_s_abiLenOffset; got != want {
 		t.Errorf("ghostty_action_scrollbar_s.len offset = %d, want %d", got, want)
+	}
+	if got, want := unsafe.Sizeof(ActionSearchSelectedS{}), abiAction_search_selected_sSize; got != want {
+		t.Errorf("ghostty_action_search_selected_s size = %d, want %d", got, want)
+	}
+	if got, want := unsafe.Alignof(ActionSearchSelectedS{}), abiAction_search_selected_sAlign; got != want {
+		t.Errorf("ghostty_action_search_selected_s align = %d, want %d", got, want)
+	}
+	if got, want := unsafe.Offsetof(ActionSearchSelectedS{}.Selected), abiAction_search_selected_s_abiSelectedOffset; got != want {
+		t.Errorf("ghostty_action_search_selected_s.selected offset = %d, want %d", got, want)
+	}
+	if got, want := unsafe.Sizeof(ActionSearchTotalS{}), abiAction_search_total_sSize; got != want {
+		t.Errorf("ghostty_action_search_total_s size = %d, want %d", got, want)
+	}
+	if got, want := unsafe.Alignof(ActionSearchTotalS{}), abiAction_search_total_sAlign; got != want {
+		t.Errorf("ghostty_action_search_total_s align = %d, want %d", got, want)
+	}
+	if got, want := unsafe.Offsetof(ActionSearchTotalS{}.Total), abiAction_search_total_s_abiTotalOffset; got != want {
+		t.Errorf("ghostty_action_search_total_s.total offset = %d, want %d", got, want)
 	}
 	if got, want := unsafe.Sizeof(ActionSetTitleS{}), abiAction_set_title_sSize; got != want {
 		t.Errorf("ghostty_action_set_title_s size = %d, want %d", got, want)
@@ -473,6 +500,21 @@ func TestGeneratedABI(t *testing.T) {
 	}
 	if got, want := unsafe.Offsetof(Selection{}.Rectangle), abiSelection_s_abiRectangleOffset; got != want {
 		t.Errorf("ghostty_selection_s.rectangle offset = %d, want %d", got, want)
+	}
+	if got, want := unsafe.Sizeof(String{}), abiString_sSize; got != want {
+		t.Errorf("ghostty_string_s size = %d, want %d", got, want)
+	}
+	if got, want := unsafe.Alignof(String{}), abiString_sAlign; got != want {
+		t.Errorf("ghostty_string_s align = %d, want %d", got, want)
+	}
+	if got, want := unsafe.Offsetof(String{}.Ptr), abiString_s_abiPtrOffset; got != want {
+		t.Errorf("ghostty_string_s.ptr offset = %d, want %d", got, want)
+	}
+	if got, want := unsafe.Offsetof(String{}.Len), abiString_s_abiLenOffset; got != want {
+		t.Errorf("ghostty_string_s.len offset = %d, want %d", got, want)
+	}
+	if got, want := unsafe.Offsetof(String{}.Sentinel), abiString_s_abiSentinelOffset; got != want {
+		t.Errorf("ghostty_string_s.sentinel offset = %d, want %d", got, want)
 	}
 	if got, want := unsafe.Sizeof(SurfaceConfig{}), abiSurface_config_sSize; got != want {
 		t.Errorf("ghostty_surface_config_s size = %d, want %d", got, want)

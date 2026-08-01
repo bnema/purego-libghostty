@@ -2,8 +2,1988 @@
   "upstream": "4d605bf0d819df901a0332bbb320dc849fdd82e4",
   "declarations": [
     {
+      "c_name": "GHOSTTY_ACTION_CELL_SIZE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_CHECK_FOR_UPDATES",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_CLOSE_ALL_WINDOWS",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_CLOSE_TAB",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_CLOSE_TAB_MODE_OTHER",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_CLOSE_TAB_MODE_RIGHT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_CLOSE_TAB_MODE_THIS",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_CLOSE_WINDOW",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_COLOR_CHANGE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_COLOR_KIND_BACKGROUND",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_COLOR_KIND_CURSOR",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_COLOR_KIND_FOREGROUND",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_COMMAND_FINISHED",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_CONFIG_CHANGE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_COPY_TITLE_TO_CLIPBOARD",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_DESKTOP_NOTIFICATION",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_END_SEARCH",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_EQUALIZE_SPLITS",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_FLOAT_WINDOW",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_GOTO_SPLIT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_GOTO_TAB",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_GOTO_WINDOW",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_INITIAL_SIZE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_INSPECTOR",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_KEY_SEQUENCE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_KEY_TABLE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_MOUSE_OVER_LINK",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_MOUSE_SHAPE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_MOUSE_VISIBILITY",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_MOVE_TAB",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_NEW_SPLIT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_NEW_TAB",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_NEW_WINDOW",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_OPEN_CONFIG",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_OPEN_URL",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_OPEN_URL_KIND_HTML",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_OPEN_URL_KIND_TEXT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_OPEN_URL_KIND_UNKNOWN",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_PRESENT_TERMINAL",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_PRESS",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_PROGRESS_REPORT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_PROMPT_TITLE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_PWD",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_QUIT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_QUIT_TIMER",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_READONLY",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_REDO",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_RELEASE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_RELOAD_CONFIG",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_RENDER",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_RENDERER_HEALTH",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_RENDER_INSPECTOR",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_REPEAT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_RESET_WINDOW_SIZE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_RESIZE_SPLIT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_RING_BELL",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_SCROLLBAR",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_SEARCH_SELECTED",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_SEARCH_TOTAL",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_SECURE_INPUT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_SELECTION_CHANGED",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_SET_TAB_TITLE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_SET_TITLE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_SHOW_CHILD_EXITED",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_SHOW_GTK_INSPECTOR",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_SHOW_ON_SCREEN_KEYBOARD",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_SIZE_LIMIT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_START_SEARCH",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_TOGGLE_BACKGROUND_OPACITY",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_TOGGLE_COMMAND_PALETTE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_TOGGLE_FULLSCREEN",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_TOGGLE_MAXIMIZE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_TOGGLE_QUICK_TERMINAL",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_TOGGLE_SPLIT_ZOOM",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_TOGGLE_TAB_OVERVIEW",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_TOGGLE_VISIBILITY",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_TOGGLE_WINDOW_DECORATIONS",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_ACTION_UNDO",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_BINDING_FLAGS_ALL",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_BINDING_FLAGS_CONSUMED",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_BINDING_FLAGS_GLOBAL",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_BINDING_FLAGS_PERFORMABLE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_BUILD_MODE_DEBUG",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_BUILD_MODE_RELEASE_FAST",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_BUILD_MODE_RELEASE_SAFE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_BUILD_MODE_RELEASE_SMALL",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_CLIPBOARD_REQUEST_OSC_52_READ",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_CLIPBOARD_REQUEST_OSC_52_WRITE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_CLIPBOARD_REQUEST_PASTE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_CLIPBOARD_SELECTION",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_CLIPBOARD_STANDARD",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_COLOR_SCHEME_DARK",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_COLOR_SCHEME_LIGHT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_FLOAT_WINDOW_OFF",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_FLOAT_WINDOW_ON",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_FLOAT_WINDOW_TOGGLE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_FULLSCREEN_MACOS_NON_NATIVE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_FULLSCREEN_MACOS_NON_NATIVE_PADDED_NOTCH",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_FULLSCREEN_MACOS_NON_NATIVE_VISIBLE_MENU",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_FULLSCREEN_NATIVE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_GOTO_SPLIT_DOWN",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_GOTO_SPLIT_LEFT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_GOTO_SPLIT_NEXT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_GOTO_SPLIT_PREVIOUS",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_GOTO_SPLIT_RIGHT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_GOTO_SPLIT_UP",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_GOTO_TAB_LAST",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_GOTO_TAB_NEXT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_GOTO_TAB_PREVIOUS",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_GOTO_WINDOW_NEXT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_GOTO_WINDOW_PREVIOUS",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_INSPECTOR_HIDE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_INSPECTOR_SHOW",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_INSPECTOR_TOGGLE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_A",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_ALT_LEFT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_ALT_RIGHT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_ARROW_DOWN",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_ARROW_LEFT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_ARROW_RIGHT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_ARROW_UP",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_AUDIO_VOLUME_DOWN",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_AUDIO_VOLUME_MUTE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_AUDIO_VOLUME_UP",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_B",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_BACKQUOTE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_BACKSLASH",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_BACKSPACE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_BRACKET_LEFT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_BRACKET_RIGHT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_BROWSER_BACK",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_BROWSER_FAVORITES",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_BROWSER_FORWARD",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_BROWSER_HOME",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_BROWSER_REFRESH",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_BROWSER_SEARCH",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_BROWSER_STOP",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_C",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_CAPS_LOCK",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_COMMA",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_CONTEXT_MENU",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_CONTROL_LEFT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_CONTROL_RIGHT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_CONVERT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_COPY",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_CUT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_D",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_DELETE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_DIGIT_0",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_DIGIT_1",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_DIGIT_2",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_DIGIT_3",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_DIGIT_4",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_DIGIT_5",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_DIGIT_6",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_DIGIT_7",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_DIGIT_8",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_DIGIT_9",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_E",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_EJECT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_END",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_ENTER",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_EQUAL",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_ESCAPE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_F",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_F1",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_F10",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_F11",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_F12",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_F13",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_F14",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_F15",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_F16",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_F17",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_F18",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_F19",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_F2",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_F20",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_F21",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_F22",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_F23",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_F24",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_F25",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_F3",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_F4",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_F5",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_F6",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_F7",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_F8",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_F9",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_FN",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_FN_LOCK",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_G",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_H",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_HELP",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_HOME",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_I",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_INSERT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_INTL_BACKSLASH",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_INTL_RO",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_INTL_YEN",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_J",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_K",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_KANA_MODE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_L",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_LAUNCH_APP_1",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_LAUNCH_APP_2",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_LAUNCH_MAIL",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_M",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_MEDIA_PLAY_PAUSE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_MEDIA_SELECT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_MEDIA_STOP",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_MEDIA_TRACK_NEXT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_MEDIA_TRACK_PREVIOUS",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_META_LEFT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_META_RIGHT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_MINUS",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_N",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_NON_CONVERT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_NUMPAD_0",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_NUMPAD_1",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_NUMPAD_2",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_NUMPAD_3",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_NUMPAD_4",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_NUMPAD_5",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_NUMPAD_6",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_NUMPAD_7",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_NUMPAD_8",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_NUMPAD_9",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_NUMPAD_ADD",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_NUMPAD_BACKSPACE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_NUMPAD_BEGIN",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_NUMPAD_CLEAR",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_NUMPAD_CLEAR_ENTRY",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_NUMPAD_COMMA",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_NUMPAD_DECIMAL",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_NUMPAD_DELETE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_NUMPAD_DIVIDE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_NUMPAD_DOWN",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_NUMPAD_END",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_NUMPAD_ENTER",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_NUMPAD_EQUAL",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_NUMPAD_HOME",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_NUMPAD_INSERT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_NUMPAD_LEFT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_NUMPAD_MEMORY_ADD",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_NUMPAD_MEMORY_CLEAR",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_NUMPAD_MEMORY_RECALL",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_NUMPAD_MEMORY_STORE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_NUMPAD_MEMORY_SUBTRACT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_NUMPAD_MULTIPLY",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_NUMPAD_PAGE_DOWN",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_NUMPAD_PAGE_UP",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_NUMPAD_PAREN_LEFT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_NUMPAD_PAREN_RIGHT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_NUMPAD_RIGHT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_NUMPAD_SEPARATOR",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_NUMPAD_SUBTRACT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_NUMPAD_UP",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_NUM_LOCK",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_O",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_P",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_PAGE_DOWN",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_PAGE_UP",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_PASTE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_PAUSE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_PERIOD",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_POWER",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_PRINT_SCREEN",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_Q",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_QUOTE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_R",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_S",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_SCROLL_LOCK",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_SEMICOLON",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_SHIFT_LEFT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_SHIFT_RIGHT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_SLASH",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_SLEEP",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_SPACE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_T",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_TAB",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_TABLE_ACTIVATE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_TABLE_DEACTIVATE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_TABLE_DEACTIVATE_ALL",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_U",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_UNIDENTIFIED",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_V",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_W",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_WAKE_UP",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_X",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_Y",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_KEY_Z",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MODS_ALT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MODS_ALT_RIGHT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MODS_CAPS",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MODS_CTRL",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MODS_CTRL_RIGHT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MODS_NONE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MODS_NUM",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MODS_SHIFT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MODS_SHIFT_RIGHT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MODS_SUPER",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MODS_SUPER_RIGHT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MOUSE_EIGHT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MOUSE_ELEVEN",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MOUSE_FIVE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MOUSE_FOUR",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MOUSE_HIDDEN",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MOUSE_LEFT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MOUSE_MIDDLE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MOUSE_NINE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MOUSE_PRESS",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MOUSE_RELEASE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MOUSE_RIGHT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MOUSE_SEVEN",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MOUSE_SHAPE_ALIAS",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MOUSE_SHAPE_ALL_SCROLL",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MOUSE_SHAPE_CELL",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MOUSE_SHAPE_COL_RESIZE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MOUSE_SHAPE_CONTEXT_MENU",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MOUSE_SHAPE_COPY",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MOUSE_SHAPE_CROSSHAIR",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MOUSE_SHAPE_DEFAULT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MOUSE_SHAPE_EW_RESIZE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MOUSE_SHAPE_E_RESIZE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MOUSE_SHAPE_GRAB",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MOUSE_SHAPE_GRABBING",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MOUSE_SHAPE_HELP",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MOUSE_SHAPE_MOVE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MOUSE_SHAPE_NESW_RESIZE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MOUSE_SHAPE_NE_RESIZE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MOUSE_SHAPE_NOT_ALLOWED",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MOUSE_SHAPE_NO_DROP",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MOUSE_SHAPE_NS_RESIZE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MOUSE_SHAPE_NWSE_RESIZE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MOUSE_SHAPE_NW_RESIZE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MOUSE_SHAPE_N_RESIZE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MOUSE_SHAPE_POINTER",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MOUSE_SHAPE_PROGRESS",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MOUSE_SHAPE_ROW_RESIZE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MOUSE_SHAPE_SE_RESIZE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MOUSE_SHAPE_SW_RESIZE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MOUSE_SHAPE_S_RESIZE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MOUSE_SHAPE_TEXT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MOUSE_SHAPE_VERTICAL_TEXT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MOUSE_SHAPE_WAIT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MOUSE_SHAPE_W_RESIZE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MOUSE_SHAPE_ZOOM_IN",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MOUSE_SHAPE_ZOOM_OUT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MOUSE_SIX",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MOUSE_TEN",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MOUSE_UNKNOWN",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_MOUSE_VISIBLE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_PLATFORM_INVALID",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_PLATFORM_IOS",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_PLATFORM_MACOS",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_POINT_ACTIVE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_POINT_COORD_BOTTOM_RIGHT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_POINT_COORD_EXACT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_POINT_COORD_TOP_LEFT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_POINT_SCREEN",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_POINT_SURFACE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_POINT_VIEWPORT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_PROGRESS_STATE_ERROR",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_PROGRESS_STATE_INDETERMINATE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_PROGRESS_STATE_PAUSE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_PROGRESS_STATE_REMOVE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_PROGRESS_STATE_SET",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_PROMPT_TITLE_SURFACE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_PROMPT_TITLE_TAB",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_QUIT_TIMER_START",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_QUIT_TIMER_STOP",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_READONLY_OFF",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_READONLY_ON",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_RENDERER_HEALTH_HEALTHY",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_RENDERER_HEALTH_UNHEALTHY",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_RESIZE_SPLIT_DOWN",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_RESIZE_SPLIT_LEFT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_RESIZE_SPLIT_RIGHT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_RESIZE_SPLIT_UP",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_SECURE_INPUT_OFF",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_SECURE_INPUT_ON",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_SECURE_INPUT_TOGGLE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_SPLIT_DIRECTION_DOWN",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_SPLIT_DIRECTION_LEFT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_SPLIT_DIRECTION_RIGHT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_SPLIT_DIRECTION_UP",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
       "c_name": "GHOSTTY_SUCCESS",
       "kind": "constant",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_SURFACE_CONTEXT_SPLIT",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_SURFACE_CONTEXT_TAB",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_SURFACE_CONTEXT_WINDOW",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_TARGET_APP",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_TARGET_SURFACE",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_TRIGGER_CATCH_ALL",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_TRIGGER_PHYSICAL",
+      "kind": "enum_value",
+      "status": "generated"
+    },
+    {
+      "c_name": "GHOSTTY_TRIGGER_UNICODE",
+      "kind": "enum_value",
       "status": "generated"
     },
     {

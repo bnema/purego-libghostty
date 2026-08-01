@@ -56,6 +56,18 @@ func TestRecordLayoutsRealHeader(t *testing.T) {
 		if len(layouts) != want {
 			t.Errorf("%s layouts = %d, want %d", target.GOARCH, len(layouts), want)
 		}
+		for _, cName := range []string{"ghostty_string_s", "ghostty_action_move_tab_s", "ghostty_action_search_selected_s"} {
+			layout := layouts[cName]
+			if layout.Size != 24 && cName == "ghostty_string_s" {
+				t.Errorf("%s %s size = %d, want 24", target.GOARCH, cName, layout.Size)
+			}
+			if layout.Size != 8 && cName != "ghostty_string_s" {
+				t.Errorf("%s %s size = %d, want 8", target.GOARCH, cName, layout.Size)
+			}
+			if layout.Align != 8 {
+				t.Errorf("%s %s align = %d, want 8", target.GOARCH, cName, layout.Align)
+			}
+		}
 	}
 }
 

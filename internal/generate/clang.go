@@ -3,6 +3,7 @@ package generate
 import (
 	"context"
 	"fmt"
+	"os"
 	"os/exec"
 	"strings"
 )
@@ -25,7 +26,12 @@ type PlatformVariant struct {
 var EmbeddingVariants = []PlatformVariant{{Reason: "__APPLE__", Defines: []string{"__APPLE__=1"}}}
 
 func inspectAST(ctx context.Context, clang, header, includeDir string, target Target, defines ...string) ([]byte, error) {
-	args := []string{"--target=" + target.Triple, "-std=c11", "-I", includeDir, "-fsyntax-only", "-Xclang", "-ast-dump=json", "-x", "c"}
+	prelude, cleanup, err := targetPrelude(target)
+	if err != nil {
+		return nil, err
+	}
+	defer cleanup()
+	args := []string{"--target=" + target.Triple, "-include", prelude, "-ffreestanding", "-std=c11", "-I", includeDir, "-fsyntax-only", "-Xclang", "-ast-dump=json", "-x", "c"}
 	for _, define := range defines {
 		args = append(args, "-D"+define)
 	}
@@ -34,7 +40,30 @@ func inspectAST(ctx context.Context, clang, header, includeDir string, target Ta
 }
 
 func inspectMacros(ctx context.Context, clang, header, includeDir string, target Target) ([]byte, error) {
-	return clangOutput(ctx, clang, "--target="+target.Triple, "-std=c11", "-I", includeDir, "-dM", "-E", "-x", "c", header)
+	prelude, cleanup, err := targetPrelude(target)
+	if err != nil {
+		return nil, err
+	}
+	defer cleanup()
+	return clangOutput(ctx, clang, "--target="+target.Triple, "-include", prelude, "-ffreestanding", "-std=c11", "-I", includeDir, "-dM", "-E", "-x", "c", header)
+}
+
+func targetPrelude(target Target) (string, func(), error) {
+	file, err := os.CreateTemp("", "ghosttygen-prelude-*.h")
+	if err != nil {
+		return "", func() {}, err
+	}
+	if _, err := file.WriteString("#ifndef _SYS_TYPES_H\n#define _SYS_TYPES_H 1\ntypedef long ssize_t;\n#endif\n"); err != nil {
+		_ = file.Close()
+		_ = os.Remove(file.Name())
+		return "", func() {}, err
+	}
+	if err := file.Close(); err != nil {
+		_ = os.Remove(file.Name())
+		return "", func() {}, err
+	}
+	cleanup := func() { _ = os.Remove(file.Name()) }
+	return file.Name(), cleanup, nil
 }
 
 func clangOutput(ctx context.Context, clang string, args ...string) ([]byte, error) {

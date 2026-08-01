@@ -148,6 +148,7 @@ func TestCoverage(t *testing.T) {
 	var coverage struct {
 		Declarations []struct {
 			CName  string `json:"c_name"`
+			Kind   string `json:"kind"`
 			Status string `json:"status"`
 		} `json:"declarations"`
 		Exclusions []Exclusion `json:"exclusions"`
@@ -170,6 +171,19 @@ func TestCoverage(t *testing.T) {
 		if seen[typ.CName] == "" {
 			t.Errorf("coverage missing type %s", typ.CName)
 		}
+		for _, value := range typ.EnumValues {
+			declaration, ok := coverageDeclaration(coverage.Declarations, value.CName)
+			if !ok {
+				t.Errorf("coverage missing enum value %s", value.CName)
+				continue
+			}
+			if declaration.Kind != "enum_value" {
+				t.Errorf("coverage enum value %s kind = %q, want enum_value", value.CName, declaration.Kind)
+			}
+			if declaration.Status != "generated" && declaration.Status != "override" {
+				t.Errorf("coverage enum value %s has unexplained status %q", value.CName, declaration.Status)
+			}
+		}
 	}
 	for _, constant := range model.Constants {
 		if seen[constant.CName] == "" {
@@ -178,6 +192,50 @@ func TestCoverage(t *testing.T) {
 	}
 	if !hasExclusion(Model{Exclusions: coverage.Exclusions}, "ghostty_apple_only", "platform-excluded: __APPLE__") {
 		t.Fatalf("coverage exclusions = %#v", coverage.Exclusions)
+	}
+}
+
+func coverageDeclaration(declarations []struct {
+	CName  string `json:"c_name"`
+	Kind   string `json:"kind"`
+	Status string `json:"status"`
+}, cName string) (struct {
+	CName  string `json:"c_name"`
+	Kind   string `json:"kind"`
+	Status string `json:"status"`
+}, bool) {
+	for _, declaration := range declarations {
+		if declaration.CName == cName {
+			return declaration, true
+		}
+	}
+	return struct {
+		CName  string `json:"c_name"`
+		Kind   string `json:"kind"`
+		Status string `json:"status"`
+	}{}, false
+}
+
+func TestTargetPointerWidthMappings(t *testing.T) {
+	for _, target := range LinuxTargets {
+		t.Run(target.GOARCH, func(t *testing.T) {
+			for _, test := range []struct {
+				cName string
+				want  string
+			}{
+				{cName: "uintptr_t", want: "uintptr"},
+				{cName: "size_t", want: "uintptr"},
+				{cName: "intptr_t", want: "int"},
+				{cName: "ssize_t", want: "int"},
+			} {
+				if got := scalarGoTypeTarget(test.cName, target.GOARCH); got != test.want {
+					t.Errorf("%s on %s = %q, want %q", test.cName, target.GOARCH, got, test.want)
+				}
+				if got, err := cTypeSize(TypeRef{CName: test.cName}, nil, nil, target.GOARCH); err != nil || got != 8 {
+					t.Errorf("%s size on %s = %d, %v; want 8", test.cName, target.GOARCH, got, err)
+				}
+			}
+		})
 	}
 }
 

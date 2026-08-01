@@ -343,19 +343,8 @@ func scalarGoTypeTarget(cName, arch string) string {
 	case "int64_t", "long", "long long", "signed long", "signed long long":
 		return "int64"
 	case "uintptr_t", "size_t":
-		if arch == "arm64" {
-			return "uint32"
-		}
 		return "uintptr"
-	case "intptr_t":
-		if arch == "arm64" {
-			return "int32"
-		}
-		return "int"
-	case "ssize_t":
-		if arch == "arm64" {
-			return "int32"
-		}
+	case "intptr_t", "ssize_t":
 		return "int"
 	case "float":
 		return "float32"
@@ -410,9 +399,6 @@ func cTypeSize(ref TypeRef, layouts map[string]RecordLayout, types []TypeDecl, a
 	case "int64_t", "uint64_t", "long", "unsigned long", "long long", "unsigned long long", "double":
 		return 8, nil
 	case "size_t", "uintptr_t", "intptr_t", "ssize_t":
-		if arch == "arm64" {
-			return 4, nil
-		}
 		return 8, nil
 	default:
 		return 0, fmt.Errorf("unsupported C type %q", ref.CName)
@@ -574,6 +560,9 @@ func renderCoverage(model Model, output Output) ([]byte, error) {
 			status, reason = "override", "embedding union accessors"
 		}
 		coverage.Declarations = append(coverage.Declarations, declaration{CName: typ.CName, Kind: "type", Status: status, Reason: reason})
+		for _, value := range typ.EnumValues {
+			coverage.Declarations = append(coverage.Declarations, declaration{CName: value.CName, Kind: "enum_value", Status: "generated"})
+		}
 	}
 	for _, constant := range model.Constants {
 		coverage.Declarations = append(coverage.Declarations, declaration{CName: constant.CName, Kind: "constant", Status: "generated"})

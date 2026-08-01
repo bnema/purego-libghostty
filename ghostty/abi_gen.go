@@ -58,6 +58,10 @@ const abiAction_mouse_over_link_sAlign = uintptr(8)
 const abiAction_mouse_over_link_s_abiUrlOffset = uintptr(0)
 const abiAction_mouse_over_link_s_abiLenOffset = uintptr(8)
 
+const abiAction_move_tab_sSize = uintptr(8)
+const abiAction_move_tab_sAlign = uintptr(8)
+const abiAction_move_tab_s_abiAmountOffset = uintptr(0)
+
 const abiAction_open_url_sSize = uintptr(24)
 const abiAction_open_url_sAlign = uintptr(8)
 const abiAction_open_url_s_abiKindOffset = uintptr(0)
@@ -92,6 +96,14 @@ const abiAction_scrollbar_sAlign = uintptr(8)
 const abiAction_scrollbar_s_abiTotalOffset = uintptr(0)
 const abiAction_scrollbar_s_abiOffsetOffset = uintptr(8)
 const abiAction_scrollbar_s_abiLenOffset = uintptr(16)
+
+const abiAction_search_selected_sSize = uintptr(8)
+const abiAction_search_selected_sAlign = uintptr(8)
+const abiAction_search_selected_s_abiSelectedOffset = uintptr(0)
+
+const abiAction_search_total_sSize = uintptr(8)
+const abiAction_search_total_sAlign = uintptr(8)
+const abiAction_search_total_s_abiTotalOffset = uintptr(0)
 
 const abiAction_set_title_sSize = uintptr(8)
 const abiAction_set_title_sAlign = uintptr(8)
@@ -243,6 +255,12 @@ const abiSelection_sAlign = uintptr(4)
 const abiSelection_s_abiTop_leftOffset = uintptr(0)
 const abiSelection_s_abiBottom_rightOffset = uintptr(16)
 const abiSelection_s_abiRectangleOffset = uintptr(32)
+
+const abiString_sSize = uintptr(24)
+const abiString_sAlign = uintptr(8)
+const abiString_s_abiPtrOffset = uintptr(0)
+const abiString_s_abiLenOffset = uintptr(8)
+const abiString_s_abiSentinelOffset = uintptr(16)
 
 const abiSurface_config_sSize = uintptr(88)
 const abiSurface_config_sAlign = uintptr(8)
