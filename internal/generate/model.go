@@ -98,6 +98,7 @@ type astNode struct {
 }
 type astLoc struct {
 	File         string  `json:"file"`
+	Line         int     `json:"line"`
 	SpellingLoc  *astLoc `json:"spellingLoc"`
 	ExpansionLoc *astLoc `json:"expansionLoc"`
 	Value        string  `json:"value"`
