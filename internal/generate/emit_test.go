@@ -60,6 +60,20 @@ func TestEmitTypes(t *testing.T) {
 			t.Fatalf("%s is not deterministic", name)
 		}
 	}
+	abiData, err := os.ReadFile(filepath.Join(out, "ghostty", "abi_gen.go"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, want := range []string{
+		"type abiRecord struct",
+		"func abiRecords() []abiRecord",
+		"name: \"ghostty_fixture_s\"",
+		"name: \"enabled\"",
+	} {
+		if !strings.Contains(string(abiData), want) {
+			t.Errorf("ABI metadata missing %q:\n%s", want, abiData)
+		}
+	}
 }
 
 func TestArchBuildTagsLeadGeneratedFiles(t *testing.T) {
@@ -72,7 +86,7 @@ func TestArchBuildTagsLeadGeneratedFiles(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	data, test, err := renderABIFor(&model, names, layouts, output, "abi_gen_arm64.go", "abi_gen_test_arm64.go", "arm64")
+	data, test, err := renderABIFor(&model, nil, names, layouts, output, "abi_gen_arm64.go", "abi_gen_test_arm64.go", "arm64")
 	if err != nil {
 		t.Fatal(err)
 	}
