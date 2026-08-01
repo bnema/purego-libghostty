@@ -556,17 +556,26 @@ func renderRegistration(model Model, names map[string]string, output Output) ([]
 	functions := append([]FunctionDecl(nil), model.Functions...)
 	sort.Slice(functions, func(i, j int) bool { return functions[i].CName < functions[j].CName })
 	var body strings.Builder
+	needsUnsafe := false
 	body.WriteString("var allSymbols = []string{\n")
 	for _, function := range functions {
 		body.WriteString("\t\"" + function.CName + "\",\n")
 	}
 	body.WriteString("}\n\n")
 	body.WriteString("func register(handle uintptr) error {\n")
+	body.WriteString("\treturn registerWith(handle, purego.Dlsym, purego.RegisterFunc)\n")
+	body.WriteString("}\n\n")
+	body.WriteString("func registerWith(handle uintptr, resolve func(uintptr, string) (uintptr, error), registerFunction func(any, uintptr)) (err error) {\n")
+	body.WriteString("\tdefer func() {\n")
+	body.WriteString("\t\tif recovered := recover(); recovered != nil {\n")
+	body.WriteString("\t\t\terr = fmt.Errorf(\"register function: %v\", recovered)\n")
+	body.WriteString("\t\t}\n")
+	body.WriteString("\t}()\n")
 	body.WriteString("\taddresses := make(map[string]uintptr, len(allSymbols))\n")
 	body.WriteString("\tfor _, symbol := range allSymbols {\n")
-	body.WriteString("\t\taddress, err := purego.Dlsym(handle, symbol)\n")
-	body.WriteString("\t\tif err != nil {\n")
-	body.WriteString("\t\t\treturn fmt.Errorf(\"resolve %s: %w\", symbol, err)\n")
+	body.WriteString("\t\taddress, resolveErr := resolve(handle, symbol)\n")
+	body.WriteString("\t\tif resolveErr != nil {\n")
+	body.WriteString("\t\t\treturn fmt.Errorf(\"resolve %s: %w\", symbol, resolveErr)\n")
 	body.WriteString("\t\t}\n")
 	body.WriteString("\t\taddresses[symbol] = address\n")
 	body.WriteString("\t}\n")
@@ -575,11 +584,34 @@ func renderRegistration(model Model, names map[string]string, output Output) ([]
 		if name == "" {
 			return nil, fmt.Errorf("missing Go name: %s", function.CName)
 		}
-		body.WriteString("\tpurego.RegisterFunc(&" + name + ", addresses[\"" + function.CName + "\"])\n")
+		signature, err := functionSignature(function, names, typeKinds(model.Types))
+		if err != nil {
+			return nil, fmt.Errorf("%s: %w", function.CName, err)
+		}
+		needsUnsafe = needsUnsafe || strings.Contains(signature, "unsafe.")
+		body.WriteString("\tvar registered" + name + " " + signature + "\n")
+	}
+	if len(functions) > 0 {
+		body.WriteByte('\n')
+	}
+	for _, function := range functions {
+		name := names[function.CName]
+		body.WriteString("\tregisterFunction(&registered" + name + ", addresses[\"" + function.CName + "\"])\n")
+	}
+	if len(functions) > 0 {
+		body.WriteByte('\n')
+	}
+	for _, function := range functions {
+		name := names[function.CName]
+		body.WriteString("\t" + name + " = registered" + name + "\n")
 	}
 	body.WriteString("\treturn nil\n")
 	body.WriteString("}\n")
-	return goFileWithImports(output, "register_gen.go", body.String(), []string{"fmt", "github.com/bnema/purego"}), nil
+	imports := []string{"fmt", "github.com/bnema/purego"}
+	if needsUnsafe {
+		imports = append(imports, "unsafe")
+	}
+	return goFileWithImports(output, "register_gen.go", body.String(), imports), nil
 }
 
 func renderConstants(model Model, names map[string]string, output Output) ([]byte, error) {

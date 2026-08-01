@@ -61,13 +61,13 @@ var ConfigOpenPath func() String
 
 var ConfigTrigger func(ConfigHandle, *byte, uintptr) InputTrigger
 
-var Info func() InfoS
+var InfoValue func() Info
 
 var Init func(uintptr, **byte) int32
 
 var InspectorFree func(SurfaceHandle)
 
-var InspectorKey func(InspectorHandle, InputAction, InputKeyE, InputMods)
+var InspectorKey func(InspectorHandle, InputAction, InputKey, InputMods)
 
 var InspectorMouseButton func(InspectorHandle, InputMouseState, InputMouseButton, InputMods)
 
@@ -153,13 +153,13 @@ var SurfaceSetOcclusion func(SurfaceHandle, bool)
 
 var SurfaceSetSize func(SurfaceHandle, uint32, uint32)
 
-var SurfaceSize func(SurfaceHandle) SurfaceSizeS
+var SurfaceSizeValue func(SurfaceHandle) SurfaceSize
 
 var SurfaceSplit func(SurfaceHandle, ActionSplitDirection)
 
 var SurfaceSplitEqualize func(SurfaceHandle)
 
-var SurfaceSplitFocus func(SurfaceHandle, ActionGotoSplitE)
+var SurfaceSplitFocus func(SurfaceHandle, ActionGotoSplit)
 
 var SurfaceSplitResize func(SurfaceHandle, ActionResizeSplitDirection, uint16)
 

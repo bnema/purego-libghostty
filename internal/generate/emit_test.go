@@ -174,7 +174,7 @@ func TestEmitFunctions(t *testing.T) {
 	code := string(data)
 	for _, want := range []string{
 		"var Init func(uintptr, **byte) int32",
-		"var Info func() InfoS",
+		"var InfoValue func() Info",
 		"var ConfigNew func() ConfigHandle",
 		"var ConfigFree func(ConfigHandle)",
 		"var ConfigSetCallback func(ConfigHandle, uintptr)",
@@ -215,14 +215,15 @@ func TestEmitRegistration(t *testing.T) {
 	}
 	for _, want := range []string{
 		"addresses := make(map[string]uintptr, len(allSymbols))",
-		"return fmt.Errorf(\"resolve %s: %w\", symbol, err)",
-		"purego.RegisterFunc(&ConfigNew, addresses[\"ghostty_config_new\"])",
+		"return fmt.Errorf(\"resolve %s: %w\", symbol, resolveErr)",
+		"registerFunction(&registeredConfigNew, addresses[\"ghostty_config_new\"])",
+		"ConfigNew = registeredConfigNew",
 	} {
 		if !strings.Contains(code, want) {
 			t.Errorf("registration output missing %q:\\n%s", want, code)
 		}
 	}
-	registerIndex := strings.Index(code, "purego.RegisterFunc")
+	registerIndex := strings.Index(code, "registerFunction(&")
 	preflightIndex := strings.Index(code, "for _, symbol := range allSymbols")
 	if registerIndex < 0 || preflightIndex < 0 {
 		t.Fatalf("registration preflight markers missing: %s", code)
@@ -230,6 +231,58 @@ func TestEmitRegistration(t *testing.T) {
 	if registerIndex < preflightIndex {
 		t.Fatal("registration assigns functions before symbol preflight")
 	}
+}
+
+func TestGeneratedRegistrationPanicIsTransactional(t *testing.T) {
+	model := Model{Functions: []FunctionDecl{
+		{CName: "ghostty_first", Result: TypeRef{CName: "void"}},
+		{CName: "ghostty_second", Result: TypeRef{CName: "void"}},
+	}}
+	root, err := os.Getwd()
+	if err != nil {
+		t.Fatal(err)
+	}
+	moduleRoot := filepath.Clean(filepath.Join(root, "../.."))
+	out, err := os.MkdirTemp(moduleRoot, ".ghosttygen-registration-")
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() { _ = os.RemoveAll(out) })
+	if err := EmitTypes(model, map[string]map[string]RecordLayout{"amd64": {}}, Output{Dir: out, Package: "ghostty", Upstream: Upstream{Commit: "0123456789abcdef0123456789abcdef01234567"}}); err != nil {
+		t.Fatal(err)
+	}
+	registrationTest := `package ghostty
+
+import (
+	"reflect"
+	"strings"
+	"testing"
+)
+
+func TestRegistrationPanicIsReturnedWithoutPartialAssignment(t *testing.T) {
+	calls := 0
+	resolve := func(uintptr, string) (uintptr, error) { return 1, nil }
+	registerFunction := func(fptr any, _ uintptr) {
+		calls++
+		if calls == 2 {
+			panic("forced RegisterFunc panic")
+		}
+		value := reflect.ValueOf(fptr).Elem()
+		value.Set(reflect.MakeFunc(value.Type(), func([]reflect.Value) []reflect.Value { return nil }))
+	}
+	err := registerWith(1, resolve, registerFunction)
+	if err == nil || !strings.Contains(err.Error(), "forced RegisterFunc panic") {
+		t.Fatalf("register error = %v", err)
+	}
+	if First != nil || Second != nil {
+		t.Fatalf("partial registration: First nil=%t Second nil=%t", First == nil, Second == nil)
+	}
+}
+`
+	if err := os.WriteFile(filepath.Join(out, "ghostty", "registration_panic_test.go"), []byte(registrationTest), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	runGeneratedPackageTest(t, moduleRoot, filepath.Join(out, "ghostty"))
 }
 
 func TestEmitRejectsInvalidConstantNameAndExpression(t *testing.T) {
@@ -379,14 +432,24 @@ func TestEmptyGeneratedPackageCompiles(t *testing.T) {
 
 func compileGeneratedPackage(t *testing.T, moduleRoot, packageDir string) {
 	t.Helper()
+	runGeneratedPackageTestCommand(t, moduleRoot, packageDir, "^$")
+}
+
+func runGeneratedPackageTest(t *testing.T, moduleRoot, packageDir string) {
+	t.Helper()
+	runGeneratedPackageTestCommand(t, moduleRoot, packageDir, "TestRegistrationPanicIsReturnedWithoutPartialAssignment")
+}
+
+func runGeneratedPackageTestCommand(t *testing.T, moduleRoot, packageDir, run string) {
+	t.Helper()
 	rel, err := filepath.Rel(moduleRoot, packageDir)
 	if err != nil {
 		t.Fatal(err)
 	}
-	command := exec.Command("go", "test", "./"+filepath.ToSlash(rel), "-run", "^$")
+	command := exec.Command("go", "test", "./"+filepath.ToSlash(rel), "-run", run)
 	command.Dir = moduleRoot
 	if output, err := command.CombinedOutput(); err != nil {
-		t.Fatalf("compile generated package: %v\n%s", err, output)
+		t.Fatalf("test generated package: %v\n%s", err, output)
 	}
 }
 

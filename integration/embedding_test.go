@@ -21,7 +21,7 @@ func TestEmbeddingRawLifecycle(t *testing.T) {
 	}
 	runtime.KeepAlive(argv0)
 	runtime.KeepAlive(argv)
-	info := ghostty.Info()
+	info := ghostty.InfoValue()
 	if info.Version == nil || info.VersionLen == 0 {
 		t.Fatal("empty version")
 	}

@@ -5,14 +5,14 @@ package ghostty
 
 import "unsafe"
 
-type ActionCellSizeS struct {
+type ActionCellSize struct {
 	Width  uint32
 	Height uint32
 }
 
 type ActionCloseTabMode int32
 
-type ActionColorChangeS struct {
+type ActionColorChange struct {
 	Kind ActionColorKind
 	R    byte
 	G    byte
@@ -22,45 +22,45 @@ type ActionColorChangeS struct {
 
 type ActionColorKind int32
 
-type ActionCommandFinishedS struct {
+type ActionCommandFinished struct {
 	ExitCode int16
 	_        [6]byte
 	Duration uint64
 }
 
-type ActionConfigChangeS struct {
+type ActionConfigChange struct {
 	Config ConfigHandle
 }
 
-type ActionDesktopNotificationS struct {
+type ActionDesktopNotification struct {
 	Title *byte
 	Body  *byte
 }
 
-type ActionFloatWindowE int32
+type ActionFloatWindow int32
 
 type ActionFullscreen int32
 
-type ActionGotoSplitE int32
+type ActionGotoSplit int32
 
-type ActionGotoTabE int32
+type ActionGotoTab int32
 
-type ActionGotoWindowE int32
+type ActionGotoWindow int32
 
-type ActionInitialSizeS struct {
+type ActionInitialSize struct {
 	Width  uint32
 	Height uint32
 }
 
-type ActionInspectorE int32
+type ActionInspector int32
 
-type ActionKeySequenceS struct {
+type ActionKeySequence struct {
 	Active  bool
 	_       [3]byte
 	Trigger InputTrigger
 }
 
-type ActionKeyTableS struct {
+type ActionKeyTable struct {
 	Tag   ActionKeyTableTag
 	_     [4]byte
 	Value ActionKeyTableU
@@ -86,29 +86,29 @@ type ActionKeyTableActivate struct {
 	Len  uintptr
 }
 
-type ActionMouseOverLinkS struct {
+type ActionMouseOverLink struct {
 	URL *byte
 	Len uintptr
 }
 
-type ActionMouseShapeE int32
+type ActionMouseShape int32
 
-type ActionMouseVisibilityE int32
+type ActionMouseVisibility int32
 
-type ActionMoveTabS struct {
+type ActionMoveTab struct {
 	Amount int
 }
 
 type ActionOpenURLKind int32
 
-type ActionOpenURLS struct {
+type ActionOpenURL struct {
 	Kind ActionOpenURLKind
 	_    [4]byte
 	URL  *byte
 	Len  uintptr
 }
 
-type ActionProgressReportS struct {
+type ActionProgressReport struct {
 	State    ActionProgressReportState
 	Progress int8
 	_        [3]byte
@@ -116,57 +116,57 @@ type ActionProgressReportS struct {
 
 type ActionProgressReportState int32
 
-type ActionPromptTitleE int32
+type ActionPromptTitle int32
 
-type ActionPwdS struct {
+type ActionPwd struct {
 	Pwd *byte
 }
 
-type ActionQuitTimerE int32
+type ActionQuitTimer int32
 
-type ActionReadonlyE int32
+type ActionReadonly int32
 
-type ActionReloadConfigS struct {
+type ActionReloadConfig struct {
 	Soft bool
 }
 
-type ActionRendererHealthE int32
+type ActionRendererHealth int32
 
 type ActionResizeSplitDirection int32
 
-type ActionResizeSplitS struct {
+type ActionResizeSplit struct {
 	Amount    uint16
 	_         [2]byte
 	Direction ActionResizeSplitDirection
 }
 
-type ActionS struct {
+type Action struct {
 	Tag    ActionTag
 	_      [4]byte
 	Action ActionU
 }
 
-type ActionScrollbarS struct {
+type ActionScrollbar struct {
 	Total  uint64
 	Offset uint64
 	Len    uint64
 }
 
-type ActionSearchSelectedS struct {
+type ActionSearchSelected struct {
 	Selected int
 }
 
-type ActionSearchTotalS struct {
+type ActionSearchTotal struct {
 	Total int
 }
 
-type ActionSecureInputE int32
+type ActionSecureInput int32
 
-type ActionSetTitleS struct {
+type ActionSetTitle struct {
 	Title *byte
 }
 
-type ActionSizeLimitS struct {
+type ActionSizeLimit struct {
 	MinWidth  uint32
 	MinHeight uint32
 	MaxWidth  uint32
@@ -175,7 +175,7 @@ type ActionSizeLimitS struct {
 
 type ActionSplitDirection int32
 
-type ActionStartSearchS struct {
+type ActionStartSearch struct {
 	Needle *byte
 }
 
@@ -202,228 +202,228 @@ func (u ActionU) ToggleFullscreen() ActionFullscreen {
 	return *(*ActionFullscreen)(unsafe.Pointer(&u))
 }
 
-func (u *ActionU) SetMoveTab(value ActionMoveTabS) {
-	*(*ActionMoveTabS)(unsafe.Pointer(u)) = value
+func (u *ActionU) SetMoveTab(value ActionMoveTab) {
+	*(*ActionMoveTab)(unsafe.Pointer(u)) = value
 }
 
-func (u ActionU) MoveTab() ActionMoveTabS {
-	return *(*ActionMoveTabS)(unsafe.Pointer(&u))
+func (u ActionU) MoveTab() ActionMoveTab {
+	return *(*ActionMoveTab)(unsafe.Pointer(&u))
 }
 
-func (u *ActionU) SetGotoTab(value ActionGotoTabE) {
-	*(*ActionGotoTabE)(unsafe.Pointer(u)) = value
+func (u *ActionU) SetGotoTab(value ActionGotoTab) {
+	*(*ActionGotoTab)(unsafe.Pointer(u)) = value
 }
 
-func (u ActionU) GotoTab() ActionGotoTabE {
-	return *(*ActionGotoTabE)(unsafe.Pointer(&u))
+func (u ActionU) GotoTab() ActionGotoTab {
+	return *(*ActionGotoTab)(unsafe.Pointer(&u))
 }
 
-func (u *ActionU) SetGotoSplit(value ActionGotoSplitE) {
-	*(*ActionGotoSplitE)(unsafe.Pointer(u)) = value
+func (u *ActionU) SetGotoSplit(value ActionGotoSplit) {
+	*(*ActionGotoSplit)(unsafe.Pointer(u)) = value
 }
 
-func (u ActionU) GotoSplit() ActionGotoSplitE {
-	return *(*ActionGotoSplitE)(unsafe.Pointer(&u))
+func (u ActionU) GotoSplit() ActionGotoSplit {
+	return *(*ActionGotoSplit)(unsafe.Pointer(&u))
 }
 
-func (u *ActionU) SetGotoWindow(value ActionGotoWindowE) {
-	*(*ActionGotoWindowE)(unsafe.Pointer(u)) = value
+func (u *ActionU) SetGotoWindow(value ActionGotoWindow) {
+	*(*ActionGotoWindow)(unsafe.Pointer(u)) = value
 }
 
-func (u ActionU) GotoWindow() ActionGotoWindowE {
-	return *(*ActionGotoWindowE)(unsafe.Pointer(&u))
+func (u ActionU) GotoWindow() ActionGotoWindow {
+	return *(*ActionGotoWindow)(unsafe.Pointer(&u))
 }
 
-func (u *ActionU) SetResizeSplit(value ActionResizeSplitS) {
-	*(*ActionResizeSplitS)(unsafe.Pointer(u)) = value
+func (u *ActionU) SetResizeSplit(value ActionResizeSplit) {
+	*(*ActionResizeSplit)(unsafe.Pointer(u)) = value
 }
 
-func (u ActionU) ResizeSplit() ActionResizeSplitS {
-	return *(*ActionResizeSplitS)(unsafe.Pointer(&u))
+func (u ActionU) ResizeSplit() ActionResizeSplit {
+	return *(*ActionResizeSplit)(unsafe.Pointer(&u))
 }
 
-func (u *ActionU) SetSizeLimit(value ActionSizeLimitS) {
-	*(*ActionSizeLimitS)(unsafe.Pointer(u)) = value
+func (u *ActionU) SetSizeLimit(value ActionSizeLimit) {
+	*(*ActionSizeLimit)(unsafe.Pointer(u)) = value
 }
 
-func (u ActionU) SizeLimit() ActionSizeLimitS {
-	return *(*ActionSizeLimitS)(unsafe.Pointer(&u))
+func (u ActionU) SizeLimit() ActionSizeLimit {
+	return *(*ActionSizeLimit)(unsafe.Pointer(&u))
 }
 
-func (u *ActionU) SetInitialSize(value ActionInitialSizeS) {
-	*(*ActionInitialSizeS)(unsafe.Pointer(u)) = value
+func (u *ActionU) SetInitialSize(value ActionInitialSize) {
+	*(*ActionInitialSize)(unsafe.Pointer(u)) = value
 }
 
-func (u ActionU) InitialSize() ActionInitialSizeS {
-	return *(*ActionInitialSizeS)(unsafe.Pointer(&u))
+func (u ActionU) InitialSize() ActionInitialSize {
+	return *(*ActionInitialSize)(unsafe.Pointer(&u))
 }
 
-func (u *ActionU) SetCellSize(value ActionCellSizeS) {
-	*(*ActionCellSizeS)(unsafe.Pointer(u)) = value
+func (u *ActionU) SetCellSize(value ActionCellSize) {
+	*(*ActionCellSize)(unsafe.Pointer(u)) = value
 }
 
-func (u ActionU) CellSize() ActionCellSizeS {
-	return *(*ActionCellSizeS)(unsafe.Pointer(&u))
+func (u ActionU) CellSize() ActionCellSize {
+	return *(*ActionCellSize)(unsafe.Pointer(&u))
 }
 
-func (u *ActionU) SetScrollbar(value ActionScrollbarS) {
-	*(*ActionScrollbarS)(unsafe.Pointer(u)) = value
+func (u *ActionU) SetScrollbar(value ActionScrollbar) {
+	*(*ActionScrollbar)(unsafe.Pointer(u)) = value
 }
 
-func (u ActionU) Scrollbar() ActionScrollbarS {
-	return *(*ActionScrollbarS)(unsafe.Pointer(&u))
+func (u ActionU) Scrollbar() ActionScrollbar {
+	return *(*ActionScrollbar)(unsafe.Pointer(&u))
 }
 
-func (u *ActionU) SetInspector(value ActionInspectorE) {
-	*(*ActionInspectorE)(unsafe.Pointer(u)) = value
+func (u *ActionU) SetInspector(value ActionInspector) {
+	*(*ActionInspector)(unsafe.Pointer(u)) = value
 }
 
-func (u ActionU) Inspector() ActionInspectorE {
-	return *(*ActionInspectorE)(unsafe.Pointer(&u))
+func (u ActionU) Inspector() ActionInspector {
+	return *(*ActionInspector)(unsafe.Pointer(&u))
 }
 
-func (u *ActionU) SetDesktopNotification(value ActionDesktopNotificationS) {
-	*(*ActionDesktopNotificationS)(unsafe.Pointer(u)) = value
+func (u *ActionU) SetDesktopNotification(value ActionDesktopNotification) {
+	*(*ActionDesktopNotification)(unsafe.Pointer(u)) = value
 }
 
-func (u ActionU) DesktopNotification() ActionDesktopNotificationS {
-	return *(*ActionDesktopNotificationS)(unsafe.Pointer(&u))
+func (u ActionU) DesktopNotification() ActionDesktopNotification {
+	return *(*ActionDesktopNotification)(unsafe.Pointer(&u))
 }
 
-func (u *ActionU) SetSetTitle(value ActionSetTitleS) {
-	*(*ActionSetTitleS)(unsafe.Pointer(u)) = value
+func (u *ActionU) SetSetTitle(value ActionSetTitle) {
+	*(*ActionSetTitle)(unsafe.Pointer(u)) = value
 }
 
-func (u ActionU) SetTitle() ActionSetTitleS {
-	return *(*ActionSetTitleS)(unsafe.Pointer(&u))
+func (u ActionU) SetTitle() ActionSetTitle {
+	return *(*ActionSetTitle)(unsafe.Pointer(&u))
 }
 
-func (u *ActionU) SetSetTabTitle(value ActionSetTitleS) {
-	*(*ActionSetTitleS)(unsafe.Pointer(u)) = value
+func (u *ActionU) SetSetTabTitle(value ActionSetTitle) {
+	*(*ActionSetTitle)(unsafe.Pointer(u)) = value
 }
 
-func (u ActionU) SetTabTitle() ActionSetTitleS {
-	return *(*ActionSetTitleS)(unsafe.Pointer(&u))
+func (u ActionU) SetTabTitle() ActionSetTitle {
+	return *(*ActionSetTitle)(unsafe.Pointer(&u))
 }
 
-func (u *ActionU) SetPromptTitle(value ActionPromptTitleE) {
-	*(*ActionPromptTitleE)(unsafe.Pointer(u)) = value
+func (u *ActionU) SetPromptTitle(value ActionPromptTitle) {
+	*(*ActionPromptTitle)(unsafe.Pointer(u)) = value
 }
 
-func (u ActionU) PromptTitle() ActionPromptTitleE {
-	return *(*ActionPromptTitleE)(unsafe.Pointer(&u))
+func (u ActionU) PromptTitle() ActionPromptTitle {
+	return *(*ActionPromptTitle)(unsafe.Pointer(&u))
 }
 
-func (u *ActionU) SetPwd(value ActionPwdS) {
-	*(*ActionPwdS)(unsafe.Pointer(u)) = value
+func (u *ActionU) SetPwd(value ActionPwd) {
+	*(*ActionPwd)(unsafe.Pointer(u)) = value
 }
 
-func (u ActionU) Pwd() ActionPwdS {
-	return *(*ActionPwdS)(unsafe.Pointer(&u))
+func (u ActionU) Pwd() ActionPwd {
+	return *(*ActionPwd)(unsafe.Pointer(&u))
 }
 
-func (u *ActionU) SetMouseShape(value ActionMouseShapeE) {
-	*(*ActionMouseShapeE)(unsafe.Pointer(u)) = value
+func (u *ActionU) SetMouseShape(value ActionMouseShape) {
+	*(*ActionMouseShape)(unsafe.Pointer(u)) = value
 }
 
-func (u ActionU) MouseShape() ActionMouseShapeE {
-	return *(*ActionMouseShapeE)(unsafe.Pointer(&u))
+func (u ActionU) MouseShape() ActionMouseShape {
+	return *(*ActionMouseShape)(unsafe.Pointer(&u))
 }
 
-func (u *ActionU) SetMouseVisibility(value ActionMouseVisibilityE) {
-	*(*ActionMouseVisibilityE)(unsafe.Pointer(u)) = value
+func (u *ActionU) SetMouseVisibility(value ActionMouseVisibility) {
+	*(*ActionMouseVisibility)(unsafe.Pointer(u)) = value
 }
 
-func (u ActionU) MouseVisibility() ActionMouseVisibilityE {
-	return *(*ActionMouseVisibilityE)(unsafe.Pointer(&u))
+func (u ActionU) MouseVisibility() ActionMouseVisibility {
+	return *(*ActionMouseVisibility)(unsafe.Pointer(&u))
 }
 
-func (u *ActionU) SetMouseOverLink(value ActionMouseOverLinkS) {
-	*(*ActionMouseOverLinkS)(unsafe.Pointer(u)) = value
+func (u *ActionU) SetMouseOverLink(value ActionMouseOverLink) {
+	*(*ActionMouseOverLink)(unsafe.Pointer(u)) = value
 }
 
-func (u ActionU) MouseOverLink() ActionMouseOverLinkS {
-	return *(*ActionMouseOverLinkS)(unsafe.Pointer(&u))
+func (u ActionU) MouseOverLink() ActionMouseOverLink {
+	return *(*ActionMouseOverLink)(unsafe.Pointer(&u))
 }
 
-func (u *ActionU) SetRendererHealth(value ActionRendererHealthE) {
-	*(*ActionRendererHealthE)(unsafe.Pointer(u)) = value
+func (u *ActionU) SetRendererHealth(value ActionRendererHealth) {
+	*(*ActionRendererHealth)(unsafe.Pointer(u)) = value
 }
 
-func (u ActionU) RendererHealth() ActionRendererHealthE {
-	return *(*ActionRendererHealthE)(unsafe.Pointer(&u))
+func (u ActionU) RendererHealth() ActionRendererHealth {
+	return *(*ActionRendererHealth)(unsafe.Pointer(&u))
 }
 
-func (u *ActionU) SetQuitTimer(value ActionQuitTimerE) {
-	*(*ActionQuitTimerE)(unsafe.Pointer(u)) = value
+func (u *ActionU) SetQuitTimer(value ActionQuitTimer) {
+	*(*ActionQuitTimer)(unsafe.Pointer(u)) = value
 }
 
-func (u ActionU) QuitTimer() ActionQuitTimerE {
-	return *(*ActionQuitTimerE)(unsafe.Pointer(&u))
+func (u ActionU) QuitTimer() ActionQuitTimer {
+	return *(*ActionQuitTimer)(unsafe.Pointer(&u))
 }
 
-func (u *ActionU) SetFloatWindow(value ActionFloatWindowE) {
-	*(*ActionFloatWindowE)(unsafe.Pointer(u)) = value
+func (u *ActionU) SetFloatWindow(value ActionFloatWindow) {
+	*(*ActionFloatWindow)(unsafe.Pointer(u)) = value
 }
 
-func (u ActionU) FloatWindow() ActionFloatWindowE {
-	return *(*ActionFloatWindowE)(unsafe.Pointer(&u))
+func (u ActionU) FloatWindow() ActionFloatWindow {
+	return *(*ActionFloatWindow)(unsafe.Pointer(&u))
 }
 
-func (u *ActionU) SetSecureInput(value ActionSecureInputE) {
-	*(*ActionSecureInputE)(unsafe.Pointer(u)) = value
+func (u *ActionU) SetSecureInput(value ActionSecureInput) {
+	*(*ActionSecureInput)(unsafe.Pointer(u)) = value
 }
 
-func (u ActionU) SecureInput() ActionSecureInputE {
-	return *(*ActionSecureInputE)(unsafe.Pointer(&u))
+func (u ActionU) SecureInput() ActionSecureInput {
+	return *(*ActionSecureInput)(unsafe.Pointer(&u))
 }
 
-func (u *ActionU) SetKeySequence(value ActionKeySequenceS) {
-	*(*ActionKeySequenceS)(unsafe.Pointer(u)) = value
+func (u *ActionU) SetKeySequence(value ActionKeySequence) {
+	*(*ActionKeySequence)(unsafe.Pointer(u)) = value
 }
 
-func (u ActionU) KeySequence() ActionKeySequenceS {
-	return *(*ActionKeySequenceS)(unsafe.Pointer(&u))
+func (u ActionU) KeySequence() ActionKeySequence {
+	return *(*ActionKeySequence)(unsafe.Pointer(&u))
 }
 
-func (u *ActionU) SetKeyTable(value ActionKeyTableS) {
-	*(*ActionKeyTableS)(unsafe.Pointer(u)) = value
+func (u *ActionU) SetKeyTable(value ActionKeyTable) {
+	*(*ActionKeyTable)(unsafe.Pointer(u)) = value
 }
 
-func (u ActionU) KeyTable() ActionKeyTableS {
-	return *(*ActionKeyTableS)(unsafe.Pointer(&u))
+func (u ActionU) KeyTable() ActionKeyTable {
+	return *(*ActionKeyTable)(unsafe.Pointer(&u))
 }
 
-func (u *ActionU) SetColorChange(value ActionColorChangeS) {
-	*(*ActionColorChangeS)(unsafe.Pointer(u)) = value
+func (u *ActionU) SetColorChange(value ActionColorChange) {
+	*(*ActionColorChange)(unsafe.Pointer(u)) = value
 }
 
-func (u ActionU) ColorChange() ActionColorChangeS {
-	return *(*ActionColorChangeS)(unsafe.Pointer(&u))
+func (u ActionU) ColorChange() ActionColorChange {
+	return *(*ActionColorChange)(unsafe.Pointer(&u))
 }
 
-func (u *ActionU) SetReloadConfig(value ActionReloadConfigS) {
-	*(*ActionReloadConfigS)(unsafe.Pointer(u)) = value
+func (u *ActionU) SetReloadConfig(value ActionReloadConfig) {
+	*(*ActionReloadConfig)(unsafe.Pointer(u)) = value
 }
 
-func (u ActionU) ReloadConfig() ActionReloadConfigS {
-	return *(*ActionReloadConfigS)(unsafe.Pointer(&u))
+func (u ActionU) ReloadConfig() ActionReloadConfig {
+	return *(*ActionReloadConfig)(unsafe.Pointer(&u))
 }
 
-func (u *ActionU) SetConfigChange(value ActionConfigChangeS) {
-	*(*ActionConfigChangeS)(unsafe.Pointer(u)) = value
+func (u *ActionU) SetConfigChange(value ActionConfigChange) {
+	*(*ActionConfigChange)(unsafe.Pointer(u)) = value
 }
 
-func (u ActionU) ConfigChange() ActionConfigChangeS {
-	return *(*ActionConfigChangeS)(unsafe.Pointer(&u))
+func (u ActionU) ConfigChange() ActionConfigChange {
+	return *(*ActionConfigChange)(unsafe.Pointer(&u))
 }
 
-func (u *ActionU) SetOpenURL(value ActionOpenURLS) {
-	*(*ActionOpenURLS)(unsafe.Pointer(u)) = value
+func (u *ActionU) SetOpenURL(value ActionOpenURL) {
+	*(*ActionOpenURL)(unsafe.Pointer(u)) = value
 }
 
-func (u ActionU) OpenURL() ActionOpenURLS {
-	return *(*ActionOpenURLS)(unsafe.Pointer(&u))
+func (u ActionU) OpenURL() ActionOpenURL {
+	return *(*ActionOpenURL)(unsafe.Pointer(&u))
 }
 
 func (u *ActionU) SetCloseTabMode(value ActionCloseTabMode) {
@@ -442,52 +442,52 @@ func (u ActionU) ChildExited() SurfaceMessageChildexited {
 	return *(*SurfaceMessageChildexited)(unsafe.Pointer(&u))
 }
 
-func (u *ActionU) SetProgressReport(value ActionProgressReportS) {
-	*(*ActionProgressReportS)(unsafe.Pointer(u)) = value
+func (u *ActionU) SetProgressReport(value ActionProgressReport) {
+	*(*ActionProgressReport)(unsafe.Pointer(u)) = value
 }
 
-func (u ActionU) ProgressReport() ActionProgressReportS {
-	return *(*ActionProgressReportS)(unsafe.Pointer(&u))
+func (u ActionU) ProgressReport() ActionProgressReport {
+	return *(*ActionProgressReport)(unsafe.Pointer(&u))
 }
 
-func (u *ActionU) SetCommandFinished(value ActionCommandFinishedS) {
-	*(*ActionCommandFinishedS)(unsafe.Pointer(u)) = value
+func (u *ActionU) SetCommandFinished(value ActionCommandFinished) {
+	*(*ActionCommandFinished)(unsafe.Pointer(u)) = value
 }
 
-func (u ActionU) CommandFinished() ActionCommandFinishedS {
-	return *(*ActionCommandFinishedS)(unsafe.Pointer(&u))
+func (u ActionU) CommandFinished() ActionCommandFinished {
+	return *(*ActionCommandFinished)(unsafe.Pointer(&u))
 }
 
-func (u *ActionU) SetStartSearch(value ActionStartSearchS) {
-	*(*ActionStartSearchS)(unsafe.Pointer(u)) = value
+func (u *ActionU) SetStartSearch(value ActionStartSearch) {
+	*(*ActionStartSearch)(unsafe.Pointer(u)) = value
 }
 
-func (u ActionU) StartSearch() ActionStartSearchS {
-	return *(*ActionStartSearchS)(unsafe.Pointer(&u))
+func (u ActionU) StartSearch() ActionStartSearch {
+	return *(*ActionStartSearch)(unsafe.Pointer(&u))
 }
 
-func (u *ActionU) SetSearchTotal(value ActionSearchTotalS) {
-	*(*ActionSearchTotalS)(unsafe.Pointer(u)) = value
+func (u *ActionU) SetSearchTotal(value ActionSearchTotal) {
+	*(*ActionSearchTotal)(unsafe.Pointer(u)) = value
 }
 
-func (u ActionU) SearchTotal() ActionSearchTotalS {
-	return *(*ActionSearchTotalS)(unsafe.Pointer(&u))
+func (u ActionU) SearchTotal() ActionSearchTotal {
+	return *(*ActionSearchTotal)(unsafe.Pointer(&u))
 }
 
-func (u *ActionU) SetSearchSelected(value ActionSearchSelectedS) {
-	*(*ActionSearchSelectedS)(unsafe.Pointer(u)) = value
+func (u *ActionU) SetSearchSelected(value ActionSearchSelected) {
+	*(*ActionSearchSelected)(unsafe.Pointer(u)) = value
 }
 
-func (u ActionU) SearchSelected() ActionSearchSelectedS {
-	return *(*ActionSearchSelectedS)(unsafe.Pointer(&u))
+func (u ActionU) SearchSelected() ActionSearchSelected {
+	return *(*ActionSearchSelected)(unsafe.Pointer(&u))
 }
 
-func (u *ActionU) SetReadonly(value ActionReadonlyE) {
-	*(*ActionReadonlyE)(unsafe.Pointer(u)) = value
+func (u *ActionU) SetReadonly(value ActionReadonly) {
+	*(*ActionReadonly)(unsafe.Pointer(u)) = value
 }
 
-func (u ActionU) Readonly() ActionReadonlyE {
-	return *(*ActionReadonlyE)(unsafe.Pointer(&u))
+func (u ActionU) Readonly() ActionReadonly {
+	return *(*ActionReadonly)(unsafe.Pointer(&u))
 }
 
 type AppHandle uintptr
@@ -518,7 +518,7 @@ type EnvVar struct {
 	Value *byte
 }
 
-type InfoS struct {
+type Info struct {
 	BuildMode  BuildMode
 	_          [4]byte
 	Version    *byte
@@ -527,7 +527,7 @@ type InfoS struct {
 
 type InputAction int32
 
-type InputKeyE int32
+type InputKey int32
 
 type InputKeyS struct {
 	Action             InputAction
@@ -553,12 +553,12 @@ type InputTriggerKey struct {
 	_ [4]byte
 }
 
-func (u *InputTriggerKey) SetPhysical(value InputKeyE) {
-	*(*InputKeyE)(unsafe.Pointer(u)) = value
+func (u *InputTriggerKey) SetPhysical(value InputKey) {
+	*(*InputKey)(unsafe.Pointer(u)) = value
 }
 
-func (u InputTriggerKey) Physical() InputKeyE {
-	return *(*InputKeyE)(unsafe.Pointer(&u))
+func (u InputTriggerKey) Physical() InputKey {
+	return *(*InputKey)(unsafe.Pointer(&u))
 }
 
 func (u *InputTriggerKey) SetUnicode(value uint32) {
@@ -609,13 +609,13 @@ func (u IPCTarget) Klass() *byte {
 	return *(**byte)(unsafe.Pointer(&u))
 }
 
-type PlatformE int32
+type Platform int32
 
-type PlatformIosS struct {
+type PlatformIOS struct {
 	Uiview unsafe.Pointer
 }
 
-type PlatformMacosS struct {
+type PlatformMacOS struct {
 	Nsview unsafe.Pointer
 }
 
@@ -624,20 +624,20 @@ type PlatformU struct {
 	_ [8]byte
 }
 
-func (u *PlatformU) SetMacos(value PlatformMacosS) {
-	*(*PlatformMacosS)(unsafe.Pointer(u)) = value
+func (u *PlatformU) SetMacOS(value PlatformMacOS) {
+	*(*PlatformMacOS)(unsafe.Pointer(u)) = value
 }
 
-func (u PlatformU) Macos() PlatformMacosS {
-	return *(*PlatformMacosS)(unsafe.Pointer(&u))
+func (u PlatformU) MacOS() PlatformMacOS {
+	return *(*PlatformMacOS)(unsafe.Pointer(&u))
 }
 
-func (u *PlatformU) SetIos(value PlatformIosS) {
-	*(*PlatformIosS)(unsafe.Pointer(u)) = value
+func (u *PlatformU) SetIOS(value PlatformIOS) {
+	*(*PlatformIOS)(unsafe.Pointer(u)) = value
 }
 
-func (u PlatformU) Ios() PlatformIosS {
-	return *(*PlatformIosS)(unsafe.Pointer(&u))
+func (u PlatformU) IOS() PlatformIOS {
+	return *(*PlatformIOS)(unsafe.Pointer(&u))
 }
 
 type PointCoord int32
@@ -711,7 +711,7 @@ type String struct {
 }
 
 type SurfaceConfig struct {
-	PlatformTag      PlatformE
+	PlatformTag      Platform
 	_                [4]byte
 	Platform         PlatformU
 	Userdata         unsafe.Pointer
@@ -736,7 +736,7 @@ type SurfaceMessageChildexited struct {
 	TimetimeMs uint64
 }
 
-type SurfaceSizeS struct {
+type SurfaceSize struct {
 	Columns      uint16
 	Rows         uint16
 	WidthPx      uint32
@@ -747,7 +747,7 @@ type SurfaceSizeS struct {
 
 type SurfaceHandle uintptr
 
-type TargetS struct {
+type Target struct {
 	Tag    TargetTag
 	_      [4]byte
 	Target TargetU
