@@ -502,7 +502,7 @@ func renderABI(model Model, names map[string]string, layouts map[string]map[stri
 	files := make(map[string][]byte)
 	arches := sortedArchitectures(layouts)
 	if !hasSplitForArch(model, split) {
-		data, test, err := renderABIFor(&model, names, layouts[arches[0]], output, "abi_gen.go", "abi_gen_test.go", "")
+		data, test, err := renderABIFor(&model, &model, names, layouts[arches[0]], output, "abi_gen.go", "abi_gen_test.go", "")
 		if err != nil {
 			return nil, err
 		}
@@ -511,7 +511,7 @@ func renderABI(model Model, names map[string]string, layouts map[string]map[stri
 		return files, nil
 	}
 	commonModel := modelWithoutSplit(model, split)
-	data, test, err := renderABIFor(&commonModel, names, layouts[arches[0]], output, "abi_gen.go", "abi_gen_test.go", "")
+	data, test, err := renderABIFor(&commonModel, &model, names, layouts[arches[0]], output, "abi_gen.go", "abi_gen_test.go", "")
 	if err != nil {
 		return nil, err
 	}
@@ -519,7 +519,7 @@ func renderABI(model Model, names map[string]string, layouts map[string]map[stri
 	files["abi_gen_test.go"] = test
 	for _, arch := range arches {
 		archModel := modelOnlySplit(model, split)
-		data, test, err := renderABIFor(&archModel, names, layouts[arch], output, "abi_gen_"+arch+".go", "abi_gen_test_"+arch+".go", arch)
+		data, test, err := renderABIFor(&archModel, &model, names, layouts[arch], output, "abi_gen_"+arch+".go", "abi_gen_test_"+arch+".go", arch)
 		if err != nil {
 			return nil, err
 		}
@@ -551,7 +551,7 @@ func modelOnlySplit(model Model, split map[string]bool) Model {
 	return copy
 }
 
-func renderABIFor(model *Model, names map[string]string, layouts map[string]RecordLayout, output Output, goName, testName, arch string) ([]byte, []byte, error) {
+func renderABIFor(model *Model, metadataModel *Model, names map[string]string, layouts map[string]RecordLayout, output Output, goName, testName, arch string) ([]byte, []byte, error) {
 	var body, tests strings.Builder
 	for _, typ := range model.Types {
 		if typ.Kind != TypeStruct && typ.Kind != TypeUnion {
@@ -571,6 +571,9 @@ func renderABIFor(model *Model, names map[string]string, layouts map[string]Reco
 	}
 	if body.Len() == 0 {
 		body.WriteString("// no record ABI metadata\n")
+	}
+	if arch == "" && metadataModel != nil {
+		body.WriteString(renderABIRecords(*metadataModel))
 	}
 	testFunc := "TestGeneratedABI"
 	if arch != "" {
@@ -613,6 +616,27 @@ func upperFirst(value string) string {
 	}
 	runeValue, size := utf8.DecodeRuneInString(value)
 	return string(unicode.ToUpper(runeValue)) + value[size:]
+}
+
+func renderABIRecords(model Model) string {
+	var body strings.Builder
+	body.WriteString("type abiField struct { name string; offset uintptr }\n")
+	body.WriteString("type abiRecord struct { name string; size uintptr; align uintptr; fields []abiField }\n\n")
+	body.WriteString("func abiRecords() []abiRecord {\n")
+	body.WriteString("\treturn []abiRecord{\n")
+	for _, typ := range model.Types {
+		if typ.Kind != TypeStruct && typ.Kind != TypeUnion {
+			continue
+		}
+		prefix := abiIdentifier(typ.CName)
+		body.WriteString("\t\t{name: " + strconv.Quote(typ.CName) + ", size: " + prefix + "Size, align: " + prefix + "Align, fields: []abiField{")
+		for _, field := range typ.Fields {
+			body.WriteString("{name: " + strconv.Quote(field.CName) + ", offset: " + prefix + "_" + abiIdentifier(field.CName) + "Offset}, ")
+		}
+		body.WriteString("}},\n")
+	}
+	body.WriteString("\t}\n}\n\n")
+	return body.String()
 }
 
 func renderCoverage(model Model, output Output) ([]byte, error) {
