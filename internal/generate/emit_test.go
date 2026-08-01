@@ -86,6 +86,76 @@ func TestArchBuildTagsLeadGeneratedFiles(t *testing.T) {
 	}
 }
 
+func TestEmitFunctions(t *testing.T) {
+	model := Model{
+		Types: []TypeDecl{
+			{CName: "ghostty_config_t", Kind: TypeAlias, Type: TypeRef{CName: "void", Pointers: 1}},
+			{CName: "ghostty_info_s", Kind: TypeStruct},
+		},
+		Functions: []FunctionDecl{
+			{CName: "ghostty_config_free", Result: TypeRef{CName: "void"}, Parameters: []Parameter{{Type: TypeRef{CName: "ghostty_config_t"}}}},
+			{CName: "ghostty_config_new", Result: TypeRef{CName: "ghostty_config_t"}},
+			{CName: "ghostty_info", Result: TypeRef{CName: "ghostty_info_s"}},
+			{CName: "ghostty_init", Result: TypeRef{CName: "int"}, Parameters: []Parameter{{Type: TypeRef{CName: "uintptr_t"}}, {Type: TypeRef{CName: "char", Pointers: 2}}}},
+		},
+	}
+	layouts := map[string]map[string]RecordLayout{
+		"amd64": {"ghostty_info_s": {CName: "ghostty_info_s", Size: 24, Align: 8}},
+	}
+	out := t.TempDir()
+	if err := EmitTypes(model, layouts, Output{Dir: out, Package: "ghostty", Upstream: Upstream{Commit: "0123456789abcdef0123456789abcdef01234567"}}); err != nil {
+		t.Fatal(err)
+	}
+	data, err := os.ReadFile(filepath.Join(out, "ghostty", "functions_gen.go"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	code := string(data)
+	for _, want := range []string{
+		"var Init func(uintptr, **byte) int32",
+		"var Info func() InfoS",
+		"var ConfigNew func() ConfigHandle",
+		"var ConfigFree func(ConfigHandle)",
+	} {
+		if !strings.Contains(code, want) {
+			t.Errorf("functions output missing %q:\\n%s", want, code)
+		}
+	}
+}
+
+func TestEmitRegistration(t *testing.T) {
+	model := Model{Functions: []FunctionDecl{
+		{CName: "ghostty_config_new", Result: TypeRef{CName: "void"}},
+		{CName: "ghostty_init", Result: TypeRef{CName: "void"}},
+	}}
+	out := t.TempDir()
+	if err := EmitTypes(model, map[string]map[string]RecordLayout{"amd64": {}}, Output{Dir: out, Package: "ghostty", Upstream: Upstream{Commit: "0123456789abcdef0123456789abcdef01234567"}}); err != nil {
+		t.Fatal(err)
+	}
+	data, err := os.ReadFile(filepath.Join(out, "ghostty", "register_gen.go"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	code := string(data)
+	firstSymbol := strings.Index(code, `"ghostty_config_new"`)
+	secondSymbol := strings.Index(code, `"ghostty_init"`)
+	if firstSymbol < 0 || secondSymbol < 0 || firstSymbol > secondSymbol {
+		t.Fatalf("symbols are not sorted: %s", code)
+	}
+	for _, want := range []string{
+		"addresses := make(map[string]uintptr, len(allSymbols))",
+		"return fmt.Errorf(\"resolve %s: %w\", symbol, err)",
+		"purego.RegisterFunc(&ConfigNew, addresses[\"ghostty_config_new\"])",
+	} {
+		if !strings.Contains(code, want) {
+			t.Errorf("registration output missing %q:\\n%s", want, code)
+		}
+	}
+	if strings.Index(code, "purego.RegisterFunc") < strings.Index(code, "for _, symbol := range allSymbols") {
+		t.Fatal("registration assigns functions before symbol preflight")
+	}
+}
+
 func TestEmitConstants(t *testing.T) {
 	header := fixtureHeader(t)
 	model, err := InspectHeader(context.Background(), "clang", header, filepath.Dir(header), LinuxTargets, nil)
