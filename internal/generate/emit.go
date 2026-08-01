@@ -502,16 +502,17 @@ func renderABI(model Model, names map[string]string, layouts map[string]map[stri
 	files := make(map[string][]byte)
 	arches := sortedArchitectures(layouts)
 	if !hasSplitForArch(model, split) {
-		data, test, err := renderABIFor(&model, &model, names, layouts[arches[0]], output, "abi_gen.go", "abi_gen_test.go", "")
+		data, test, err := renderABIFor(&model, names, layouts[arches[0]], output, "abi_gen.go", "abi_gen_test.go", "")
 		if err != nil {
 			return nil, err
 		}
 		files["abi_gen.go"] = data
 		files["abi_gen_test.go"] = test
+		files["abi_records_gen.go"] = renderABIRecords(model, output)
 		return files, nil
 	}
 	commonModel := modelWithoutSplit(model, split)
-	data, test, err := renderABIFor(&commonModel, &model, names, layouts[arches[0]], output, "abi_gen.go", "abi_gen_test.go", "")
+	data, test, err := renderABIFor(&commonModel, names, layouts[arches[0]], output, "abi_gen.go", "abi_gen_test.go", "")
 	if err != nil {
 		return nil, err
 	}
@@ -519,13 +520,14 @@ func renderABI(model Model, names map[string]string, layouts map[string]map[stri
 	files["abi_gen_test.go"] = test
 	for _, arch := range arches {
 		archModel := modelOnlySplit(model, split)
-		data, test, err := renderABIFor(&archModel, &model, names, layouts[arch], output, "abi_gen_"+arch+".go", "abi_gen_test_"+arch+".go", arch)
+		data, test, err := renderABIFor(&archModel, names, layouts[arch], output, "abi_gen_"+arch+".go", "abi_gen_test_"+arch+".go", arch)
 		if err != nil {
 			return nil, err
 		}
 		files["abi_gen_"+arch+".go"] = data
 		files["abi_gen_test_"+arch+".go"] = test
 	}
+	files["abi_records_gen.go"] = renderABIRecords(model, output)
 	return files, nil
 }
 
@@ -551,7 +553,7 @@ func modelOnlySplit(model Model, split map[string]bool) Model {
 	return copy
 }
 
-func renderABIFor(model *Model, metadataModel *Model, names map[string]string, layouts map[string]RecordLayout, output Output, goName, testName, arch string) ([]byte, []byte, error) {
+func renderABIFor(model *Model, names map[string]string, layouts map[string]RecordLayout, output Output, goName, testName, arch string) ([]byte, []byte, error) {
 	var body, tests strings.Builder
 	for _, typ := range model.Types {
 		if typ.Kind != TypeStruct && typ.Kind != TypeUnion {
@@ -571,9 +573,6 @@ func renderABIFor(model *Model, metadataModel *Model, names map[string]string, l
 	}
 	if body.Len() == 0 {
 		body.WriteString("// no record ABI metadata\n")
-	}
-	if arch == "" && metadataModel != nil {
-		body.WriteString(renderABIRecords(*metadataModel))
 	}
 	testFunc := "TestGeneratedABI"
 	if arch != "" {
@@ -618,7 +617,7 @@ func upperFirst(value string) string {
 	return string(unicode.ToUpper(runeValue)) + value[size:]
 }
 
-func renderABIRecords(model Model) string {
+func renderABIRecords(model Model, output Output) []byte {
 	var body strings.Builder
 	body.WriteString("type abiField struct { name string; offset uintptr }\n")
 	body.WriteString("type abiRecord struct { name string; size uintptr; align uintptr; fields []abiField }\n\n")
@@ -636,7 +635,7 @@ func renderABIRecords(model Model) string {
 		body.WriteString("}},\n")
 	}
 	body.WriteString("\t}\n}\n\n")
-	return body.String()
+	return goFile(output, "abi_records_gen.go", body.String(), false, "integration")
 }
 
 func renderCoverage(model Model, output Output) ([]byte, error) {
@@ -753,7 +752,7 @@ func writeGeneratedFiles(dir string, files map[string][]byte) error {
 	}
 	for _, stale := range []string{
 		"types_gen.go", "types_gen_amd64.go", "types_gen_arm64.go",
-		"constants_gen.go", "abi_gen.go", "abi_gen_amd64.go", "abi_gen_arm64.go",
+		"constants_gen.go", "abi_gen.go", "abi_gen_amd64.go", "abi_gen_arm64.go", "abi_records_gen.go",
 		"abi_gen_test.go", "abi_gen_test_amd64.go", "abi_gen_test_arm64.go", "coverage_gen.json",
 		"functions_gen.go", "register_gen.go",
 	} {
