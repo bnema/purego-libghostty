@@ -204,7 +204,6 @@ func recordDeclaration(decl TypeDecl, record *astNode, header string) (TypeDecl,
 		if nested != nil && strings.Contains(child.Type.QualType, "(unnamed") {
 			fieldType.CName = decl.CName + "." + child.Name
 			// Nested records are retained as a deterministic type declaration by its parent field path.
-			_ = nested
 		}
 		decl.Fields = append(decl.Fields, Field{CName: child.Name, Source: sourcePath(child, header), Type: fieldType})
 		refs = append(refs, refsInType(child.Type.QualType)...)
@@ -367,11 +366,15 @@ func auditPreprocessor(header string) error {
 	for _, line := range strings.Split(string(data), "\n") {
 		trimmed := strings.TrimSpace(line)
 		switch {
-		case strings.HasPrefix(trimmed, "#if "), strings.HasPrefix(trimmed, "#ifdef "), strings.HasPrefix(trimmed, "#ifndef "):
-			conditions = append(conditions, strings.TrimSpace(strings.TrimPrefix(strings.TrimPrefix(strings.TrimPrefix(trimmed, "#if"), "def"), "ndef")))
+		case strings.HasPrefix(trimmed, "#if "):
+			conditions = append(conditions, normalizePreprocessorCondition(strings.TrimPrefix(trimmed, "#if")))
+		case strings.HasPrefix(trimmed, "#ifdef "):
+			conditions = append(conditions, strings.TrimSpace(strings.TrimPrefix(trimmed, "#ifdef")))
+		case strings.HasPrefix(trimmed, "#ifndef "):
+			conditions = append(conditions, strings.TrimSpace(strings.TrimPrefix(trimmed, "#ifndef")))
 		case strings.HasPrefix(trimmed, "#elif "):
 			if len(conditions) > 0 {
-				conditions[len(conditions)-1] = strings.TrimSpace(strings.TrimPrefix(trimmed, "#elif"))
+				conditions[len(conditions)-1] = normalizePreprocessorCondition(strings.TrimPrefix(trimmed, "#elif"))
 			}
 		case strings.HasPrefix(trimmed, "#else"):
 			if len(conditions) > 0 {
@@ -391,4 +394,12 @@ func auditPreprocessor(header string) error {
 		}
 	}
 	return nil
+}
+
+func normalizePreprocessorCondition(condition string) string {
+	condition = strings.TrimSpace(condition)
+	if strings.HasPrefix(condition, "defined(") && strings.HasSuffix(condition, ")") {
+		return strings.TrimSpace(strings.TrimSuffix(strings.TrimPrefix(condition, "defined("), ")"))
+	}
+	return condition
 }
