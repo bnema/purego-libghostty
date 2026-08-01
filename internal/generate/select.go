@@ -110,7 +110,13 @@ func declaration(node *astNode, nodes map[string]*astNode, header string) (TypeD
 	}
 	if target == nil {
 		if strings.Contains(node.Type.QualType, "(*)") {
+			result, parameters, ok := callbackSignature(node)
+			if !ok {
+				return TypeDecl{}, nil, &UnsupportedDeclarationError{CName: node.Name}
+			}
 			decl.Kind = TypeCallback
+			decl.Result = &result
+			decl.Parameters = parameters
 		}
 		return decl, refsInType(node.Type.QualType), nil
 	}
@@ -221,6 +227,33 @@ func recordDeclaration(decl TypeDecl, record *astNode, header string) (TypeDecl,
 		}
 	}
 	return decl, refs, nil
+}
+
+func callbackSignature(node *astNode) (TypeRef, []Parameter, bool) {
+	var prototype *astNode
+	var find func(*astNode)
+	find = func(current *astNode) {
+		if prototype != nil {
+			return
+		}
+		if current.Kind == "FunctionProtoType" {
+			prototype = current
+			return
+		}
+		for _, child := range current.Inner {
+			find(child)
+		}
+	}
+	find(node)
+	if prototype == nil || len(prototype.Inner) == 0 {
+		return TypeRef{}, nil, false
+	}
+	result := typeRef(prototype.Inner[0].Type.QualType)
+	parameters := make([]Parameter, 0, len(prototype.Inner)-1)
+	for _, parameter := range prototype.Inner[1:] {
+		parameters = append(parameters, Parameter{Type: typeRef(parameter.Type.QualType)})
+	}
+	return result, parameters, true
 }
 
 func refsInType(qual string) []string { return ghosttyName.FindAllString(qual, -1) }
