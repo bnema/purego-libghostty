@@ -47,7 +47,7 @@ func TestEmitTypes(t *testing.T) {
 	if err := EmitTypes(model, layouts, Output{Dir: second, Package: "ghostty", Upstream: Upstream{Commit: "0123456789abcdef0123456789abcdef01234567"}}); err != nil {
 		t.Fatal(err)
 	}
-	for _, name := range []string{"types_gen.go", "constants_gen.go", "abi_gen.go", "abi_gen_test.go", "coverage_gen.json"} {
+	for _, name := range []string{"types_gen.go", "constants_gen.go", "abi_gen.go", "abi_records_gen.go", "abi_gen_test.go", "coverage_gen.json"} {
 		firstData, err := os.ReadFile(filepath.Join(out, "ghostty", name))
 		if err != nil {
 			t.Fatal(err)
@@ -60,18 +60,28 @@ func TestEmitTypes(t *testing.T) {
 			t.Fatalf("%s is not deterministic", name)
 		}
 	}
-	abiData, err := os.ReadFile(filepath.Join(out, "ghostty", "abi_gen.go"))
+	normalABIData, err := os.ReadFile(filepath.Join(out, "ghostty", "abi_gen.go"))
 	if err != nil {
 		t.Fatal(err)
 	}
+	normalABICode := string(normalABIData)
+	if strings.Contains(normalABICode, "type abiRecord struct") || strings.Contains(normalABICode, "func abiRecords() []abiRecord") {
+		t.Fatalf("ABI metadata leaked into normal output:\n%s", normalABICode)
+	}
+	abiData, err := os.ReadFile(filepath.Join(out, "ghostty", "abi_records_gen.go"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	abiCode := string(abiData)
 	for _, want := range []string{
+		"//go:build integration",
 		"type abiRecord struct",
 		"func abiRecords() []abiRecord",
 		"name: \"ghostty_fixture_s\"",
 		"name: \"enabled\"",
 	} {
-		if !strings.Contains(string(abiData), want) {
-			t.Errorf("ABI metadata missing %q:\n%s", want, abiData)
+		if !strings.Contains(abiCode, want) {
+			t.Errorf("ABI metadata missing %q:\n%s", want, abiCode)
 		}
 	}
 }
@@ -86,7 +96,7 @@ func TestArchBuildTagsLeadGeneratedFiles(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	data, test, err := renderABIFor(&model, nil, names, layouts, output, "abi_gen_arm64.go", "abi_gen_test_arm64.go", "arm64")
+	data, test, err := renderABIFor(&model, names, layouts, output, "abi_gen_arm64.go", "abi_gen_test_arm64.go", "arm64")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -96,6 +106,44 @@ func TestArchBuildTagsLeadGeneratedFiles(t *testing.T) {
 		pkg := strings.Index(text, "package ghostty")
 		if tag < 0 || pkg < 0 || tag > pkg {
 			t.Fatalf("%s build tag position = %d, package position = %d\n%s", name, tag, pkg, text)
+		}
+	}
+}
+
+func TestABIRecordsUseFullModelForSplitArchitectures(t *testing.T) {
+	model := Model{Types: []TypeDecl{
+		{CName: "ghostty_common_s", Kind: TypeStruct},
+		{CName: "ghostty_split_s", Kind: TypeStruct},
+	}}
+	names := map[string]string{"ghostty_common_s": "CommonS", "ghostty_split_s": "SplitS"}
+	layouts := map[string]map[string]RecordLayout{
+		"amd64": {
+			"ghostty_common_s": {CName: "ghostty_common_s", Size: 4, Align: 4},
+			"ghostty_split_s":  {CName: "ghostty_split_s", Size: 8, Align: 8},
+		},
+		"arm64": {
+			"ghostty_common_s": {CName: "ghostty_common_s", Size: 4, Align: 4},
+			"ghostty_split_s":  {CName: "ghostty_split_s", Size: 16, Align: 8},
+		},
+	}
+	files, err := renderABI(model, names, layouts, map[string]bool{"ghostty_common_s": false, "ghostty_split_s": true}, Output{Package: "ghostty", Upstream: Upstream{Commit: "0123456789abcdef0123456789abcdef01234567"}})
+	if err != nil {
+		t.Fatal(err)
+	}
+	normal := string(files["abi_gen.go"])
+	if !strings.Contains(normal, "abiCommon_sSize = uintptr(4)") || strings.Contains(normal, "abiSplit_sSize") {
+		t.Fatalf("normal ABI constants =\n%s", normal)
+	}
+	for arch, size := range map[string]string{"amd64": "8", "arm64": "16"} {
+		archCode := string(files["abi_gen_"+arch+".go"])
+		if !strings.Contains(archCode, "abiSplit_sSize = uintptr("+size+")") {
+			t.Fatalf("%s ABI constants missing split record:\n%s", arch, archCode)
+		}
+	}
+	metadata := string(files["abi_records_gen.go"])
+	for _, want := range []string{"//go:build integration", "ghostty_common_s", "ghostty_split_s", "abiSplit_sSize"} {
+		if !strings.Contains(metadata, want) {
+			t.Errorf("split ABI metadata missing %q:\n%s", want, metadata)
 		}
 	}
 }
