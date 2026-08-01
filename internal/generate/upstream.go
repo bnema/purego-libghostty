@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/exec"
 	"strings"
+	"time"
 )
 
 type Upstream struct {
@@ -22,11 +23,11 @@ type ResolvedSource struct {
 func LoadUpstream(path string) (Upstream, error) {
 	data, err := os.ReadFile(path)
 	if err != nil {
-		return Upstream{}, err
+		return Upstream{}, fmt.Errorf("read upstream config %q: %w", path, err)
 	}
 	var upstream Upstream
 	if err := json.Unmarshal(data, &upstream); err != nil {
-		return Upstream{}, err
+		return Upstream{}, fmt.Errorf("parse upstream config %q: %w", path, err)
 	}
 	if strings.TrimSpace(upstream.Repository) == "" {
 		return Upstream{}, fmt.Errorf("ghostty upstream repository is empty")
@@ -40,8 +41,18 @@ func LoadUpstream(path string) (Upstream, error) {
 func ResolveSource(ctx context.Context, upstream Upstream, override string) (ResolvedSource, error) {
 	if override != "" {
 		head, err := gitOutput(ctx, override, "rev-parse", "HEAD")
-		if err != nil || strings.TrimSpace(head) != upstream.Commit {
-			return ResolvedSource{}, fmt.Errorf("ghostty source override must be commit %s", upstream.Commit)
+		if err != nil {
+			return ResolvedSource{}, fmt.Errorf("ghostty source override rev-parse HEAD: %w", err)
+		}
+		if got := strings.TrimSpace(head); got != upstream.Commit {
+			return ResolvedSource{}, fmt.Errorf("ghostty source override must be commit %s, found %s", upstream.Commit, got)
+		}
+		status, err := gitOutput(ctx, override, "status", "--porcelain")
+		if err != nil {
+			return ResolvedSource{}, fmt.Errorf("ghostty source override status: %w", err)
+		}
+		if strings.TrimSpace(status) != "" {
+			return ResolvedSource{}, fmt.Errorf("ghostty source override has uncommitted changes")
 		}
 		return ResolvedSource{Dir: override}, nil
 	}
@@ -57,7 +68,14 @@ func ResolveSource(ctx context.Context, upstream Upstream, override string) (Res
 		{"fetch", "--depth=1", "origin", upstream.Commit},
 		{"checkout", "--detach", "FETCH_HEAD"},
 	} {
-		if _, err := gitOutput(ctx, dir, args...); err != nil {
+		commandCtx := ctx
+		cancel := func() {}
+		if args[0] == "fetch" {
+			commandCtx, cancel = context.WithTimeout(ctx, 5*time.Minute)
+		}
+		_, err := gitOutput(commandCtx, dir, args...)
+		cancel()
+		if err != nil {
 			cleanup()
 			return ResolvedSource{}, err
 		}
@@ -76,7 +94,7 @@ func isCommit(commit string) bool {
 		return false
 	}
 	for _, r := range commit {
-		if !(r >= '0' && r <= '9' || r >= 'a' && r <= 'f') {
+		if !(r >= '0' && r <= '9') && !(r >= 'a' && r <= 'f') {
 			return false
 		}
 	}
