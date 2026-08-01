@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"net/url"
 	"os"
 	"os/exec"
 	"strings"
@@ -31,6 +32,9 @@ func LoadUpstream(path string) (Upstream, error) {
 	}
 	if strings.TrimSpace(upstream.Repository) == "" {
 		return Upstream{}, fmt.Errorf("ghostty upstream repository is empty")
+	}
+	if !isHTTPSRepository(upstream.Repository) {
+		return Upstream{}, fmt.Errorf("ghostty upstream repository must be an https URL")
 	}
 	if !isCommit(upstream.Commit) {
 		return Upstream{}, fmt.Errorf("ghostty upstream commit must be 40 lowercase hexadecimal characters")
@@ -87,6 +91,14 @@ func (s ResolvedSource) Close() {
 	if s.cleanup != nil {
 		s.cleanup()
 	}
+}
+
+func isHTTPSRepository(repository string) bool {
+	if repository == "" || repository != strings.TrimSpace(repository) || strings.HasPrefix(repository, "-") || strings.HasPrefix(repository, "ext::") {
+		return false
+	}
+	repositoryURL, err := url.Parse(repository)
+	return err == nil && repositoryURL.Scheme == "https" && repositoryURL.Host != "" && repositoryURL.User == nil
 }
 
 func isCommit(commit string) bool {

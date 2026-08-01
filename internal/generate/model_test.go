@@ -21,10 +21,12 @@ func TestInspectHeader(t *testing.T) {
 	if !hasFunction(model, "ghostty_fixture") || hasFunction(model, "ghostty_apple_only") {
 		t.Fatalf("functions = %#v", model.Functions)
 	}
-	if !hasExclusion(model, "ghostty_apple_only", "platform-excluded: __APPLE__") {
-		t.Fatalf("exclusions = %#v", model.Exclusions)
+	for _, name := range []string{"ghostty_apple_only", "ghostty_defined_apple_only", "ghostty_defined_space_apple_only"} {
+		if !hasExclusion(model, name, "platform-excluded: __APPLE__") {
+			t.Fatalf("missing exclusion for %s: %#v", name, model.Exclusions)
+		}
 	}
-	for _, name := range []string{"ghostty_app_t", "ghostty_mode_e", "ghostty_value_u", "ghostty_value_u.named", "ghostty_fixture_s", "ghostty_callback_t"} {
+	for _, name := range []string{"ghostty_app_t", "ghostty_mode_e", "ghostty_nested_only_e", "ghostty_value_u", "ghostty_value_u.named", "ghostty_fixture_s", "ghostty_callback_t"} {
 		if !hasType(model, name) {
 			t.Errorf("missing reachable type %q", name)
 		}
@@ -108,13 +110,25 @@ func TestSelectPublic(t *testing.T) {
 	}
 }
 
-func TestAuditPreprocessorNormalizesDefined(t *testing.T) {
-	header := filepath.Join(t.TempDir(), "defined.h")
-	if err := os.WriteFile(header, []byte("#if defined(__APPLE__)\nGHOSTTY_API void ghostty_apple_only(void);\n#endif\n"), 0o600); err != nil {
-		t.Fatal(err)
+func TestAuditPreprocessorDefinedForms(t *testing.T) {
+	cases := []string{
+		"#if defined(__APPLE__)",
+		"#if defined __APPLE__",
+		"#ifdef __APPLE__",
+		"#ifndef __APPLE__",
+		"#if SOME_OTHER_PLATFORM\n#elif defined(__APPLE__)",
 	}
-	if err := auditPreprocessor(header); err != nil {
-		t.Fatalf("auditPreprocessor() = %v", err)
+	for _, directive := range cases {
+		t.Run(directive, func(t *testing.T) {
+			header := filepath.Join(t.TempDir(), "header.h")
+			data := directive + "\nGHOSTTY_API void ghostty_condition(void);\n#endif\n"
+			if err := os.WriteFile(header, []byte(data), 0o600); err != nil {
+				t.Fatal(err)
+			}
+			if err := auditPreprocessor(header); err != nil {
+				t.Fatalf("auditPreprocessor() = %v", err)
+			}
+		})
 	}
 }
 

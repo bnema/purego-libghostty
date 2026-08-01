@@ -91,6 +91,21 @@ func TestAddRecordNameUsesFallbackLocationLine(t *testing.T) {
 	}
 }
 
+func TestRecordLayoutMatchingUsesCompleteName(t *testing.T) {
+	if !recordLayoutMatches("struct ghostty_value_s", "ghostty_value_s") {
+		t.Fatal("exact record name did not match")
+	}
+	for _, label := range []string{
+		"struct ghostty_value_suffix_s",
+		"union ghostty_value_s_extra",
+		"struct prefix_ghostty_value_s",
+	} {
+		if recordLayoutMatches(label, "ghostty_value_s") {
+			t.Fatalf("record label %q matched a substring", label)
+		}
+	}
+}
+
 func TestGoNames(t *testing.T) {
 	model := Model{
 		Types: []TypeDecl{
