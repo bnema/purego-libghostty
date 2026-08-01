@@ -43,6 +43,8 @@ type TypeDecl struct {
 	Kind       TypeKind    `json:"kind"`
 	Source     string      `json:"source"`
 	Type       TypeRef     `json:"type,omitempty"`
+	Result     *TypeRef    `json:"result,omitempty"`
+	Parameters []Parameter `json:"parameters,omitempty"`
 	Fields     []Field     `json:"fields,omitempty"`
 	EnumValues []EnumValue `json:"enum_values,omitempty"`
 }

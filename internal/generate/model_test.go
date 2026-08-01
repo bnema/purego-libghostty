@@ -47,6 +47,28 @@ func TestInspectHeader(t *testing.T) {
 	}
 }
 
+func TestInspectHeaderCallbackSignatures(t *testing.T) {
+	header := fixtureHeader(t)
+	model, err := InspectHeader(context.Background(), "clang", header, filepath.Dir(header), LinuxTargets, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	assertCallbackSignature(t, model, "ghostty_callback_t", filepath.Clean(header), TypeRef{CName: "_Bool"}, []TypeRef{{CName: "ghostty_app_t"}, {CName: "ghostty_fixture_s"}})
+}
+
+func TestInspectHeaderRealCallbackSignatures(t *testing.T) {
+	source := os.Getenv("GHOSTTY_SOURCE_DIR")
+	if source == "" {
+		t.Skip("GHOSTTY_SOURCE_DIR is not set")
+	}
+	header := filepath.Join(source, "include", "ghostty.h")
+	model, err := InspectHeader(context.Background(), "clang", header, filepath.Dir(header), LinuxTargets, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	assertCallbackSignature(t, model, "ghostty_runtime_wakeup_cb", filepath.Clean(header), TypeRef{CName: "void"}, []TypeRef{{CName: "void", Pointers: 1}})
+}
+
 func TestSelectPublic(t *testing.T) {
 	header := fixtureHeader(t)
 	model, err := InspectHeader(context.Background(), "clang", header, filepath.Dir(header), LinuxTargets, []string{"ghostty_override_only_u"})
@@ -108,6 +130,33 @@ func fixtureHeader(t *testing.T) string {
 	t.Helper()
 	return filepath.Join("testdata", "embedding_fixture.h")
 }
+func assertCallbackSignature(t *testing.T, model Model, name, source string, result TypeRef, parameters []TypeRef) {
+	t.Helper()
+	for _, typ := range model.Types {
+		if typ.CName != name {
+			continue
+		}
+		if typ.Kind != TypeCallback {
+			t.Fatalf("%s kind = %q, want callback", name, typ.Kind)
+		}
+		if typ.Source != source {
+			t.Fatalf("%s source = %q, want %q", name, typ.Source, source)
+		}
+		if typ.Result == nil || !reflect.DeepEqual(*typ.Result, result) {
+			t.Fatalf("%s result = %#v, want %#v", name, typ.Result, result)
+		}
+		got := make([]TypeRef, len(typ.Parameters))
+		for i, parameter := range typ.Parameters {
+			got[i] = parameter.Type
+		}
+		if !reflect.DeepEqual(got, parameters) {
+			t.Fatalf("%s parameters = %#v, want %#v", name, got, parameters)
+		}
+		return
+	}
+	t.Fatalf("missing callback %q", name)
+}
+
 func hasFunction(m Model, name string) bool {
 	for _, d := range m.Functions {
 		if d.CName == name {
