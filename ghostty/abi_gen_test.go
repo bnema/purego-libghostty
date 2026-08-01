@@ -9,103 +9,103 @@ import (
 )
 
 func TestGeneratedABI(t *testing.T) {
-	if got, want := unsafe.Sizeof(ActionCellSizeS{}), abiAction_cell_size_sSize; got != want {
+	if got, want := unsafe.Sizeof(ActionCellSize{}), abiAction_cell_size_sSize; got != want {
 		t.Errorf("ghostty_action_cell_size_s size = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Alignof(ActionCellSizeS{}), abiAction_cell_size_sAlign; got != want {
+	if got, want := unsafe.Alignof(ActionCellSize{}), abiAction_cell_size_sAlign; got != want {
 		t.Errorf("ghostty_action_cell_size_s align = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Offsetof(ActionCellSizeS{}.Width), abiAction_cell_size_s_abiWidthOffset; got != want {
+	if got, want := unsafe.Offsetof(ActionCellSize{}.Width), abiAction_cell_size_s_abiWidthOffset; got != want {
 		t.Errorf("ghostty_action_cell_size_s.width offset = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Offsetof(ActionCellSizeS{}.Height), abiAction_cell_size_s_abiHeightOffset; got != want {
+	if got, want := unsafe.Offsetof(ActionCellSize{}.Height), abiAction_cell_size_s_abiHeightOffset; got != want {
 		t.Errorf("ghostty_action_cell_size_s.height offset = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Sizeof(ActionColorChangeS{}), abiAction_color_change_sSize; got != want {
+	if got, want := unsafe.Sizeof(ActionColorChange{}), abiAction_color_change_sSize; got != want {
 		t.Errorf("ghostty_action_color_change_s size = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Alignof(ActionColorChangeS{}), abiAction_color_change_sAlign; got != want {
+	if got, want := unsafe.Alignof(ActionColorChange{}), abiAction_color_change_sAlign; got != want {
 		t.Errorf("ghostty_action_color_change_s align = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Offsetof(ActionColorChangeS{}.Kind), abiAction_color_change_s_abiKindOffset; got != want {
+	if got, want := unsafe.Offsetof(ActionColorChange{}.Kind), abiAction_color_change_s_abiKindOffset; got != want {
 		t.Errorf("ghostty_action_color_change_s.kind offset = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Offsetof(ActionColorChangeS{}.R), abiAction_color_change_s_abiROffset; got != want {
+	if got, want := unsafe.Offsetof(ActionColorChange{}.R), abiAction_color_change_s_abiROffset; got != want {
 		t.Errorf("ghostty_action_color_change_s.r offset = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Offsetof(ActionColorChangeS{}.G), abiAction_color_change_s_abiGOffset; got != want {
+	if got, want := unsafe.Offsetof(ActionColorChange{}.G), abiAction_color_change_s_abiGOffset; got != want {
 		t.Errorf("ghostty_action_color_change_s.g offset = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Offsetof(ActionColorChangeS{}.B), abiAction_color_change_s_abiBOffset; got != want {
+	if got, want := unsafe.Offsetof(ActionColorChange{}.B), abiAction_color_change_s_abiBOffset; got != want {
 		t.Errorf("ghostty_action_color_change_s.b offset = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Sizeof(ActionCommandFinishedS{}), abiAction_command_finished_sSize; got != want {
+	if got, want := unsafe.Sizeof(ActionCommandFinished{}), abiAction_command_finished_sSize; got != want {
 		t.Errorf("ghostty_action_command_finished_s size = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Alignof(ActionCommandFinishedS{}), abiAction_command_finished_sAlign; got != want {
+	if got, want := unsafe.Alignof(ActionCommandFinished{}), abiAction_command_finished_sAlign; got != want {
 		t.Errorf("ghostty_action_command_finished_s align = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Offsetof(ActionCommandFinishedS{}.ExitCode), abiAction_command_finished_s_abiExit_codeOffset; got != want {
+	if got, want := unsafe.Offsetof(ActionCommandFinished{}.ExitCode), abiAction_command_finished_s_abiExit_codeOffset; got != want {
 		t.Errorf("ghostty_action_command_finished_s.exit_code offset = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Offsetof(ActionCommandFinishedS{}.Duration), abiAction_command_finished_s_abiDurationOffset; got != want {
+	if got, want := unsafe.Offsetof(ActionCommandFinished{}.Duration), abiAction_command_finished_s_abiDurationOffset; got != want {
 		t.Errorf("ghostty_action_command_finished_s.duration offset = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Sizeof(ActionConfigChangeS{}), abiAction_config_change_sSize; got != want {
+	if got, want := unsafe.Sizeof(ActionConfigChange{}), abiAction_config_change_sSize; got != want {
 		t.Errorf("ghostty_action_config_change_s size = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Alignof(ActionConfigChangeS{}), abiAction_config_change_sAlign; got != want {
+	if got, want := unsafe.Alignof(ActionConfigChange{}), abiAction_config_change_sAlign; got != want {
 		t.Errorf("ghostty_action_config_change_s align = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Offsetof(ActionConfigChangeS{}.Config), abiAction_config_change_s_abiConfigOffset; got != want {
+	if got, want := unsafe.Offsetof(ActionConfigChange{}.Config), abiAction_config_change_s_abiConfigOffset; got != want {
 		t.Errorf("ghostty_action_config_change_s.config offset = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Sizeof(ActionDesktopNotificationS{}), abiAction_desktop_notification_sSize; got != want {
+	if got, want := unsafe.Sizeof(ActionDesktopNotification{}), abiAction_desktop_notification_sSize; got != want {
 		t.Errorf("ghostty_action_desktop_notification_s size = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Alignof(ActionDesktopNotificationS{}), abiAction_desktop_notification_sAlign; got != want {
+	if got, want := unsafe.Alignof(ActionDesktopNotification{}), abiAction_desktop_notification_sAlign; got != want {
 		t.Errorf("ghostty_action_desktop_notification_s align = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Offsetof(ActionDesktopNotificationS{}.Title), abiAction_desktop_notification_s_abiTitleOffset; got != want {
+	if got, want := unsafe.Offsetof(ActionDesktopNotification{}.Title), abiAction_desktop_notification_s_abiTitleOffset; got != want {
 		t.Errorf("ghostty_action_desktop_notification_s.title offset = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Offsetof(ActionDesktopNotificationS{}.Body), abiAction_desktop_notification_s_abiBodyOffset; got != want {
+	if got, want := unsafe.Offsetof(ActionDesktopNotification{}.Body), abiAction_desktop_notification_s_abiBodyOffset; got != want {
 		t.Errorf("ghostty_action_desktop_notification_s.body offset = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Sizeof(ActionInitialSizeS{}), abiAction_initial_size_sSize; got != want {
+	if got, want := unsafe.Sizeof(ActionInitialSize{}), abiAction_initial_size_sSize; got != want {
 		t.Errorf("ghostty_action_initial_size_s size = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Alignof(ActionInitialSizeS{}), abiAction_initial_size_sAlign; got != want {
+	if got, want := unsafe.Alignof(ActionInitialSize{}), abiAction_initial_size_sAlign; got != want {
 		t.Errorf("ghostty_action_initial_size_s align = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Offsetof(ActionInitialSizeS{}.Width), abiAction_initial_size_s_abiWidthOffset; got != want {
+	if got, want := unsafe.Offsetof(ActionInitialSize{}.Width), abiAction_initial_size_s_abiWidthOffset; got != want {
 		t.Errorf("ghostty_action_initial_size_s.width offset = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Offsetof(ActionInitialSizeS{}.Height), abiAction_initial_size_s_abiHeightOffset; got != want {
+	if got, want := unsafe.Offsetof(ActionInitialSize{}.Height), abiAction_initial_size_s_abiHeightOffset; got != want {
 		t.Errorf("ghostty_action_initial_size_s.height offset = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Sizeof(ActionKeySequenceS{}), abiAction_key_sequence_sSize; got != want {
+	if got, want := unsafe.Sizeof(ActionKeySequence{}), abiAction_key_sequence_sSize; got != want {
 		t.Errorf("ghostty_action_key_sequence_s size = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Alignof(ActionKeySequenceS{}), abiAction_key_sequence_sAlign; got != want {
+	if got, want := unsafe.Alignof(ActionKeySequence{}), abiAction_key_sequence_sAlign; got != want {
 		t.Errorf("ghostty_action_key_sequence_s align = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Offsetof(ActionKeySequenceS{}.Active), abiAction_key_sequence_s_abiActiveOffset; got != want {
+	if got, want := unsafe.Offsetof(ActionKeySequence{}.Active), abiAction_key_sequence_s_abiActiveOffset; got != want {
 		t.Errorf("ghostty_action_key_sequence_s.active offset = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Offsetof(ActionKeySequenceS{}.Trigger), abiAction_key_sequence_s_abiTriggerOffset; got != want {
+	if got, want := unsafe.Offsetof(ActionKeySequence{}.Trigger), abiAction_key_sequence_s_abiTriggerOffset; got != want {
 		t.Errorf("ghostty_action_key_sequence_s.trigger offset = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Sizeof(ActionKeyTableS{}), abiAction_key_table_sSize; got != want {
+	if got, want := unsafe.Sizeof(ActionKeyTable{}), abiAction_key_table_sSize; got != want {
 		t.Errorf("ghostty_action_key_table_s size = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Alignof(ActionKeyTableS{}), abiAction_key_table_sAlign; got != want {
+	if got, want := unsafe.Alignof(ActionKeyTable{}), abiAction_key_table_sAlign; got != want {
 		t.Errorf("ghostty_action_key_table_s align = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Offsetof(ActionKeyTableS{}.Tag), abiAction_key_table_s_abiTagOffset; got != want {
+	if got, want := unsafe.Offsetof(ActionKeyTable{}.Tag), abiAction_key_table_s_abiTagOffset; got != want {
 		t.Errorf("ghostty_action_key_table_s.tag offset = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Offsetof(ActionKeyTableS{}.Value), abiAction_key_table_s_abiValueOffset; got != want {
+	if got, want := unsafe.Offsetof(ActionKeyTable{}.Value), abiAction_key_table_s_abiValueOffset; got != want {
 		t.Errorf("ghostty_action_key_table_s.value offset = %d, want %d", got, want)
 	}
 	if got, want := unsafe.Sizeof(ActionKeyTableU{}), abiAction_key_table_uSize; got != want {
@@ -126,163 +126,163 @@ func TestGeneratedABI(t *testing.T) {
 	if got, want := unsafe.Offsetof(ActionKeyTableActivate{}.Len), abiAction_key_table_u_activate_abiLenOffset; got != want {
 		t.Errorf("ghostty_action_key_table_u.activate.len offset = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Sizeof(ActionMouseOverLinkS{}), abiAction_mouse_over_link_sSize; got != want {
+	if got, want := unsafe.Sizeof(ActionMouseOverLink{}), abiAction_mouse_over_link_sSize; got != want {
 		t.Errorf("ghostty_action_mouse_over_link_s size = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Alignof(ActionMouseOverLinkS{}), abiAction_mouse_over_link_sAlign; got != want {
+	if got, want := unsafe.Alignof(ActionMouseOverLink{}), abiAction_mouse_over_link_sAlign; got != want {
 		t.Errorf("ghostty_action_mouse_over_link_s align = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Offsetof(ActionMouseOverLinkS{}.URL), abiAction_mouse_over_link_s_abiUrlOffset; got != want {
+	if got, want := unsafe.Offsetof(ActionMouseOverLink{}.URL), abiAction_mouse_over_link_s_abiUrlOffset; got != want {
 		t.Errorf("ghostty_action_mouse_over_link_s.url offset = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Offsetof(ActionMouseOverLinkS{}.Len), abiAction_mouse_over_link_s_abiLenOffset; got != want {
+	if got, want := unsafe.Offsetof(ActionMouseOverLink{}.Len), abiAction_mouse_over_link_s_abiLenOffset; got != want {
 		t.Errorf("ghostty_action_mouse_over_link_s.len offset = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Sizeof(ActionMoveTabS{}), abiAction_move_tab_sSize; got != want {
+	if got, want := unsafe.Sizeof(ActionMoveTab{}), abiAction_move_tab_sSize; got != want {
 		t.Errorf("ghostty_action_move_tab_s size = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Alignof(ActionMoveTabS{}), abiAction_move_tab_sAlign; got != want {
+	if got, want := unsafe.Alignof(ActionMoveTab{}), abiAction_move_tab_sAlign; got != want {
 		t.Errorf("ghostty_action_move_tab_s align = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Offsetof(ActionMoveTabS{}.Amount), abiAction_move_tab_s_abiAmountOffset; got != want {
+	if got, want := unsafe.Offsetof(ActionMoveTab{}.Amount), abiAction_move_tab_s_abiAmountOffset; got != want {
 		t.Errorf("ghostty_action_move_tab_s.amount offset = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Sizeof(ActionOpenURLS{}), abiAction_open_url_sSize; got != want {
+	if got, want := unsafe.Sizeof(ActionOpenURL{}), abiAction_open_url_sSize; got != want {
 		t.Errorf("ghostty_action_open_url_s size = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Alignof(ActionOpenURLS{}), abiAction_open_url_sAlign; got != want {
+	if got, want := unsafe.Alignof(ActionOpenURL{}), abiAction_open_url_sAlign; got != want {
 		t.Errorf("ghostty_action_open_url_s align = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Offsetof(ActionOpenURLS{}.Kind), abiAction_open_url_s_abiKindOffset; got != want {
+	if got, want := unsafe.Offsetof(ActionOpenURL{}.Kind), abiAction_open_url_s_abiKindOffset; got != want {
 		t.Errorf("ghostty_action_open_url_s.kind offset = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Offsetof(ActionOpenURLS{}.URL), abiAction_open_url_s_abiUrlOffset; got != want {
+	if got, want := unsafe.Offsetof(ActionOpenURL{}.URL), abiAction_open_url_s_abiUrlOffset; got != want {
 		t.Errorf("ghostty_action_open_url_s.url offset = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Offsetof(ActionOpenURLS{}.Len), abiAction_open_url_s_abiLenOffset; got != want {
+	if got, want := unsafe.Offsetof(ActionOpenURL{}.Len), abiAction_open_url_s_abiLenOffset; got != want {
 		t.Errorf("ghostty_action_open_url_s.len offset = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Sizeof(ActionProgressReportS{}), abiAction_progress_report_sSize; got != want {
+	if got, want := unsafe.Sizeof(ActionProgressReport{}), abiAction_progress_report_sSize; got != want {
 		t.Errorf("ghostty_action_progress_report_s size = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Alignof(ActionProgressReportS{}), abiAction_progress_report_sAlign; got != want {
+	if got, want := unsafe.Alignof(ActionProgressReport{}), abiAction_progress_report_sAlign; got != want {
 		t.Errorf("ghostty_action_progress_report_s align = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Offsetof(ActionProgressReportS{}.State), abiAction_progress_report_s_abiStateOffset; got != want {
+	if got, want := unsafe.Offsetof(ActionProgressReport{}.State), abiAction_progress_report_s_abiStateOffset; got != want {
 		t.Errorf("ghostty_action_progress_report_s.state offset = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Offsetof(ActionProgressReportS{}.Progress), abiAction_progress_report_s_abiProgressOffset; got != want {
+	if got, want := unsafe.Offsetof(ActionProgressReport{}.Progress), abiAction_progress_report_s_abiProgressOffset; got != want {
 		t.Errorf("ghostty_action_progress_report_s.progress offset = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Sizeof(ActionPwdS{}), abiAction_pwd_sSize; got != want {
+	if got, want := unsafe.Sizeof(ActionPwd{}), abiAction_pwd_sSize; got != want {
 		t.Errorf("ghostty_action_pwd_s size = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Alignof(ActionPwdS{}), abiAction_pwd_sAlign; got != want {
+	if got, want := unsafe.Alignof(ActionPwd{}), abiAction_pwd_sAlign; got != want {
 		t.Errorf("ghostty_action_pwd_s align = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Offsetof(ActionPwdS{}.Pwd), abiAction_pwd_s_abiPwdOffset; got != want {
+	if got, want := unsafe.Offsetof(ActionPwd{}.Pwd), abiAction_pwd_s_abiPwdOffset; got != want {
 		t.Errorf("ghostty_action_pwd_s.pwd offset = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Sizeof(ActionReloadConfigS{}), abiAction_reload_config_sSize; got != want {
+	if got, want := unsafe.Sizeof(ActionReloadConfig{}), abiAction_reload_config_sSize; got != want {
 		t.Errorf("ghostty_action_reload_config_s size = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Alignof(ActionReloadConfigS{}), abiAction_reload_config_sAlign; got != want {
+	if got, want := unsafe.Alignof(ActionReloadConfig{}), abiAction_reload_config_sAlign; got != want {
 		t.Errorf("ghostty_action_reload_config_s align = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Offsetof(ActionReloadConfigS{}.Soft), abiAction_reload_config_s_abiSoftOffset; got != want {
+	if got, want := unsafe.Offsetof(ActionReloadConfig{}.Soft), abiAction_reload_config_s_abiSoftOffset; got != want {
 		t.Errorf("ghostty_action_reload_config_s.soft offset = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Sizeof(ActionResizeSplitS{}), abiAction_resize_split_sSize; got != want {
+	if got, want := unsafe.Sizeof(ActionResizeSplit{}), abiAction_resize_split_sSize; got != want {
 		t.Errorf("ghostty_action_resize_split_s size = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Alignof(ActionResizeSplitS{}), abiAction_resize_split_sAlign; got != want {
+	if got, want := unsafe.Alignof(ActionResizeSplit{}), abiAction_resize_split_sAlign; got != want {
 		t.Errorf("ghostty_action_resize_split_s align = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Offsetof(ActionResizeSplitS{}.Amount), abiAction_resize_split_s_abiAmountOffset; got != want {
+	if got, want := unsafe.Offsetof(ActionResizeSplit{}.Amount), abiAction_resize_split_s_abiAmountOffset; got != want {
 		t.Errorf("ghostty_action_resize_split_s.amount offset = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Offsetof(ActionResizeSplitS{}.Direction), abiAction_resize_split_s_abiDirectionOffset; got != want {
+	if got, want := unsafe.Offsetof(ActionResizeSplit{}.Direction), abiAction_resize_split_s_abiDirectionOffset; got != want {
 		t.Errorf("ghostty_action_resize_split_s.direction offset = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Sizeof(ActionS{}), abiAction_sSize; got != want {
+	if got, want := unsafe.Sizeof(Action{}), abiAction_sSize; got != want {
 		t.Errorf("ghostty_action_s size = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Alignof(ActionS{}), abiAction_sAlign; got != want {
+	if got, want := unsafe.Alignof(Action{}), abiAction_sAlign; got != want {
 		t.Errorf("ghostty_action_s align = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Offsetof(ActionS{}.Tag), abiAction_s_abiTagOffset; got != want {
+	if got, want := unsafe.Offsetof(Action{}.Tag), abiAction_s_abiTagOffset; got != want {
 		t.Errorf("ghostty_action_s.tag offset = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Offsetof(ActionS{}.Action), abiAction_s_abiActionOffset; got != want {
+	if got, want := unsafe.Offsetof(Action{}.Action), abiAction_s_abiActionOffset; got != want {
 		t.Errorf("ghostty_action_s.action offset = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Sizeof(ActionScrollbarS{}), abiAction_scrollbar_sSize; got != want {
+	if got, want := unsafe.Sizeof(ActionScrollbar{}), abiAction_scrollbar_sSize; got != want {
 		t.Errorf("ghostty_action_scrollbar_s size = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Alignof(ActionScrollbarS{}), abiAction_scrollbar_sAlign; got != want {
+	if got, want := unsafe.Alignof(ActionScrollbar{}), abiAction_scrollbar_sAlign; got != want {
 		t.Errorf("ghostty_action_scrollbar_s align = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Offsetof(ActionScrollbarS{}.Total), abiAction_scrollbar_s_abiTotalOffset; got != want {
+	if got, want := unsafe.Offsetof(ActionScrollbar{}.Total), abiAction_scrollbar_s_abiTotalOffset; got != want {
 		t.Errorf("ghostty_action_scrollbar_s.total offset = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Offsetof(ActionScrollbarS{}.Offset), abiAction_scrollbar_s_abiOffsetOffset; got != want {
+	if got, want := unsafe.Offsetof(ActionScrollbar{}.Offset), abiAction_scrollbar_s_abiOffsetOffset; got != want {
 		t.Errorf("ghostty_action_scrollbar_s.offset offset = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Offsetof(ActionScrollbarS{}.Len), abiAction_scrollbar_s_abiLenOffset; got != want {
+	if got, want := unsafe.Offsetof(ActionScrollbar{}.Len), abiAction_scrollbar_s_abiLenOffset; got != want {
 		t.Errorf("ghostty_action_scrollbar_s.len offset = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Sizeof(ActionSearchSelectedS{}), abiAction_search_selected_sSize; got != want {
+	if got, want := unsafe.Sizeof(ActionSearchSelected{}), abiAction_search_selected_sSize; got != want {
 		t.Errorf("ghostty_action_search_selected_s size = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Alignof(ActionSearchSelectedS{}), abiAction_search_selected_sAlign; got != want {
+	if got, want := unsafe.Alignof(ActionSearchSelected{}), abiAction_search_selected_sAlign; got != want {
 		t.Errorf("ghostty_action_search_selected_s align = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Offsetof(ActionSearchSelectedS{}.Selected), abiAction_search_selected_s_abiSelectedOffset; got != want {
+	if got, want := unsafe.Offsetof(ActionSearchSelected{}.Selected), abiAction_search_selected_s_abiSelectedOffset; got != want {
 		t.Errorf("ghostty_action_search_selected_s.selected offset = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Sizeof(ActionSearchTotalS{}), abiAction_search_total_sSize; got != want {
+	if got, want := unsafe.Sizeof(ActionSearchTotal{}), abiAction_search_total_sSize; got != want {
 		t.Errorf("ghostty_action_search_total_s size = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Alignof(ActionSearchTotalS{}), abiAction_search_total_sAlign; got != want {
+	if got, want := unsafe.Alignof(ActionSearchTotal{}), abiAction_search_total_sAlign; got != want {
 		t.Errorf("ghostty_action_search_total_s align = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Offsetof(ActionSearchTotalS{}.Total), abiAction_search_total_s_abiTotalOffset; got != want {
+	if got, want := unsafe.Offsetof(ActionSearchTotal{}.Total), abiAction_search_total_s_abiTotalOffset; got != want {
 		t.Errorf("ghostty_action_search_total_s.total offset = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Sizeof(ActionSetTitleS{}), abiAction_set_title_sSize; got != want {
+	if got, want := unsafe.Sizeof(ActionSetTitle{}), abiAction_set_title_sSize; got != want {
 		t.Errorf("ghostty_action_set_title_s size = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Alignof(ActionSetTitleS{}), abiAction_set_title_sAlign; got != want {
+	if got, want := unsafe.Alignof(ActionSetTitle{}), abiAction_set_title_sAlign; got != want {
 		t.Errorf("ghostty_action_set_title_s align = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Offsetof(ActionSetTitleS{}.Title), abiAction_set_title_s_abiTitleOffset; got != want {
+	if got, want := unsafe.Offsetof(ActionSetTitle{}.Title), abiAction_set_title_s_abiTitleOffset; got != want {
 		t.Errorf("ghostty_action_set_title_s.title offset = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Sizeof(ActionSizeLimitS{}), abiAction_size_limit_sSize; got != want {
+	if got, want := unsafe.Sizeof(ActionSizeLimit{}), abiAction_size_limit_sSize; got != want {
 		t.Errorf("ghostty_action_size_limit_s size = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Alignof(ActionSizeLimitS{}), abiAction_size_limit_sAlign; got != want {
+	if got, want := unsafe.Alignof(ActionSizeLimit{}), abiAction_size_limit_sAlign; got != want {
 		t.Errorf("ghostty_action_size_limit_s align = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Offsetof(ActionSizeLimitS{}.MinWidth), abiAction_size_limit_s_abiMin_widthOffset; got != want {
+	if got, want := unsafe.Offsetof(ActionSizeLimit{}.MinWidth), abiAction_size_limit_s_abiMin_widthOffset; got != want {
 		t.Errorf("ghostty_action_size_limit_s.min_width offset = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Offsetof(ActionSizeLimitS{}.MinHeight), abiAction_size_limit_s_abiMin_heightOffset; got != want {
+	if got, want := unsafe.Offsetof(ActionSizeLimit{}.MinHeight), abiAction_size_limit_s_abiMin_heightOffset; got != want {
 		t.Errorf("ghostty_action_size_limit_s.min_height offset = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Offsetof(ActionSizeLimitS{}.MaxWidth), abiAction_size_limit_s_abiMax_widthOffset; got != want {
+	if got, want := unsafe.Offsetof(ActionSizeLimit{}.MaxWidth), abiAction_size_limit_s_abiMax_widthOffset; got != want {
 		t.Errorf("ghostty_action_size_limit_s.max_width offset = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Offsetof(ActionSizeLimitS{}.MaxHeight), abiAction_size_limit_s_abiMax_heightOffset; got != want {
+	if got, want := unsafe.Offsetof(ActionSizeLimit{}.MaxHeight), abiAction_size_limit_s_abiMax_heightOffset; got != want {
 		t.Errorf("ghostty_action_size_limit_s.max_height offset = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Sizeof(ActionStartSearchS{}), abiAction_start_search_sSize; got != want {
+	if got, want := unsafe.Sizeof(ActionStartSearch{}), abiAction_start_search_sSize; got != want {
 		t.Errorf("ghostty_action_start_search_s size = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Alignof(ActionStartSearchS{}), abiAction_start_search_sAlign; got != want {
+	if got, want := unsafe.Alignof(ActionStartSearch{}), abiAction_start_search_sAlign; got != want {
 		t.Errorf("ghostty_action_start_search_s align = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Offsetof(ActionStartSearchS{}.Needle), abiAction_start_search_s_abiNeedleOffset; got != want {
+	if got, want := unsafe.Offsetof(ActionStartSearch{}.Needle), abiAction_start_search_s_abiNeedleOffset; got != want {
 		t.Errorf("ghostty_action_start_search_s.needle offset = %d, want %d", got, want)
 	}
 	if got, want := unsafe.Sizeof(ActionU{}), abiAction_uSize; got != want {
@@ -324,19 +324,19 @@ func TestGeneratedABI(t *testing.T) {
 	if got, want := unsafe.Offsetof(EnvVar{}.Value), abiEnv_var_s_abiValueOffset; got != want {
 		t.Errorf("ghostty_env_var_s.value offset = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Sizeof(InfoS{}), abiInfo_sSize; got != want {
+	if got, want := unsafe.Sizeof(Info{}), abiInfo_sSize; got != want {
 		t.Errorf("ghostty_info_s size = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Alignof(InfoS{}), abiInfo_sAlign; got != want {
+	if got, want := unsafe.Alignof(Info{}), abiInfo_sAlign; got != want {
 		t.Errorf("ghostty_info_s align = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Offsetof(InfoS{}.BuildMode), abiInfo_s_abiBuild_modeOffset; got != want {
+	if got, want := unsafe.Offsetof(Info{}.BuildMode), abiInfo_s_abiBuild_modeOffset; got != want {
 		t.Errorf("ghostty_info_s.build_mode offset = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Offsetof(InfoS{}.Version), abiInfo_s_abiVersionOffset; got != want {
+	if got, want := unsafe.Offsetof(Info{}.Version), abiInfo_s_abiVersionOffset; got != want {
 		t.Errorf("ghostty_info_s.version offset = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Offsetof(InfoS{}.VersionLen), abiInfo_s_abiVersion_lenOffset; got != want {
+	if got, want := unsafe.Offsetof(Info{}.VersionLen), abiInfo_s_abiVersion_lenOffset; got != want {
 		t.Errorf("ghostty_info_s.version_len offset = %d, want %d", got, want)
 	}
 	if got, want := unsafe.Sizeof(InputKeyS{}), abiInput_key_sSize; got != want {
@@ -408,22 +408,22 @@ func TestGeneratedABI(t *testing.T) {
 	if got, want := unsafe.Alignof(IPCTarget{}), abiIpc_target_uAlign; got != want {
 		t.Errorf("ghostty_ipc_target_u align = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Sizeof(PlatformIosS{}), abiPlatform_ios_sSize; got != want {
+	if got, want := unsafe.Sizeof(PlatformIOS{}), abiPlatform_ios_sSize; got != want {
 		t.Errorf("ghostty_platform_ios_s size = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Alignof(PlatformIosS{}), abiPlatform_ios_sAlign; got != want {
+	if got, want := unsafe.Alignof(PlatformIOS{}), abiPlatform_ios_sAlign; got != want {
 		t.Errorf("ghostty_platform_ios_s align = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Offsetof(PlatformIosS{}.Uiview), abiPlatform_ios_s_abiUiviewOffset; got != want {
+	if got, want := unsafe.Offsetof(PlatformIOS{}.Uiview), abiPlatform_ios_s_abiUiviewOffset; got != want {
 		t.Errorf("ghostty_platform_ios_s.uiview offset = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Sizeof(PlatformMacosS{}), abiPlatform_macos_sSize; got != want {
+	if got, want := unsafe.Sizeof(PlatformMacOS{}), abiPlatform_macos_sSize; got != want {
 		t.Errorf("ghostty_platform_macos_s size = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Alignof(PlatformMacosS{}), abiPlatform_macos_sAlign; got != want {
+	if got, want := unsafe.Alignof(PlatformMacOS{}), abiPlatform_macos_sAlign; got != want {
 		t.Errorf("ghostty_platform_macos_s align = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Offsetof(PlatformMacosS{}.Nsview), abiPlatform_macos_s_abiNsviewOffset; got != want {
+	if got, want := unsafe.Offsetof(PlatformMacOS{}.Nsview), abiPlatform_macos_s_abiNsviewOffset; got != want {
 		t.Errorf("ghostty_platform_macos_s.nsview offset = %d, want %d", got, want)
 	}
 	if got, want := unsafe.Sizeof(PlatformU{}), abiPlatform_uSize; got != want {
@@ -570,40 +570,40 @@ func TestGeneratedABI(t *testing.T) {
 	if got, want := unsafe.Offsetof(SurfaceMessageChildexited{}.TimetimeMs), abiSurface_message_childexited_s_abiTimetime_msOffset; got != want {
 		t.Errorf("ghostty_surface_message_childexited_s.timetime_ms offset = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Sizeof(SurfaceSizeS{}), abiSurface_size_sSize; got != want {
+	if got, want := unsafe.Sizeof(SurfaceSize{}), abiSurface_size_sSize; got != want {
 		t.Errorf("ghostty_surface_size_s size = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Alignof(SurfaceSizeS{}), abiSurface_size_sAlign; got != want {
+	if got, want := unsafe.Alignof(SurfaceSize{}), abiSurface_size_sAlign; got != want {
 		t.Errorf("ghostty_surface_size_s align = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Offsetof(SurfaceSizeS{}.Columns), abiSurface_size_s_abiColumnsOffset; got != want {
+	if got, want := unsafe.Offsetof(SurfaceSize{}.Columns), abiSurface_size_s_abiColumnsOffset; got != want {
 		t.Errorf("ghostty_surface_size_s.columns offset = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Offsetof(SurfaceSizeS{}.Rows), abiSurface_size_s_abiRowsOffset; got != want {
+	if got, want := unsafe.Offsetof(SurfaceSize{}.Rows), abiSurface_size_s_abiRowsOffset; got != want {
 		t.Errorf("ghostty_surface_size_s.rows offset = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Offsetof(SurfaceSizeS{}.WidthPx), abiSurface_size_s_abiWidth_pxOffset; got != want {
+	if got, want := unsafe.Offsetof(SurfaceSize{}.WidthPx), abiSurface_size_s_abiWidth_pxOffset; got != want {
 		t.Errorf("ghostty_surface_size_s.width_px offset = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Offsetof(SurfaceSizeS{}.HeightPx), abiSurface_size_s_abiHeight_pxOffset; got != want {
+	if got, want := unsafe.Offsetof(SurfaceSize{}.HeightPx), abiSurface_size_s_abiHeight_pxOffset; got != want {
 		t.Errorf("ghostty_surface_size_s.height_px offset = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Offsetof(SurfaceSizeS{}.CellWidthPx), abiSurface_size_s_abiCell_width_pxOffset; got != want {
+	if got, want := unsafe.Offsetof(SurfaceSize{}.CellWidthPx), abiSurface_size_s_abiCell_width_pxOffset; got != want {
 		t.Errorf("ghostty_surface_size_s.cell_width_px offset = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Offsetof(SurfaceSizeS{}.CellHeightPx), abiSurface_size_s_abiCell_height_pxOffset; got != want {
+	if got, want := unsafe.Offsetof(SurfaceSize{}.CellHeightPx), abiSurface_size_s_abiCell_height_pxOffset; got != want {
 		t.Errorf("ghostty_surface_size_s.cell_height_px offset = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Sizeof(TargetS{}), abiTarget_sSize; got != want {
+	if got, want := unsafe.Sizeof(Target{}), abiTarget_sSize; got != want {
 		t.Errorf("ghostty_target_s size = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Alignof(TargetS{}), abiTarget_sAlign; got != want {
+	if got, want := unsafe.Alignof(Target{}), abiTarget_sAlign; got != want {
 		t.Errorf("ghostty_target_s align = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Offsetof(TargetS{}.Tag), abiTarget_s_abiTagOffset; got != want {
+	if got, want := unsafe.Offsetof(Target{}.Tag), abiTarget_s_abiTagOffset; got != want {
 		t.Errorf("ghostty_target_s.tag offset = %d, want %d", got, want)
 	}
-	if got, want := unsafe.Offsetof(TargetS{}.Target), abiTarget_s_abiTargetOffset; got != want {
+	if got, want := unsafe.Offsetof(Target{}.Target), abiTarget_s_abiTargetOffset; got != want {
 		t.Errorf("ghostty_target_s.target offset = %d, want %d", got, want)
 	}
 	if got, want := unsafe.Sizeof(TargetU{}), abiTarget_uSize; got != want {

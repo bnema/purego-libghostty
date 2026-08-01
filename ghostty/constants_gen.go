@@ -16,42 +16,42 @@ const (
 )
 
 const (
-	FloatWindowOn     ActionFloatWindowE = 0
-	FloatWindowOff    ActionFloatWindowE = 1
-	FloatWindowToggle ActionFloatWindowE = 2
+	FloatWindowOn     ActionFloatWindow = 0
+	FloatWindowOff    ActionFloatWindow = 1
+	FloatWindowToggle ActionFloatWindow = 2
 )
 
 const (
 	FullscreenNative                    ActionFullscreen = 0
-	FullscreenMacosNonNative            ActionFullscreen = 1
-	FullscreenMacosNonNativeVisibleMenu ActionFullscreen = 2
-	FullscreenMacosNonNativePaddedNotch ActionFullscreen = 3
+	FullscreenMacOSNonNative            ActionFullscreen = 1
+	FullscreenMacOSNonNativeVisibleMenu ActionFullscreen = 2
+	FullscreenMacOSNonNativePaddedNotch ActionFullscreen = 3
 )
 
 const (
-	GotoSplitPrevious ActionGotoSplitE = 0
-	GotoSplitNext     ActionGotoSplitE = 1
-	GotoSplitUp       ActionGotoSplitE = 2
-	GotoSplitLeft     ActionGotoSplitE = 3
-	GotoSplitDown     ActionGotoSplitE = 4
-	GotoSplitRight    ActionGotoSplitE = 5
+	GotoSplitPrevious ActionGotoSplit = 0
+	GotoSplitNext     ActionGotoSplit = 1
+	GotoSplitUp       ActionGotoSplit = 2
+	GotoSplitLeft     ActionGotoSplit = 3
+	GotoSplitDown     ActionGotoSplit = 4
+	GotoSplitRight    ActionGotoSplit = 5
 )
 
 const (
-	GotoTabPrevious ActionGotoTabE = -1
-	GotoTabNext     ActionGotoTabE = -2
-	GotoTabLast     ActionGotoTabE = -3
+	GotoTabPrevious ActionGotoTab = -1
+	GotoTabNext     ActionGotoTab = -2
+	GotoTabLast     ActionGotoTab = -3
 )
 
 const (
-	GotoWindowPrevious ActionGotoWindowE = 0
-	GotoWindowNext     ActionGotoWindowE = 1
+	GotoWindowPrevious ActionGotoWindow = 0
+	GotoWindowNext     ActionGotoWindow = 1
 )
 
 const (
-	InspectorToggle ActionInspectorE = 0
-	InspectorShow   ActionInspectorE = 1
-	InspectorHide   ActionInspectorE = 2
+	InspectorToggle ActionInspector = 0
+	InspectorShow   ActionInspector = 1
+	InspectorHide   ActionInspector = 2
 )
 
 const (
@@ -61,51 +61,51 @@ const (
 )
 
 const (
-	MouseShapeDefault      ActionMouseShapeE = 0
-	MouseShapeContextMenu  ActionMouseShapeE = 1
-	MouseShapeHelp         ActionMouseShapeE = 2
-	MouseShapePointer      ActionMouseShapeE = 3
-	MouseShapeProgress     ActionMouseShapeE = 4
-	MouseShapeWait         ActionMouseShapeE = 5
-	MouseShapeCell         ActionMouseShapeE = 6
-	MouseShapeCrosshair    ActionMouseShapeE = 7
-	MouseShapeText         ActionMouseShapeE = 8
-	MouseShapeVerticalText ActionMouseShapeE = 9
-	MouseShapeAlias        ActionMouseShapeE = 10
-	MouseShapeCopy         ActionMouseShapeE = 11
-	MouseShapeMove         ActionMouseShapeE = 12
-	MouseShapeNoDrop       ActionMouseShapeE = 13
-	MouseShapeNotAllowed   ActionMouseShapeE = 14
-	MouseShapeGrab         ActionMouseShapeE = 15
-	MouseShapeGrabbing     ActionMouseShapeE = 16
-	MouseShapeAllScroll    ActionMouseShapeE = 17
-	MouseShapeColResize    ActionMouseShapeE = 18
-	MouseShapeRowResize    ActionMouseShapeE = 19
-	MouseShapeNResize      ActionMouseShapeE = 20
-	MouseShapeEResize      ActionMouseShapeE = 21
-	MouseShapeSResize      ActionMouseShapeE = 22
-	MouseShapeWResize      ActionMouseShapeE = 23
-	MouseShapeNeResize     ActionMouseShapeE = 24
-	MouseShapeNwResize     ActionMouseShapeE = 25
-	MouseShapeSeResize     ActionMouseShapeE = 26
-	MouseShapeSwResize     ActionMouseShapeE = 27
-	MouseShapeEwResize     ActionMouseShapeE = 28
-	MouseShapeNsResize     ActionMouseShapeE = 29
-	MouseShapeNeswResize   ActionMouseShapeE = 30
-	MouseShapeNwseResize   ActionMouseShapeE = 31
-	MouseShapeZoomIn       ActionMouseShapeE = 32
-	MouseShapeZoomOut      ActionMouseShapeE = 33
+	MouseShapeDefault      ActionMouseShape = 0
+	MouseShapeContextMenu  ActionMouseShape = 1
+	MouseShapeHelp         ActionMouseShape = 2
+	MouseShapePointer      ActionMouseShape = 3
+	MouseShapeProgress     ActionMouseShape = 4
+	MouseShapeWait         ActionMouseShape = 5
+	MouseShapeCell         ActionMouseShape = 6
+	MouseShapeCrosshair    ActionMouseShape = 7
+	MouseShapeText         ActionMouseShape = 8
+	MouseShapeVerticalText ActionMouseShape = 9
+	MouseShapeAlias        ActionMouseShape = 10
+	MouseShapeCopy         ActionMouseShape = 11
+	MouseShapeMove         ActionMouseShape = 12
+	MouseShapeNoDrop       ActionMouseShape = 13
+	MouseShapeNotAllowed   ActionMouseShape = 14
+	MouseShapeGrab         ActionMouseShape = 15
+	MouseShapeGrabbing     ActionMouseShape = 16
+	MouseShapeAllScroll    ActionMouseShape = 17
+	MouseShapeColResize    ActionMouseShape = 18
+	MouseShapeRowResize    ActionMouseShape = 19
+	MouseShapeNResize      ActionMouseShape = 20
+	MouseShapeEResize      ActionMouseShape = 21
+	MouseShapeSResize      ActionMouseShape = 22
+	MouseShapeWResize      ActionMouseShape = 23
+	MouseShapeNeResize     ActionMouseShape = 24
+	MouseShapeNwResize     ActionMouseShape = 25
+	MouseShapeSeResize     ActionMouseShape = 26
+	MouseShapeSwResize     ActionMouseShape = 27
+	MouseShapeEwResize     ActionMouseShape = 28
+	MouseShapeNsResize     ActionMouseShape = 29
+	MouseShapeNeswResize   ActionMouseShape = 30
+	MouseShapeNwseResize   ActionMouseShape = 31
+	MouseShapeZoomIn       ActionMouseShape = 32
+	MouseShapeZoomOut      ActionMouseShape = 33
 )
 
 const (
-	MouseVisible ActionMouseVisibilityE = 0
-	MouseHidden  ActionMouseVisibilityE = 1
+	MouseVisible ActionMouseVisibility = 0
+	MouseHidden  ActionMouseVisibility = 1
 )
 
 const (
 	ActionOpenURLKindUnknown ActionOpenURLKind = 0
 	ActionOpenURLKindText    ActionOpenURLKind = 1
-	ActionOpenURLKindHtml    ActionOpenURLKind = 2
+	ActionOpenURLKindHTML    ActionOpenURLKind = 2
 )
 
 const (
@@ -117,23 +117,23 @@ const (
 )
 
 const (
-	PromptTitleSurface ActionPromptTitleE = 0
-	PromptTitleTab     ActionPromptTitleE = 1
+	PromptTitleSurface ActionPromptTitle = 0
+	PromptTitleTab     ActionPromptTitle = 1
 )
 
 const (
-	QuitTimerStart ActionQuitTimerE = 0
-	QuitTimerStop  ActionQuitTimerE = 1
+	QuitTimerStart ActionQuitTimer = 0
+	QuitTimerStop  ActionQuitTimer = 1
 )
 
 const (
-	ReadonlyOff ActionReadonlyE = 0
-	ReadonlyOn  ActionReadonlyE = 1
+	ReadonlyOff ActionReadonly = 0
+	ReadonlyOn  ActionReadonly = 1
 )
 
 const (
-	RendererHealthHealthy   ActionRendererHealthE = 0
-	RendererHealthUnhealthy ActionRendererHealthE = 1
+	RendererHealthHealthy   ActionRendererHealth = 0
+	RendererHealthUnhealthy ActionRendererHealth = 1
 )
 
 const (
@@ -144,9 +144,9 @@ const (
 )
 
 const (
-	SecureInputOn     ActionSecureInputE = 0
-	SecureInputOff    ActionSecureInputE = 1
-	SecureInputToggle ActionSecureInputE = 2
+	SecureInputOn     ActionSecureInput = 0
+	SecureInputOff    ActionSecureInput = 1
+	SecureInputToggle ActionSecureInput = 2
 )
 
 const (
@@ -157,72 +157,72 @@ const (
 )
 
 const (
-	ActionQuit                    ActionTag = 0
-	ActionNewWindow               ActionTag = 1
-	ActionNewTab                  ActionTag = 2
-	ActionCloseTab                ActionTag = 3
-	ActionNewSplit                ActionTag = 4
-	ActionCloseAllWindows         ActionTag = 5
-	ActionToggleMaximize          ActionTag = 6
-	ActionToggleFullscreen        ActionTag = 7
-	ActionToggleTabOverview       ActionTag = 8
-	ActionToggleWindowDecorations ActionTag = 9
-	ActionToggleQuickTerminal     ActionTag = 10
-	ActionToggleCommandPalette    ActionTag = 11
-	ActionToggleVisibility        ActionTag = 12
-	ActionToggleBackgroundOpacity ActionTag = 13
-	ActionMoveTab                 ActionTag = 14
-	ActionGotoTab                 ActionTag = 15
-	ActionGotoSplit               ActionTag = 16
-	ActionGotoWindow              ActionTag = 17
-	ActionResizeSplit             ActionTag = 18
-	ActionEqualizeSplits          ActionTag = 19
-	ActionToggleSplitZoom         ActionTag = 20
-	ActionPresentTerminal         ActionTag = 21
-	ActionSizeLimit               ActionTag = 22
-	ActionResetWindowSize         ActionTag = 23
-	ActionInitialSize             ActionTag = 24
-	ActionCellSize                ActionTag = 25
-	ActionScrollbar               ActionTag = 26
-	ActionRender                  ActionTag = 27
-	ActionInspector               ActionTag = 28
-	ActionShowGtkInspector        ActionTag = 29
-	ActionRenderInspector         ActionTag = 30
-	ActionDesktopNotification     ActionTag = 31
-	ActionSetTitle                ActionTag = 32
-	ActionSetTabTitle             ActionTag = 33
-	ActionPromptTitle             ActionTag = 34
-	ActionPwd                     ActionTag = 35
-	ActionMouseShape              ActionTag = 36
-	ActionMouseVisibility         ActionTag = 37
-	ActionMouseOverLink           ActionTag = 38
-	ActionRendererHealth          ActionTag = 39
-	ActionOpenConfig              ActionTag = 40
-	ActionQuitTimer               ActionTag = 41
-	ActionFloatWindow             ActionTag = 42
-	ActionSecureInput             ActionTag = 43
-	ActionKeySequence             ActionTag = 44
-	ActionKeyTable                ActionTag = 45
-	ActionColorChange             ActionTag = 46
-	ActionReloadConfig            ActionTag = 47
-	ActionConfigChange            ActionTag = 48
-	ActionCloseWindow             ActionTag = 49
-	ActionRingBell                ActionTag = 50
-	ActionSelectionChanged        ActionTag = 51
-	ActionUndo                    ActionTag = 52
-	ActionRedo                    ActionTag = 53
-	ActionCheckForUpdates         ActionTag = 54
-	ActionOpenURL                 ActionTag = 55
-	ActionShowChildExited         ActionTag = 56
-	ActionProgressReport          ActionTag = 57
-	ActionShowOnScreenKeyboard    ActionTag = 58
-	ActionCommandFinished         ActionTag = 59
-	ActionStartSearch             ActionTag = 60
-	ActionEndSearch               ActionTag = 61
-	ActionSearchTotal             ActionTag = 62
-	ActionSearchSelected          ActionTag = 63
-	ActionReadonly                ActionTag = 64
-	ActionCopyTitleToClipboard    ActionTag = 65
+	ActionQuit                     ActionTag = 0
+	ActionNewWindow                ActionTag = 1
+	ActionNewTab                   ActionTag = 2
+	ActionCloseTab                 ActionTag = 3
+	ActionNewSplit                 ActionTag = 4
+	ActionCloseAllWindows          ActionTag = 5
+	ActionToggleMaximize           ActionTag = 6
+	ActionToggleFullscreen         ActionTag = 7
+	ActionToggleTabOverview        ActionTag = 8
+	ActionToggleWindowDecorations  ActionTag = 9
+	ActionToggleQuickTerminal      ActionTag = 10
+	ActionToggleCommandPalette     ActionTag = 11
+	ActionToggleVisibility         ActionTag = 12
+	ActionToggleBackgroundOpacity  ActionTag = 13
+	ActionMoveTabValue             ActionTag = 14
+	ActionGotoTabValue             ActionTag = 15
+	ActionGotoSplitValue           ActionTag = 16
+	ActionGotoWindowValue          ActionTag = 17
+	ActionResizeSplitValue         ActionTag = 18
+	ActionEqualizeSplits           ActionTag = 19
+	ActionToggleSplitZoom          ActionTag = 20
+	ActionPresentTerminal          ActionTag = 21
+	ActionSizeLimitValue           ActionTag = 22
+	ActionResetWindowSize          ActionTag = 23
+	ActionInitialSizeValue         ActionTag = 24
+	ActionCellSizeValue            ActionTag = 25
+	ActionScrollbarValue           ActionTag = 26
+	ActionRender                   ActionTag = 27
+	ActionInspectorValue           ActionTag = 28
+	ActionShowGtkInspector         ActionTag = 29
+	ActionRenderInspector          ActionTag = 30
+	ActionDesktopNotificationValue ActionTag = 31
+	ActionSetTitleValue            ActionTag = 32
+	ActionSetTabTitle              ActionTag = 33
+	ActionPromptTitleValue         ActionTag = 34
+	ActionPwdValue                 ActionTag = 35
+	ActionMouseShapeValue          ActionTag = 36
+	ActionMouseVisibilityValue     ActionTag = 37
+	ActionMouseOverLinkValue       ActionTag = 38
+	ActionRendererHealthValue      ActionTag = 39
+	ActionOpenConfig               ActionTag = 40
+	ActionQuitTimerValue           ActionTag = 41
+	ActionFloatWindowValue         ActionTag = 42
+	ActionSecureInputValue         ActionTag = 43
+	ActionKeySequenceValue         ActionTag = 44
+	ActionKeyTableValue            ActionTag = 45
+	ActionColorChangeValue         ActionTag = 46
+	ActionReloadConfigValue        ActionTag = 47
+	ActionConfigChangeValue        ActionTag = 48
+	ActionCloseWindow              ActionTag = 49
+	ActionRingBell                 ActionTag = 50
+	ActionSelectionChanged         ActionTag = 51
+	ActionUndo                     ActionTag = 52
+	ActionRedo                     ActionTag = 53
+	ActionCheckForUpdates          ActionTag = 54
+	ActionOpenURLValue             ActionTag = 55
+	ActionShowChildExited          ActionTag = 56
+	ActionProgressReportValue      ActionTag = 57
+	ActionShowOnScreenKeyboard     ActionTag = 58
+	ActionCommandFinishedValue     ActionTag = 59
+	ActionStartSearchValue         ActionTag = 60
+	ActionEndSearch                ActionTag = 61
+	ActionSearchTotalValue         ActionTag = 62
+	ActionSearchSelectedValue      ActionTag = 63
+	ActionReadonlyValue            ActionTag = 64
+	ActionCopyTitleToClipboard     ActionTag = 65
 )
 
 const (
@@ -262,182 +262,182 @@ const (
 )
 
 const (
-	KeyUnidentified         InputKeyE = 0
-	KeyBackquote            InputKeyE = 1
-	KeyBackslash            InputKeyE = 2
-	KeyBracketLeft          InputKeyE = 3
-	KeyBracketRight         InputKeyE = 4
-	KeyComma                InputKeyE = 5
-	KeyDigit0               InputKeyE = 6
-	KeyDigit1               InputKeyE = 7
-	KeyDigit2               InputKeyE = 8
-	KeyDigit3               InputKeyE = 9
-	KeyDigit4               InputKeyE = 10
-	KeyDigit5               InputKeyE = 11
-	KeyDigit6               InputKeyE = 12
-	KeyDigit7               InputKeyE = 13
-	KeyDigit8               InputKeyE = 14
-	KeyDigit9               InputKeyE = 15
-	KeyEqual                InputKeyE = 16
-	KeyIntlBackslash        InputKeyE = 17
-	KeyIntlRo               InputKeyE = 18
-	KeyIntlYen              InputKeyE = 19
-	KeyA                    InputKeyE = 20
-	KeyB                    InputKeyE = 21
-	KeyC                    InputKeyE = 22
-	KeyD                    InputKeyE = 23
-	KeyE                    InputKeyE = 24
-	KeyF                    InputKeyE = 25
-	KeyG                    InputKeyE = 26
-	KeyH                    InputKeyE = 27
-	KeyI                    InputKeyE = 28
-	KeyJ                    InputKeyE = 29
-	KeyK                    InputKeyE = 30
-	KeyL                    InputKeyE = 31
-	KeyM                    InputKeyE = 32
-	KeyN                    InputKeyE = 33
-	KeyO                    InputKeyE = 34
-	KeyP                    InputKeyE = 35
-	KeyQ                    InputKeyE = 36
-	KeyR                    InputKeyE = 37
-	KeyS                    InputKeyE = 38
-	KeyT                    InputKeyE = 39
-	KeyU                    InputKeyE = 40
-	KeyV                    InputKeyE = 41
-	KeyW                    InputKeyE = 42
-	KeyX                    InputKeyE = 43
-	KeyY                    InputKeyE = 44
-	KeyZ                    InputKeyE = 45
-	KeyMinus                InputKeyE = 46
-	KeyPeriod               InputKeyE = 47
-	KeyQuote                InputKeyE = 48
-	KeySemicolon            InputKeyE = 49
-	KeySlash                InputKeyE = 50
-	KeyAltLeft              InputKeyE = 51
-	KeyAltRight             InputKeyE = 52
-	KeyBackspace            InputKeyE = 53
-	KeyCapsLock             InputKeyE = 54
-	KeyContextMenu          InputKeyE = 55
-	KeyControlLeft          InputKeyE = 56
-	KeyControlRight         InputKeyE = 57
-	KeyEnter                InputKeyE = 58
-	KeyMetaLeft             InputKeyE = 59
-	KeyMetaRight            InputKeyE = 60
-	KeyShiftLeft            InputKeyE = 61
-	KeyShiftRight           InputKeyE = 62
-	KeySpace                InputKeyE = 63
-	KeyTab                  InputKeyE = 64
-	KeyConvert              InputKeyE = 65
-	KeyKanaMode             InputKeyE = 66
-	KeyNonConvert           InputKeyE = 67
-	KeyDelete               InputKeyE = 68
-	KeyEnd                  InputKeyE = 69
-	KeyHelp                 InputKeyE = 70
-	KeyHome                 InputKeyE = 71
-	KeyInsert               InputKeyE = 72
-	KeyPageDown             InputKeyE = 73
-	KeyPageUp               InputKeyE = 74
-	KeyArrowDown            InputKeyE = 75
-	KeyArrowLeft            InputKeyE = 76
-	KeyArrowRight           InputKeyE = 77
-	KeyArrowUp              InputKeyE = 78
-	KeyNumLock              InputKeyE = 79
-	KeyNumpad0              InputKeyE = 80
-	KeyNumpad1              InputKeyE = 81
-	KeyNumpad2              InputKeyE = 82
-	KeyNumpad3              InputKeyE = 83
-	KeyNumpad4              InputKeyE = 84
-	KeyNumpad5              InputKeyE = 85
-	KeyNumpad6              InputKeyE = 86
-	KeyNumpad7              InputKeyE = 87
-	KeyNumpad8              InputKeyE = 88
-	KeyNumpad9              InputKeyE = 89
-	KeyNumpadAdd            InputKeyE = 90
-	KeyNumpadBackspace      InputKeyE = 91
-	KeyNumpadClear          InputKeyE = 92
-	KeyNumpadClearEntry     InputKeyE = 93
-	KeyNumpadComma          InputKeyE = 94
-	KeyNumpadDecimal        InputKeyE = 95
-	KeyNumpadDivide         InputKeyE = 96
-	KeyNumpadEnter          InputKeyE = 97
-	KeyNumpadEqual          InputKeyE = 98
-	KeyNumpadMemoryAdd      InputKeyE = 99
-	KeyNumpadMemoryClear    InputKeyE = 100
-	KeyNumpadMemoryRecall   InputKeyE = 101
-	KeyNumpadMemoryStore    InputKeyE = 102
-	KeyNumpadMemorySubtract InputKeyE = 103
-	KeyNumpadMultiply       InputKeyE = 104
-	KeyNumpadParenLeft      InputKeyE = 105
-	KeyNumpadParenRight     InputKeyE = 106
-	KeyNumpadSubtract       InputKeyE = 107
-	KeyNumpadSeparator      InputKeyE = 108
-	KeyNumpadUp             InputKeyE = 109
-	KeyNumpadDown           InputKeyE = 110
-	KeyNumpadRight          InputKeyE = 111
-	KeyNumpadLeft           InputKeyE = 112
-	KeyNumpadBegin          InputKeyE = 113
-	KeyNumpadHome           InputKeyE = 114
-	KeyNumpadEnd            InputKeyE = 115
-	KeyNumpadInsert         InputKeyE = 116
-	KeyNumpadDelete         InputKeyE = 117
-	KeyNumpadPageUp         InputKeyE = 118
-	KeyNumpadPageDown       InputKeyE = 119
-	KeyEscape               InputKeyE = 120
-	KeyF1                   InputKeyE = 121
-	KeyF2                   InputKeyE = 122
-	KeyF3                   InputKeyE = 123
-	KeyF4                   InputKeyE = 124
-	KeyF5                   InputKeyE = 125
-	KeyF6                   InputKeyE = 126
-	KeyF7                   InputKeyE = 127
-	KeyF8                   InputKeyE = 128
-	KeyF9                   InputKeyE = 129
-	KeyF10                  InputKeyE = 130
-	KeyF11                  InputKeyE = 131
-	KeyF12                  InputKeyE = 132
-	KeyF13                  InputKeyE = 133
-	KeyF14                  InputKeyE = 134
-	KeyF15                  InputKeyE = 135
-	KeyF16                  InputKeyE = 136
-	KeyF17                  InputKeyE = 137
-	KeyF18                  InputKeyE = 138
-	KeyF19                  InputKeyE = 139
-	KeyF20                  InputKeyE = 140
-	KeyF21                  InputKeyE = 141
-	KeyF22                  InputKeyE = 142
-	KeyF23                  InputKeyE = 143
-	KeyF24                  InputKeyE = 144
-	KeyF25                  InputKeyE = 145
-	KeyFn                   InputKeyE = 146
-	KeyFnLock               InputKeyE = 147
-	KeyPrintScreen          InputKeyE = 148
-	KeyScrollLock           InputKeyE = 149
-	KeyPause                InputKeyE = 150
-	KeyBrowserBack          InputKeyE = 151
-	KeyBrowserFavorites     InputKeyE = 152
-	KeyBrowserForward       InputKeyE = 153
-	KeyBrowserHome          InputKeyE = 154
-	KeyBrowserRefresh       InputKeyE = 155
-	KeyBrowserSearch        InputKeyE = 156
-	KeyBrowserStop          InputKeyE = 157
-	KeyEject                InputKeyE = 158
-	KeyLaunchApp1           InputKeyE = 159
-	KeyLaunchApp2           InputKeyE = 160
-	KeyLaunchMail           InputKeyE = 161
-	KeyMediaPlayPause       InputKeyE = 162
-	KeyMediaSelect          InputKeyE = 163
-	KeyMediaStop            InputKeyE = 164
-	KeyMediaTrackNext       InputKeyE = 165
-	KeyMediaTrackPrevious   InputKeyE = 166
-	KeyPower                InputKeyE = 167
-	KeySleep                InputKeyE = 168
-	KeyAudioVolumeDown      InputKeyE = 169
-	KeyAudioVolumeMute      InputKeyE = 170
-	KeyAudioVolumeUp        InputKeyE = 171
-	KeyWakeUp               InputKeyE = 172
-	KeyCopy                 InputKeyE = 173
-	KeyCut                  InputKeyE = 174
-	KeyPaste                InputKeyE = 175
+	KeyUnidentified         InputKey = 0
+	KeyBackquote            InputKey = 1
+	KeyBackslash            InputKey = 2
+	KeyBracketLeft          InputKey = 3
+	KeyBracketRight         InputKey = 4
+	KeyComma                InputKey = 5
+	KeyDigit0               InputKey = 6
+	KeyDigit1               InputKey = 7
+	KeyDigit2               InputKey = 8
+	KeyDigit3               InputKey = 9
+	KeyDigit4               InputKey = 10
+	KeyDigit5               InputKey = 11
+	KeyDigit6               InputKey = 12
+	KeyDigit7               InputKey = 13
+	KeyDigit8               InputKey = 14
+	KeyDigit9               InputKey = 15
+	KeyEqual                InputKey = 16
+	KeyIntlBackslash        InputKey = 17
+	KeyIntlRo               InputKey = 18
+	KeyIntlYen              InputKey = 19
+	KeyA                    InputKey = 20
+	KeyB                    InputKey = 21
+	KeyC                    InputKey = 22
+	KeyD                    InputKey = 23
+	KeyE                    InputKey = 24
+	KeyF                    InputKey = 25
+	KeyG                    InputKey = 26
+	KeyH                    InputKey = 27
+	KeyI                    InputKey = 28
+	KeyJ                    InputKey = 29
+	KeyK                    InputKey = 30
+	KeyL                    InputKey = 31
+	KeyM                    InputKey = 32
+	KeyN                    InputKey = 33
+	KeyO                    InputKey = 34
+	KeyP                    InputKey = 35
+	KeyQ                    InputKey = 36
+	KeyR                    InputKey = 37
+	KeyS                    InputKey = 38
+	KeyT                    InputKey = 39
+	KeyU                    InputKey = 40
+	KeyV                    InputKey = 41
+	KeyW                    InputKey = 42
+	KeyX                    InputKey = 43
+	KeyY                    InputKey = 44
+	KeyZ                    InputKey = 45
+	KeyMinus                InputKey = 46
+	KeyPeriod               InputKey = 47
+	KeyQuote                InputKey = 48
+	KeySemicolon            InputKey = 49
+	KeySlash                InputKey = 50
+	KeyAltLeft              InputKey = 51
+	KeyAltRight             InputKey = 52
+	KeyBackspace            InputKey = 53
+	KeyCapsLock             InputKey = 54
+	KeyContextMenu          InputKey = 55
+	KeyControlLeft          InputKey = 56
+	KeyControlRight         InputKey = 57
+	KeyEnter                InputKey = 58
+	KeyMetaLeft             InputKey = 59
+	KeyMetaRight            InputKey = 60
+	KeyShiftLeft            InputKey = 61
+	KeyShiftRight           InputKey = 62
+	KeySpace                InputKey = 63
+	KeyTab                  InputKey = 64
+	KeyConvert              InputKey = 65
+	KeyKanaMode             InputKey = 66
+	KeyNonConvert           InputKey = 67
+	KeyDelete               InputKey = 68
+	KeyEnd                  InputKey = 69
+	KeyHelp                 InputKey = 70
+	KeyHome                 InputKey = 71
+	KeyInsert               InputKey = 72
+	KeyPageDown             InputKey = 73
+	KeyPageUp               InputKey = 74
+	KeyArrowDown            InputKey = 75
+	KeyArrowLeft            InputKey = 76
+	KeyArrowRight           InputKey = 77
+	KeyArrowUp              InputKey = 78
+	KeyNumLock              InputKey = 79
+	KeyNumpad0              InputKey = 80
+	KeyNumpad1              InputKey = 81
+	KeyNumpad2              InputKey = 82
+	KeyNumpad3              InputKey = 83
+	KeyNumpad4              InputKey = 84
+	KeyNumpad5              InputKey = 85
+	KeyNumpad6              InputKey = 86
+	KeyNumpad7              InputKey = 87
+	KeyNumpad8              InputKey = 88
+	KeyNumpad9              InputKey = 89
+	KeyNumpadAdd            InputKey = 90
+	KeyNumpadBackspace      InputKey = 91
+	KeyNumpadClear          InputKey = 92
+	KeyNumpadClearEntry     InputKey = 93
+	KeyNumpadComma          InputKey = 94
+	KeyNumpadDecimal        InputKey = 95
+	KeyNumpadDivide         InputKey = 96
+	KeyNumpadEnter          InputKey = 97
+	KeyNumpadEqual          InputKey = 98
+	KeyNumpadMemoryAdd      InputKey = 99
+	KeyNumpadMemoryClear    InputKey = 100
+	KeyNumpadMemoryRecall   InputKey = 101
+	KeyNumpadMemoryStore    InputKey = 102
+	KeyNumpadMemorySubtract InputKey = 103
+	KeyNumpadMultiply       InputKey = 104
+	KeyNumpadParenLeft      InputKey = 105
+	KeyNumpadParenRight     InputKey = 106
+	KeyNumpadSubtract       InputKey = 107
+	KeyNumpadSeparator      InputKey = 108
+	KeyNumpadUp             InputKey = 109
+	KeyNumpadDown           InputKey = 110
+	KeyNumpadRight          InputKey = 111
+	KeyNumpadLeft           InputKey = 112
+	KeyNumpadBegin          InputKey = 113
+	KeyNumpadHome           InputKey = 114
+	KeyNumpadEnd            InputKey = 115
+	KeyNumpadInsert         InputKey = 116
+	KeyNumpadDelete         InputKey = 117
+	KeyNumpadPageUp         InputKey = 118
+	KeyNumpadPageDown       InputKey = 119
+	KeyEscape               InputKey = 120
+	KeyF1                   InputKey = 121
+	KeyF2                   InputKey = 122
+	KeyF3                   InputKey = 123
+	KeyF4                   InputKey = 124
+	KeyF5                   InputKey = 125
+	KeyF6                   InputKey = 126
+	KeyF7                   InputKey = 127
+	KeyF8                   InputKey = 128
+	KeyF9                   InputKey = 129
+	KeyF10                  InputKey = 130
+	KeyF11                  InputKey = 131
+	KeyF12                  InputKey = 132
+	KeyF13                  InputKey = 133
+	KeyF14                  InputKey = 134
+	KeyF15                  InputKey = 135
+	KeyF16                  InputKey = 136
+	KeyF17                  InputKey = 137
+	KeyF18                  InputKey = 138
+	KeyF19                  InputKey = 139
+	KeyF20                  InputKey = 140
+	KeyF21                  InputKey = 141
+	KeyF22                  InputKey = 142
+	KeyF23                  InputKey = 143
+	KeyF24                  InputKey = 144
+	KeyF25                  InputKey = 145
+	KeyFn                   InputKey = 146
+	KeyFnLock               InputKey = 147
+	KeyPrintScreen          InputKey = 148
+	KeyScrollLock           InputKey = 149
+	KeyPause                InputKey = 150
+	KeyBrowserBack          InputKey = 151
+	KeyBrowserFavorites     InputKey = 152
+	KeyBrowserForward       InputKey = 153
+	KeyBrowserHome          InputKey = 154
+	KeyBrowserRefresh       InputKey = 155
+	KeyBrowserSearch        InputKey = 156
+	KeyBrowserStop          InputKey = 157
+	KeyEject                InputKey = 158
+	KeyLaunchApp1           InputKey = 159
+	KeyLaunchApp2           InputKey = 160
+	KeyLaunchMail           InputKey = 161
+	KeyMediaPlayPause       InputKey = 162
+	KeyMediaSelect          InputKey = 163
+	KeyMediaStop            InputKey = 164
+	KeyMediaTrackNext       InputKey = 165
+	KeyMediaTrackPrevious   InputKey = 166
+	KeyPower                InputKey = 167
+	KeySleep                InputKey = 168
+	KeyAudioVolumeDown      InputKey = 169
+	KeyAudioVolumeMute      InputKey = 170
+	KeyAudioVolumeUp        InputKey = 171
+	KeyWakeUp               InputKey = 172
+	KeyCopy                 InputKey = 173
+	KeyCut                  InputKey = 174
+	KeyPaste                InputKey = 175
 )
 
 const (
@@ -481,9 +481,9 @@ const (
 )
 
 const (
-	PlatformInvalid PlatformE = 0
-	PlatformMacos   PlatformE = 1
-	PlatformIos     PlatformE = 2
+	PlatformInvalid    Platform = 0
+	PlatformMacOSValue Platform = 1
+	PlatformIOSValue   Platform = 2
 )
 
 const (

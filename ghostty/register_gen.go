@@ -6,6 +6,7 @@ package ghostty
 import (
 	"fmt"
 	"github.com/bnema/purego"
+	"unsafe"
 )
 
 var allSymbols = []string{
@@ -96,97 +97,276 @@ var allSymbols = []string{
 }
 
 func register(handle uintptr) error {
+	return registerWith(handle, purego.Dlsym, purego.RegisterFunc)
+}
+
+func registerWith(handle uintptr, resolve func(uintptr, string) (uintptr, error), registerFunction func(any, uintptr)) (err error) {
+	defer func() {
+		if recovered := recover(); recovered != nil {
+			err = fmt.Errorf("register function: %v", recovered)
+		}
+	}()
 	addresses := make(map[string]uintptr, len(allSymbols))
 	for _, symbol := range allSymbols {
-		address, err := purego.Dlsym(handle, symbol)
-		if err != nil {
-			return fmt.Errorf("resolve %s: %w", symbol, err)
+		address, resolveErr := resolve(handle, symbol)
+		if resolveErr != nil {
+			return fmt.Errorf("resolve %s: %w", symbol, resolveErr)
 		}
 		addresses[symbol] = address
 	}
-	purego.RegisterFunc(&AppFree, addresses["ghostty_app_free"])
-	purego.RegisterFunc(&AppHasGlobalKeybinds, addresses["ghostty_app_has_global_keybinds"])
-	purego.RegisterFunc(&AppKey, addresses["ghostty_app_key"])
-	purego.RegisterFunc(&AppKeyboardChanged, addresses["ghostty_app_keyboard_changed"])
-	purego.RegisterFunc(&AppNeedsConfirmQuit, addresses["ghostty_app_needs_confirm_quit"])
-	purego.RegisterFunc(&AppNew, addresses["ghostty_app_new"])
-	purego.RegisterFunc(&AppOpenConfig, addresses["ghostty_app_open_config"])
-	purego.RegisterFunc(&AppSetColorScheme, addresses["ghostty_app_set_color_scheme"])
-	purego.RegisterFunc(&AppSetFocus, addresses["ghostty_app_set_focus"])
-	purego.RegisterFunc(&AppTick, addresses["ghostty_app_tick"])
-	purego.RegisterFunc(&AppUpdateConfig, addresses["ghostty_app_update_config"])
-	purego.RegisterFunc(&AppUserdata, addresses["ghostty_app_userdata"])
-	purego.RegisterFunc(&BenchmarkCLI, addresses["ghostty_benchmark_cli"])
-	purego.RegisterFunc(&CLITryAction, addresses["ghostty_cli_try_action"])
-	purego.RegisterFunc(&ConfigClone, addresses["ghostty_config_clone"])
-	purego.RegisterFunc(&ConfigDiagnosticsCount, addresses["ghostty_config_diagnostics_count"])
-	purego.RegisterFunc(&ConfigFinalize, addresses["ghostty_config_finalize"])
-	purego.RegisterFunc(&ConfigFree, addresses["ghostty_config_free"])
-	purego.RegisterFunc(&ConfigGet, addresses["ghostty_config_get"])
-	purego.RegisterFunc(&ConfigGetDiagnostic, addresses["ghostty_config_get_diagnostic"])
-	purego.RegisterFunc(&ConfigKeyIsBinding, addresses["ghostty_config_key_is_binding"])
-	purego.RegisterFunc(&ConfigLoadCLIArgs, addresses["ghostty_config_load_cli_args"])
-	purego.RegisterFunc(&ConfigLoadDefaultFiles, addresses["ghostty_config_load_default_files"])
-	purego.RegisterFunc(&ConfigLoadFile, addresses["ghostty_config_load_file"])
-	purego.RegisterFunc(&ConfigLoadRecursiveFiles, addresses["ghostty_config_load_recursive_files"])
-	purego.RegisterFunc(&ConfigNew, addresses["ghostty_config_new"])
-	purego.RegisterFunc(&ConfigOpenPath, addresses["ghostty_config_open_path"])
-	purego.RegisterFunc(&ConfigTrigger, addresses["ghostty_config_trigger"])
-	purego.RegisterFunc(&Info, addresses["ghostty_info"])
-	purego.RegisterFunc(&Init, addresses["ghostty_init"])
-	purego.RegisterFunc(&InspectorFree, addresses["ghostty_inspector_free"])
-	purego.RegisterFunc(&InspectorKey, addresses["ghostty_inspector_key"])
-	purego.RegisterFunc(&InspectorMouseButton, addresses["ghostty_inspector_mouse_button"])
-	purego.RegisterFunc(&InspectorMousePos, addresses["ghostty_inspector_mouse_pos"])
-	purego.RegisterFunc(&InspectorMouseScroll, addresses["ghostty_inspector_mouse_scroll"])
-	purego.RegisterFunc(&InspectorSetContentScale, addresses["ghostty_inspector_set_content_scale"])
-	purego.RegisterFunc(&InspectorSetFocus, addresses["ghostty_inspector_set_focus"])
-	purego.RegisterFunc(&InspectorSetSize, addresses["ghostty_inspector_set_size"])
-	purego.RegisterFunc(&InspectorText, addresses["ghostty_inspector_text"])
-	purego.RegisterFunc(&SetWindowBackgroundBlur, addresses["ghostty_set_window_background_blur"])
-	purego.RegisterFunc(&StringFree, addresses["ghostty_string_free"])
-	purego.RegisterFunc(&SurfaceApp, addresses["ghostty_surface_app"])
-	purego.RegisterFunc(&SurfaceBindingAction, addresses["ghostty_surface_binding_action"])
-	purego.RegisterFunc(&SurfaceCompleteClipboardRequest, addresses["ghostty_surface_complete_clipboard_request"])
-	purego.RegisterFunc(&SurfaceConfigNew, addresses["ghostty_surface_config_new"])
-	purego.RegisterFunc(&SurfaceDraw, addresses["ghostty_surface_draw"])
-	purego.RegisterFunc(&SurfaceForegroundPid, addresses["ghostty_surface_foreground_pid"])
-	purego.RegisterFunc(&SurfaceFree, addresses["ghostty_surface_free"])
-	purego.RegisterFunc(&SurfaceFreeText, addresses["ghostty_surface_free_text"])
-	purego.RegisterFunc(&SurfaceHasSelection, addresses["ghostty_surface_has_selection"])
-	purego.RegisterFunc(&SurfaceIMEPoint, addresses["ghostty_surface_ime_point"])
-	purego.RegisterFunc(&SurfaceInheritedConfig, addresses["ghostty_surface_inherited_config"])
-	purego.RegisterFunc(&SurfaceInspector, addresses["ghostty_surface_inspector"])
-	purego.RegisterFunc(&SurfaceKey, addresses["ghostty_surface_key"])
-	purego.RegisterFunc(&SurfaceKeyIsBinding, addresses["ghostty_surface_key_is_binding"])
-	purego.RegisterFunc(&SurfaceKeyTranslationMods, addresses["ghostty_surface_key_translation_mods"])
-	purego.RegisterFunc(&SurfaceMouseButton, addresses["ghostty_surface_mouse_button"])
-	purego.RegisterFunc(&SurfaceMouseCaptured, addresses["ghostty_surface_mouse_captured"])
-	purego.RegisterFunc(&SurfaceMousePos, addresses["ghostty_surface_mouse_pos"])
-	purego.RegisterFunc(&SurfaceMousePressure, addresses["ghostty_surface_mouse_pressure"])
-	purego.RegisterFunc(&SurfaceMouseScroll, addresses["ghostty_surface_mouse_scroll"])
-	purego.RegisterFunc(&SurfaceNeedsConfirmQuit, addresses["ghostty_surface_needs_confirm_quit"])
-	purego.RegisterFunc(&SurfaceNew, addresses["ghostty_surface_new"])
-	purego.RegisterFunc(&SurfacePreedit, addresses["ghostty_surface_preedit"])
-	purego.RegisterFunc(&SurfaceProcessExited, addresses["ghostty_surface_process_exited"])
-	purego.RegisterFunc(&SurfaceReadSelection, addresses["ghostty_surface_read_selection"])
-	purego.RegisterFunc(&SurfaceReadText, addresses["ghostty_surface_read_text"])
-	purego.RegisterFunc(&SurfaceRefresh, addresses["ghostty_surface_refresh"])
-	purego.RegisterFunc(&SurfaceRequestClose, addresses["ghostty_surface_request_close"])
-	purego.RegisterFunc(&SurfaceSetColorScheme, addresses["ghostty_surface_set_color_scheme"])
-	purego.RegisterFunc(&SurfaceSetContentScale, addresses["ghostty_surface_set_content_scale"])
-	purego.RegisterFunc(&SurfaceSetFocus, addresses["ghostty_surface_set_focus"])
-	purego.RegisterFunc(&SurfaceSetOcclusion, addresses["ghostty_surface_set_occlusion"])
-	purego.RegisterFunc(&SurfaceSetSize, addresses["ghostty_surface_set_size"])
-	purego.RegisterFunc(&SurfaceSize, addresses["ghostty_surface_size"])
-	purego.RegisterFunc(&SurfaceSplit, addresses["ghostty_surface_split"])
-	purego.RegisterFunc(&SurfaceSplitEqualize, addresses["ghostty_surface_split_equalize"])
-	purego.RegisterFunc(&SurfaceSplitFocus, addresses["ghostty_surface_split_focus"])
-	purego.RegisterFunc(&SurfaceSplitResize, addresses["ghostty_surface_split_resize"])
-	purego.RegisterFunc(&SurfaceText, addresses["ghostty_surface_text"])
-	purego.RegisterFunc(&SurfaceTTYName, addresses["ghostty_surface_tty_name"])
-	purego.RegisterFunc(&SurfaceUpdateConfig, addresses["ghostty_surface_update_config"])
-	purego.RegisterFunc(&SurfaceUserdata, addresses["ghostty_surface_userdata"])
-	purego.RegisterFunc(&Translate, addresses["ghostty_translate"])
+	var registeredAppFree func(AppHandle)
+	var registeredAppHasGlobalKeybinds func(AppHandle) bool
+	var registeredAppKey func(AppHandle, InputKeyS) bool
+	var registeredAppKeyboardChanged func(AppHandle)
+	var registeredAppNeedsConfirmQuit func(AppHandle) bool
+	var registeredAppNew func(*RuntimeConfig, ConfigHandle) AppHandle
+	var registeredAppOpenConfig func(AppHandle)
+	var registeredAppSetColorScheme func(AppHandle, ColorScheme)
+	var registeredAppSetFocus func(AppHandle, bool)
+	var registeredAppTick func(AppHandle)
+	var registeredAppUpdateConfig func(AppHandle, ConfigHandle)
+	var registeredAppUserdata func(AppHandle) unsafe.Pointer
+	var registeredBenchmarkCLI func(*byte, *byte) bool
+	var registeredCLITryAction func()
+	var registeredConfigClone func(ConfigHandle) ConfigHandle
+	var registeredConfigDiagnosticsCount func(ConfigHandle) uint32
+	var registeredConfigFinalize func(ConfigHandle)
+	var registeredConfigFree func(ConfigHandle)
+	var registeredConfigGet func(ConfigHandle, unsafe.Pointer, *byte, uintptr) bool
+	var registeredConfigGetDiagnostic func(ConfigHandle, uint32) Diagnostic
+	var registeredConfigKeyIsBinding func(ConfigHandle, InputKeyS) bool
+	var registeredConfigLoadCLIArgs func(ConfigHandle)
+	var registeredConfigLoadDefaultFiles func(ConfigHandle)
+	var registeredConfigLoadFile func(ConfigHandle, *byte)
+	var registeredConfigLoadRecursiveFiles func(ConfigHandle)
+	var registeredConfigNew func() ConfigHandle
+	var registeredConfigOpenPath func() String
+	var registeredConfigTrigger func(ConfigHandle, *byte, uintptr) InputTrigger
+	var registeredInfoValue func() Info
+	var registeredInit func(uintptr, **byte) int32
+	var registeredInspectorFree func(SurfaceHandle)
+	var registeredInspectorKey func(InspectorHandle, InputAction, InputKey, InputMods)
+	var registeredInspectorMouseButton func(InspectorHandle, InputMouseState, InputMouseButton, InputMods)
+	var registeredInspectorMousePos func(InspectorHandle, float64, float64)
+	var registeredInspectorMouseScroll func(InspectorHandle, float64, float64, InputScrollMods)
+	var registeredInspectorSetContentScale func(InspectorHandle, float64, float64)
+	var registeredInspectorSetFocus func(InspectorHandle, bool)
+	var registeredInspectorSetSize func(InspectorHandle, uint32, uint32)
+	var registeredInspectorText func(InspectorHandle, *byte)
+	var registeredSetWindowBackgroundBlur func(AppHandle, unsafe.Pointer)
+	var registeredStringFree func(String)
+	var registeredSurfaceApp func(SurfaceHandle) AppHandle
+	var registeredSurfaceBindingAction func(SurfaceHandle, *byte, uintptr) bool
+	var registeredSurfaceCompleteClipboardRequest func(SurfaceHandle, *byte, unsafe.Pointer, bool)
+	var registeredSurfaceConfigNew func() SurfaceConfig
+	var registeredSurfaceDraw func(SurfaceHandle)
+	var registeredSurfaceForegroundPid func(SurfaceHandle) uint64
+	var registeredSurfaceFree func(SurfaceHandle)
+	var registeredSurfaceFreeText func(SurfaceHandle, *Text)
+	var registeredSurfaceHasSelection func(SurfaceHandle) bool
+	var registeredSurfaceIMEPoint func(SurfaceHandle, *float64, *float64, *float64, *float64)
+	var registeredSurfaceInheritedConfig func(SurfaceHandle, SurfaceContext) SurfaceConfig
+	var registeredSurfaceInspector func(SurfaceHandle) InspectorHandle
+	var registeredSurfaceKey func(SurfaceHandle, InputKeyS) bool
+	var registeredSurfaceKeyIsBinding func(SurfaceHandle, InputKeyS, *BindingFlags) bool
+	var registeredSurfaceKeyTranslationMods func(SurfaceHandle, InputMods) InputMods
+	var registeredSurfaceMouseButton func(SurfaceHandle, InputMouseState, InputMouseButton, InputMods) bool
+	var registeredSurfaceMouseCaptured func(SurfaceHandle) bool
+	var registeredSurfaceMousePos func(SurfaceHandle, float64, float64, InputMods)
+	var registeredSurfaceMousePressure func(SurfaceHandle, uint32, float64)
+	var registeredSurfaceMouseScroll func(SurfaceHandle, float64, float64, InputScrollMods)
+	var registeredSurfaceNeedsConfirmQuit func(SurfaceHandle) bool
+	var registeredSurfaceNew func(AppHandle, *SurfaceConfig) SurfaceHandle
+	var registeredSurfacePreedit func(SurfaceHandle, *byte, uintptr)
+	var registeredSurfaceProcessExited func(SurfaceHandle) bool
+	var registeredSurfaceReadSelection func(SurfaceHandle, *Text) bool
+	var registeredSurfaceReadText func(SurfaceHandle, Selection, *Text) bool
+	var registeredSurfaceRefresh func(SurfaceHandle)
+	var registeredSurfaceRequestClose func(SurfaceHandle)
+	var registeredSurfaceSetColorScheme func(SurfaceHandle, ColorScheme)
+	var registeredSurfaceSetContentScale func(SurfaceHandle, float64, float64)
+	var registeredSurfaceSetFocus func(SurfaceHandle, bool)
+	var registeredSurfaceSetOcclusion func(SurfaceHandle, bool)
+	var registeredSurfaceSetSize func(SurfaceHandle, uint32, uint32)
+	var registeredSurfaceSizeValue func(SurfaceHandle) SurfaceSize
+	var registeredSurfaceSplit func(SurfaceHandle, ActionSplitDirection)
+	var registeredSurfaceSplitEqualize func(SurfaceHandle)
+	var registeredSurfaceSplitFocus func(SurfaceHandle, ActionGotoSplit)
+	var registeredSurfaceSplitResize func(SurfaceHandle, ActionResizeSplitDirection, uint16)
+	var registeredSurfaceText func(SurfaceHandle, *byte, uintptr)
+	var registeredSurfaceTTYName func(SurfaceHandle) String
+	var registeredSurfaceUpdateConfig func(SurfaceHandle, ConfigHandle)
+	var registeredSurfaceUserdata func(SurfaceHandle) unsafe.Pointer
+	var registeredTranslate func(*byte) *byte
+
+	registerFunction(&registeredAppFree, addresses["ghostty_app_free"])
+	registerFunction(&registeredAppHasGlobalKeybinds, addresses["ghostty_app_has_global_keybinds"])
+	registerFunction(&registeredAppKey, addresses["ghostty_app_key"])
+	registerFunction(&registeredAppKeyboardChanged, addresses["ghostty_app_keyboard_changed"])
+	registerFunction(&registeredAppNeedsConfirmQuit, addresses["ghostty_app_needs_confirm_quit"])
+	registerFunction(&registeredAppNew, addresses["ghostty_app_new"])
+	registerFunction(&registeredAppOpenConfig, addresses["ghostty_app_open_config"])
+	registerFunction(&registeredAppSetColorScheme, addresses["ghostty_app_set_color_scheme"])
+	registerFunction(&registeredAppSetFocus, addresses["ghostty_app_set_focus"])
+	registerFunction(&registeredAppTick, addresses["ghostty_app_tick"])
+	registerFunction(&registeredAppUpdateConfig, addresses["ghostty_app_update_config"])
+	registerFunction(&registeredAppUserdata, addresses["ghostty_app_userdata"])
+	registerFunction(&registeredBenchmarkCLI, addresses["ghostty_benchmark_cli"])
+	registerFunction(&registeredCLITryAction, addresses["ghostty_cli_try_action"])
+	registerFunction(&registeredConfigClone, addresses["ghostty_config_clone"])
+	registerFunction(&registeredConfigDiagnosticsCount, addresses["ghostty_config_diagnostics_count"])
+	registerFunction(&registeredConfigFinalize, addresses["ghostty_config_finalize"])
+	registerFunction(&registeredConfigFree, addresses["ghostty_config_free"])
+	registerFunction(&registeredConfigGet, addresses["ghostty_config_get"])
+	registerFunction(&registeredConfigGetDiagnostic, addresses["ghostty_config_get_diagnostic"])
+	registerFunction(&registeredConfigKeyIsBinding, addresses["ghostty_config_key_is_binding"])
+	registerFunction(&registeredConfigLoadCLIArgs, addresses["ghostty_config_load_cli_args"])
+	registerFunction(&registeredConfigLoadDefaultFiles, addresses["ghostty_config_load_default_files"])
+	registerFunction(&registeredConfigLoadFile, addresses["ghostty_config_load_file"])
+	registerFunction(&registeredConfigLoadRecursiveFiles, addresses["ghostty_config_load_recursive_files"])
+	registerFunction(&registeredConfigNew, addresses["ghostty_config_new"])
+	registerFunction(&registeredConfigOpenPath, addresses["ghostty_config_open_path"])
+	registerFunction(&registeredConfigTrigger, addresses["ghostty_config_trigger"])
+	registerFunction(&registeredInfoValue, addresses["ghostty_info"])
+	registerFunction(&registeredInit, addresses["ghostty_init"])
+	registerFunction(&registeredInspectorFree, addresses["ghostty_inspector_free"])
+	registerFunction(&registeredInspectorKey, addresses["ghostty_inspector_key"])
+	registerFunction(&registeredInspectorMouseButton, addresses["ghostty_inspector_mouse_button"])
+	registerFunction(&registeredInspectorMousePos, addresses["ghostty_inspector_mouse_pos"])
+	registerFunction(&registeredInspectorMouseScroll, addresses["ghostty_inspector_mouse_scroll"])
+	registerFunction(&registeredInspectorSetContentScale, addresses["ghostty_inspector_set_content_scale"])
+	registerFunction(&registeredInspectorSetFocus, addresses["ghostty_inspector_set_focus"])
+	registerFunction(&registeredInspectorSetSize, addresses["ghostty_inspector_set_size"])
+	registerFunction(&registeredInspectorText, addresses["ghostty_inspector_text"])
+	registerFunction(&registeredSetWindowBackgroundBlur, addresses["ghostty_set_window_background_blur"])
+	registerFunction(&registeredStringFree, addresses["ghostty_string_free"])
+	registerFunction(&registeredSurfaceApp, addresses["ghostty_surface_app"])
+	registerFunction(&registeredSurfaceBindingAction, addresses["ghostty_surface_binding_action"])
+	registerFunction(&registeredSurfaceCompleteClipboardRequest, addresses["ghostty_surface_complete_clipboard_request"])
+	registerFunction(&registeredSurfaceConfigNew, addresses["ghostty_surface_config_new"])
+	registerFunction(&registeredSurfaceDraw, addresses["ghostty_surface_draw"])
+	registerFunction(&registeredSurfaceForegroundPid, addresses["ghostty_surface_foreground_pid"])
+	registerFunction(&registeredSurfaceFree, addresses["ghostty_surface_free"])
+	registerFunction(&registeredSurfaceFreeText, addresses["ghostty_surface_free_text"])
+	registerFunction(&registeredSurfaceHasSelection, addresses["ghostty_surface_has_selection"])
+	registerFunction(&registeredSurfaceIMEPoint, addresses["ghostty_surface_ime_point"])
+	registerFunction(&registeredSurfaceInheritedConfig, addresses["ghostty_surface_inherited_config"])
+	registerFunction(&registeredSurfaceInspector, addresses["ghostty_surface_inspector"])
+	registerFunction(&registeredSurfaceKey, addresses["ghostty_surface_key"])
+	registerFunction(&registeredSurfaceKeyIsBinding, addresses["ghostty_surface_key_is_binding"])
+	registerFunction(&registeredSurfaceKeyTranslationMods, addresses["ghostty_surface_key_translation_mods"])
+	registerFunction(&registeredSurfaceMouseButton, addresses["ghostty_surface_mouse_button"])
+	registerFunction(&registeredSurfaceMouseCaptured, addresses["ghostty_surface_mouse_captured"])
+	registerFunction(&registeredSurfaceMousePos, addresses["ghostty_surface_mouse_pos"])
+	registerFunction(&registeredSurfaceMousePressure, addresses["ghostty_surface_mouse_pressure"])
+	registerFunction(&registeredSurfaceMouseScroll, addresses["ghostty_surface_mouse_scroll"])
+	registerFunction(&registeredSurfaceNeedsConfirmQuit, addresses["ghostty_surface_needs_confirm_quit"])
+	registerFunction(&registeredSurfaceNew, addresses["ghostty_surface_new"])
+	registerFunction(&registeredSurfacePreedit, addresses["ghostty_surface_preedit"])
+	registerFunction(&registeredSurfaceProcessExited, addresses["ghostty_surface_process_exited"])
+	registerFunction(&registeredSurfaceReadSelection, addresses["ghostty_surface_read_selection"])
+	registerFunction(&registeredSurfaceReadText, addresses["ghostty_surface_read_text"])
+	registerFunction(&registeredSurfaceRefresh, addresses["ghostty_surface_refresh"])
+	registerFunction(&registeredSurfaceRequestClose, addresses["ghostty_surface_request_close"])
+	registerFunction(&registeredSurfaceSetColorScheme, addresses["ghostty_surface_set_color_scheme"])
+	registerFunction(&registeredSurfaceSetContentScale, addresses["ghostty_surface_set_content_scale"])
+	registerFunction(&registeredSurfaceSetFocus, addresses["ghostty_surface_set_focus"])
+	registerFunction(&registeredSurfaceSetOcclusion, addresses["ghostty_surface_set_occlusion"])
+	registerFunction(&registeredSurfaceSetSize, addresses["ghostty_surface_set_size"])
+	registerFunction(&registeredSurfaceSizeValue, addresses["ghostty_surface_size"])
+	registerFunction(&registeredSurfaceSplit, addresses["ghostty_surface_split"])
+	registerFunction(&registeredSurfaceSplitEqualize, addresses["ghostty_surface_split_equalize"])
+	registerFunction(&registeredSurfaceSplitFocus, addresses["ghostty_surface_split_focus"])
+	registerFunction(&registeredSurfaceSplitResize, addresses["ghostty_surface_split_resize"])
+	registerFunction(&registeredSurfaceText, addresses["ghostty_surface_text"])
+	registerFunction(&registeredSurfaceTTYName, addresses["ghostty_surface_tty_name"])
+	registerFunction(&registeredSurfaceUpdateConfig, addresses["ghostty_surface_update_config"])
+	registerFunction(&registeredSurfaceUserdata, addresses["ghostty_surface_userdata"])
+	registerFunction(&registeredTranslate, addresses["ghostty_translate"])
+
+	AppFree = registeredAppFree
+	AppHasGlobalKeybinds = registeredAppHasGlobalKeybinds
+	AppKey = registeredAppKey
+	AppKeyboardChanged = registeredAppKeyboardChanged
+	AppNeedsConfirmQuit = registeredAppNeedsConfirmQuit
+	AppNew = registeredAppNew
+	AppOpenConfig = registeredAppOpenConfig
+	AppSetColorScheme = registeredAppSetColorScheme
+	AppSetFocus = registeredAppSetFocus
+	AppTick = registeredAppTick
+	AppUpdateConfig = registeredAppUpdateConfig
+	AppUserdata = registeredAppUserdata
+	BenchmarkCLI = registeredBenchmarkCLI
+	CLITryAction = registeredCLITryAction
+	ConfigClone = registeredConfigClone
+	ConfigDiagnosticsCount = registeredConfigDiagnosticsCount
+	ConfigFinalize = registeredConfigFinalize
+	ConfigFree = registeredConfigFree
+	ConfigGet = registeredConfigGet
+	ConfigGetDiagnostic = registeredConfigGetDiagnostic
+	ConfigKeyIsBinding = registeredConfigKeyIsBinding
+	ConfigLoadCLIArgs = registeredConfigLoadCLIArgs
+	ConfigLoadDefaultFiles = registeredConfigLoadDefaultFiles
+	ConfigLoadFile = registeredConfigLoadFile
+	ConfigLoadRecursiveFiles = registeredConfigLoadRecursiveFiles
+	ConfigNew = registeredConfigNew
+	ConfigOpenPath = registeredConfigOpenPath
+	ConfigTrigger = registeredConfigTrigger
+	InfoValue = registeredInfoValue
+	Init = registeredInit
+	InspectorFree = registeredInspectorFree
+	InspectorKey = registeredInspectorKey
+	InspectorMouseButton = registeredInspectorMouseButton
+	InspectorMousePos = registeredInspectorMousePos
+	InspectorMouseScroll = registeredInspectorMouseScroll
+	InspectorSetContentScale = registeredInspectorSetContentScale
+	InspectorSetFocus = registeredInspectorSetFocus
+	InspectorSetSize = registeredInspectorSetSize
+	InspectorText = registeredInspectorText
+	SetWindowBackgroundBlur = registeredSetWindowBackgroundBlur
+	StringFree = registeredStringFree
+	SurfaceApp = registeredSurfaceApp
+	SurfaceBindingAction = registeredSurfaceBindingAction
+	SurfaceCompleteClipboardRequest = registeredSurfaceCompleteClipboardRequest
+	SurfaceConfigNew = registeredSurfaceConfigNew
+	SurfaceDraw = registeredSurfaceDraw
+	SurfaceForegroundPid = registeredSurfaceForegroundPid
+	SurfaceFree = registeredSurfaceFree
+	SurfaceFreeText = registeredSurfaceFreeText
+	SurfaceHasSelection = registeredSurfaceHasSelection
+	SurfaceIMEPoint = registeredSurfaceIMEPoint
+	SurfaceInheritedConfig = registeredSurfaceInheritedConfig
+	SurfaceInspector = registeredSurfaceInspector
+	SurfaceKey = registeredSurfaceKey
+	SurfaceKeyIsBinding = registeredSurfaceKeyIsBinding
+	SurfaceKeyTranslationMods = registeredSurfaceKeyTranslationMods
+	SurfaceMouseButton = registeredSurfaceMouseButton
+	SurfaceMouseCaptured = registeredSurfaceMouseCaptured
+	SurfaceMousePos = registeredSurfaceMousePos
+	SurfaceMousePressure = registeredSurfaceMousePressure
+	SurfaceMouseScroll = registeredSurfaceMouseScroll
+	SurfaceNeedsConfirmQuit = registeredSurfaceNeedsConfirmQuit
+	SurfaceNew = registeredSurfaceNew
+	SurfacePreedit = registeredSurfacePreedit
+	SurfaceProcessExited = registeredSurfaceProcessExited
+	SurfaceReadSelection = registeredSurfaceReadSelection
+	SurfaceReadText = registeredSurfaceReadText
+	SurfaceRefresh = registeredSurfaceRefresh
+	SurfaceRequestClose = registeredSurfaceRequestClose
+	SurfaceSetColorScheme = registeredSurfaceSetColorScheme
+	SurfaceSetContentScale = registeredSurfaceSetContentScale
+	SurfaceSetFocus = registeredSurfaceSetFocus
+	SurfaceSetOcclusion = registeredSurfaceSetOcclusion
+	SurfaceSetSize = registeredSurfaceSetSize
+	SurfaceSizeValue = registeredSurfaceSizeValue
+	SurfaceSplit = registeredSurfaceSplit
+	SurfaceSplitEqualize = registeredSurfaceSplitEqualize
+	SurfaceSplitFocus = registeredSurfaceSplitFocus
+	SurfaceSplitResize = registeredSurfaceSplitResize
+	SurfaceText = registeredSurfaceText
+	SurfaceTTYName = registeredSurfaceTTYName
+	SurfaceUpdateConfig = registeredSurfaceUpdateConfig
+	SurfaceUserdata = registeredSurfaceUserdata
+	Translate = registeredTranslate
 	return nil
 }

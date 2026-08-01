@@ -8,12 +8,16 @@ import (
 )
 
 var goInitialisms = map[string]string{
-	"cli": "CLI",
-	"ime": "IME",
-	"ipc": "IPC",
-	"rgb": "RGB",
-	"tty": "TTY",
-	"url": "URL",
+	"cli":   "CLI",
+	"html":  "HTML",
+	"ime":   "IME",
+	"ios":   "IOS",
+	"ipc":   "IPC",
+	"macos": "MacOS",
+	"os":    "OS",
+	"rgb":   "RGB",
+	"tty":   "TTY",
+	"url":   "URL",
 }
 
 var allTypeSuffixes = map[string]bool{"t": true, "s": true, "e": true, "u": true}
@@ -33,21 +37,8 @@ func GoIdentifier(cName string) string {
 	return goIdentifier(cName, allTypeSuffixes)
 }
 
-func goTypeIdentifier(cName string, kind TypeKind) string {
-	if strings.ContainsRune(cName, '.') {
-		return goIdentifier(cName, allTypeSuffixes)
-	}
-	suffix := map[TypeKind]string{
-		TypeAlias:    "t",
-		TypeEnum:     "e",
-		TypeStruct:   "s",
-		TypeUnion:    "u",
-		TypeCallback: "t",
-	}[kind]
-	if suffix == "" {
-		return goIdentifier(cName, nil)
-	}
-	return goIdentifier(cName, map[string]bool{suffix: true})
+func goTypeIdentifier(cName string, _ TypeKind) string {
+	return goIdentifier(cName, allTypeSuffixes)
 }
 
 func goIdentifier(cName string, suffixes map[string]bool) string {
@@ -117,6 +108,11 @@ type nameEntry struct {
 	isType                  bool
 }
 
+func valueNameEntry(cName string) nameEntry {
+	name := goValueIdentifier(cName)
+	return nameEntry{cName: cName, goName: name, fallback: name + "Value"}
+}
+
 // AssignGoNames assigns every package-level declaration before reporting a collision.
 func AssignGoNames(model Model) (map[string]string, error) {
 	var entries []nameEntry
@@ -129,14 +125,14 @@ func AssignGoNames(model Model) (map[string]string, error) {
 		}
 		entries = append(entries, nameEntry{cName: typ.CName, goName: name, fallback: fallback, isType: true})
 		for _, value := range typ.EnumValues {
-			entries = append(entries, nameEntry{cName: value.CName, goName: goValueIdentifier(value.CName)})
+			entries = append(entries, valueNameEntry(value.CName))
 		}
 	}
 	for _, constant := range model.Constants {
-		entries = append(entries, nameEntry{cName: constant.CName, goName: goValueIdentifier(constant.CName)})
+		entries = append(entries, valueNameEntry(constant.CName))
 	}
 	for _, function := range model.Functions {
-		entries = append(entries, nameEntry{cName: function.CName, goName: goValueIdentifier(function.CName)})
+		entries = append(entries, valueNameEntry(function.CName))
 	}
 	sort.Slice(entries, func(i, j int) bool { return entries[i].cName < entries[j].cName })
 
@@ -164,10 +160,20 @@ func AssignGoNames(model Model) (map[string]string, error) {
 					values = append(values, index)
 				}
 			}
-			if len(types) == 0 || (len(values) == 0 && !distinctTypeSuffixes(entries, types)) {
+			if len(types) == 0 {
 				return nil, collisionError(entries, indexes)
 			}
-			for _, index := range types {
+			for _, index := range values {
+				entries[index].goName = entries[index].fallback
+				changed = true
+			}
+			if len(types) < 2 {
+				continue
+			}
+			if !distinctTypeSuffixes(entries, types) {
+				return nil, collisionError(entries, indexes)
+			}
+			for _, index := range types[1:] {
 				if entries[index].fallback == entries[index].goName || typeSuffix(entries[index].cName) == "" {
 					return nil, collisionError(entries, indexes)
 				}
